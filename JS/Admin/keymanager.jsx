@@ -23,7 +23,7 @@ function ManageKeysModal(props) {
     var newKey = () => {
 
         var data = {
-            "value" : UUID(),
+            "value" : GenerateAPIKey(),
             "id" : UUID(),
             "name" : "New Key",
             "perms" : "admin"
@@ -102,6 +102,25 @@ function ManageKeysModal(props) {
     )
 }
 
+function GenerateAPIKey() {
+    var baseKey = Array.from(
+        window.crypto.getRandomValues(new Uint8Array(Math.ceil(32 / 2))),
+        (b) => ("0" + (b & 0xFF).toString(16)).slice(-2)
+    ).join("").toUpperCase();
+
+    var key = "";
+    for (let i = 0; i < baseKey.length; i++) {
+        if (i % 6 == 0 && i != 0) {
+            key += "-";
+        }
+        key += baseKey[i];
+    }
+
+    //Year Signature Just For Reference
+    key += new Date().getFullYear().toString();
+
+    return key;
+}
 
 function ManageKeysItem(props) {
 
