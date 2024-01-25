@@ -1,0 +1,105 @@
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 300px;
+    z-index: 100;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+
+    background-color: var(--col-contrast);
+}
+
+
+.workspaceButton {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 5px;
+}
+
+.workspaceButton h3 {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    margin: 0;
+    margin-left: 5px;
+}
+
+.workspaceButton .workspaceButtonIcon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.workspaceButton .workspaceButtonIcon img {
+    width: 23px;
+}
+
+.sidebarWorkspaces {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebarWorkspaces .sidebarWorkspacesHeader {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 40px;
+    gap: 5px;
+}
+
+.sidebarWorkspaces .sidebarWorkspacesHeader h3 {
+    margin: 0
+}
+
+.sidebarWorkspaces .sidebarWorkspacesHeader button {
+    display: none;
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+.sidebarWorkspaces:hover .sidebarWorkspacesHeader button {
+    display: flex;
+}
+
+.sidebarWorkspaces .workspaceList {
+    transition: transform 0.3s, background-color 0.3s, border-radius 0.3s, padding 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 80%;
+}
+
+.sidebarWorkspaces .reorderWorkspaceList {
+    transform: scale(90%);
+    background-color: var(--col-bg);
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.sidebarWorkspaces .workspaceSortable {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}

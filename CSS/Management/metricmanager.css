@@ -1,0 +1,49 @@
+.metricList {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr) ) ;
+}
+
+.metricList .box {
+    background-color: #fff;
+}
+
+.metricTable thead {
+    display: none;
+}
+
+.metricTableItem {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 15px;
+}
+
+.metricTableItem .iconButtonLarge:nth-of-type(1) {
+    margin-left: auto;
+}
+
+.metricTableItem p {
+    line-height: normal;
+    font-size: 20px;
+}
+
+.metricTableItem h1 {
+    font-size: 16px;
+    letter-spacing: normal;
+    line-height: normal;
+    margin: 0;
+    font-weight: 500;
+}
+
+.iconSelect {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 500px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-rows: 50px;
+    justify-content: center;
+    align-items: start;
+    row-gap: 15px;
+}

@@ -1,0 +1,52 @@
+.csMedLong.graphNum0 .leftBar {
+    height: 100%;
+    width: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.csMedLong.graphNum0 .leftBar img {
+    width: 35px;
+    height: 35px;
+}
+
+.csMedLong.graphNum0 .subCard {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    gap: 7px;
+}
+
+.csMedLong.graphNum0 .subCard h1 {
+    font-family: InterVariable !important;
+    font-weight: 500;
+    margin: 0;
+    line-height: 34px;
+    color: var(--col-text);
+    letter-spacing: normal;
+
+    display: flex;
+}
+
+.csMedLong.graphNum0 .subCard h3 {
+    font-family: InterVariable !important;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    margin: 0;
+    font-size: 14px;
+    color: var(--col-text-secondary);
+    letter-spacing: normal;
+}
+
+.csMedLong.graphNum0 .subCard .numberBox {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 3px;
+}

@@ -1,0 +1,266 @@
+
+* {
+    box-sizing: border-box;
+    font-family:  InterVariable, tabler-icons !important;
+    letter-spacing: normal !important;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+* {
+    --col-bg: #F0F0F0;
+    --col-contrast: white;
+    --col-text: #242424;
+    --col-text-secondary: #818181;
+}
+
+*::-webkit-scrollbar {
+    width: 16px;
+    background: var(--col-bg);
+}
+*::-webkit-scrollbar-thumb {
+    height: 56px;
+    border-radius: 8px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+    background-color: var(--col-text);
+    opacity: 0.5;
+}
+.mobile *::-webkit-scrollbar {
+    width: 0px;
+}
+
+@media (prefers-color-scheme: dark) {
+    /*Dark Mode*/
+    * {
+        --col-bg: #161616;
+        --col-contrast: #222222;
+        --col-text: white;
+        --col-text-secondary: #979797;
+    }
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background-color: var(--col-bg);
+}
+
+.flexx {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexy {
+    display: flex;
+    flex-direction: column;
+}
+
+.fillx {
+    width: 100%;
+}
+
+.filly {
+    height: 100%;
+}
+
+.fjend {
+    justify-content: flex-end;
+}
+
+.fjcenter {
+    justify-content: center;
+}
+
+.fjstart {
+    justify-content: flex-start;
+}
+
+.faend {
+    align-items: flex-end;
+}
+
+.facenter {
+    align-items: center;
+}
+
+.fastart {
+    align-items: flex-start;
+}
+
+.gap15 {
+    gap: 15px;
+}
+
+.gap10 {
+    gap: 10px;
+}
+
+.gap5 {
+    gap: 5px;
+}
+
+.tacenter {
+    text-align: center;
+}
+
+.taleft {
+    text-align: left;
+}
+
+.boldText, .nextui-input-block-label {
+    font-family: InterVariable !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+
+    line-height: normal !important;
+    font-size: 14px !important;
+    color: var(--col-text-secondary) !important;
+    letter-spacing: normal !important;
+}
+
+.sectionHeader, #modal-title {
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: normal;
+    font-size: 22px;
+
+    font-optical-sizing: none;
+    font-variation-settings: 'opsz' 32;
+}
+
+.nextui-modal-body {
+    padding: 15px !important;
+}
+
+.ti {
+    text-align: center;
+    position: relative;
+}
+
+.nextui-dropdown-item-content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nextui-button-text {
+    font-weight: 400;
+}
+
+
+.topbar {
+    width: 100%;
+    height: 70px;
+    position: absolute;
+    z-index: 99;
+    box-shadow: none;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding-right: 20px;
+}
+
+.dashboard {
+    position: absolute;
+    width: calc(100% - 300px);
+    height: calc(100% - 70px);
+    margin-left: 300px;
+    margin-top: 70px;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+
+.horizontalButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.horizontalButtons button {
+    border-radius: 0;
+    margin: 0;
+    font-size: 17px;
+    width: calc(100% / 5);
+}
+
+.horizontalButtons button:first-child {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.horizontalButtons button:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.metricIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.metricIcon img {
+    width: 30px;
+    height: 30px;
+}
+
+.iconButton, .iconButtonLarge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+    aspect-ratio: 1;
+}
+
+.iconButtonLarge {
+    position: relative;
+}
+
+.iconButtonLarge span {
+    position: absolute;
+}
+
+.manageKeysItem {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 25px;
+}
+
+.apexcharts-legend {
+    justify-content: center !important;
+}
+
+#mastertooltip {
+    background-color: var(--col-text);
+    color: var(--col-contrast);
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    min-height: 40px;
+    min-width: 40px;
+    padding: 0px 10px 0px 10px;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 10px;
+    z-index: 99999;
+}
+
+
+
+.silentTooltip {
+    position: absolute;
+    z-index: 15;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}

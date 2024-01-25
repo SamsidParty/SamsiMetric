@@ -1,0 +1,99 @@
+.layoutCard {
+    position: relative;
+}
+
+.desktop .layoutCard {
+    --card-scale: 1;
+}
+
+.dashboardLayout {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    gap: 20px;
+}
+
+.layout1 {
+    width: 100%;
+    height: 140px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.layout2 {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.layout3 {
+    width: 100%;
+    height: 310px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.csMedLong {
+    width: 310px;
+    height: 140px;
+    background-color: var(--col-contrast);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+.graphSettings .csMedLong {
+    min-width: 310px;
+}
+
+.graphSettingscsMedLong {
+    height: 140px;
+}
+
+.csShortLong {
+    width: 310px;
+    height: 70px;
+    background-color: var(--col-contrast);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+.graphSettings .csShortLong {
+    min-width: 310px;
+}
+
+.graphSettingscsShortLong {
+    height: 70px;
+}
+
+.csLongDouble {
+    width: 640px;
+    height: 310px;
+    background-color: var(--col-contrast);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}

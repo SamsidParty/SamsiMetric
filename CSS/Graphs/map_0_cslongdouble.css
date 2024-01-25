@@ -1,0 +1,61 @@
+.csLongDouble.graphMap0 {
+    position: relative;
+}
+
+.csLongDouble.graphMap0 * {
+    outline: none !important;
+}
+
+.csLongDouble.graphMap0 .mapHeader {
+    background-color: var(--col-bg);
+    z-index: 10;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 10px;
+    height: 40px;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    gap: 5px;
+}
+
+.csLongDouble.graphMap0 .mapHeader .boldText {
+    margin: 3px;
+}
+
+.csLongDouble.graphMap0 .mapHeader .metricIcon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+}
+
+.csLongDouble.graphMap0 .mapHeader .metricIcon img {
+    width: 21px;
+    height: 21px;
+}
+
+.csLongDouble.graphMap0 .mapGroupHeader .nextui-dropdown-button {
+    padding: 3px !important;
+}
+
+.csLongDouble.graphMap0 .mapGroupHeader .nextui-button-icon-right {
+    margin-left: 3px !important;
+}
+
+.csLongDouble.graphMap0 .mapGroupHeader .nextui-button-icon-right svg {
+    color: var(--col-text-secondary) !important;
+}
+
+.csLongDouble.graphMap0 .mapGroupHeader .nextui-button-text-right {
+    font-family: InterVariable !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+
+    line-height: normal !important;
+    font-size: 14px !important;
+    color: var(--col-text-secondary) !important;
+    letter-spacing: normal !important;
+}

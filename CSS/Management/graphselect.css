@@ -1,0 +1,58 @@
+.metricSelect {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 500px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-auto-rows: 50px;
+    justify-content: center;
+    align-items: start;
+    row-gap: 10px;
+    column-gap: 10px;
+}
+
+.metricSelect button {
+    width: 100%;
+    height: 100%;
+}
+
+.graphSelect {
+    min-height: 300px;
+    max-height: 500px;
+    height: 100%;
+    background-color: var(--col-bg);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    gap: 25px;
+    margin-bottom: 0 !important;
+}
+
+.graphSettings {
+    display: flex;
+    gap: 25px;
+}
+
+.graphSettingsBox {
+    background-color: var(--col-contrast);
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    gap: 15px;
+}
+
+.graphSetting {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.applyGraphSettings {
+    margin-top: auto;
+}

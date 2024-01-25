@@ -1,0 +1,77 @@
+.csMedLong.graphPie0 .apexcharts-legend {
+    display: none;
+}
+
+.csMedLong.graphPie0 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.csMedLong.graphPie0 .subCard {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 95px;
+    align-items: flex-start;
+    padding: 15px 0px 0px 15px;
+    margin-right: auto;
+    gap: 15px;
+}
+
+.csMedLong.graphPie0 .graphChart {
+    margin-right: 5px;
+    margin-left: auto;
+    margin-bottom: 3px;
+}
+
+.csMedLong.graphPie0 .iconHolder {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    right: 45px;
+    border-radius: 360px;
+    border: 2px solid var(--col-contrast);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.csMedLong.graphPie0 .iconHolder img {
+    width: 21px;
+    height: 21px;
+}
+
+.csMedLong.graphPie0 .subCard h3 {
+    font-family: InterVariable !important;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    margin: 0;
+    font-size: 14px;
+    color: var(--col-text-secondary);
+    letter-spacing: normal;
+    line-height: normal;
+}
+
+.csMedLong.graphPie0 .labelHolder {
+    width: 140px;
+    height: 70px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.csMedLong.graphPie0 .subCardLabel {
+    border-radius: 8px;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.csMedLong.graphPie0 .subCardLabel img {
+    width: 21px;
+    height: 21px;
+}

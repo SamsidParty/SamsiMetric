@@ -1,0 +1,67 @@
+[
+    {
+        "action": "copyfolder",
+        "from": "../Images",
+        "to": "../Build/Images"
+    },
+    {
+        "action": "copyfolder",
+        "from": "../PHP",
+        "to": "../Build/PHP"
+    },
+    {
+        "action": "copyfolder",
+        "from": "../Pages",
+        "to": "../Build/Pages"
+    },
+    {
+        "action": "copyfile",
+        "from": "../.htaccess",
+        "to": "../Build/.htaccess"
+    },
+    {
+        "action": "copyfile",
+        "from": "../backend.php",
+        "to": "../Build/backend.php"
+    },
+    {
+        "action": "mkdir",
+        "to": "../Build/UploadedIcons"
+    },
+    {
+        "action": "copyfile",
+        "from": "../UploadedIcons/.htaccess",
+        "to": "../Build/UploadedIcons/.htaccess"
+    },
+    {
+        "action": "mkdir",
+        "to": "../Build/JS"
+    },
+    {
+        "action": "mkdir",
+        "to": "../Build/JS/Common"
+    },
+    {
+        "action": "mkdir",
+        "to": "../Build/JS/Mobile"
+    },
+    {
+        "action": "mkdir",
+        "to": "../Build/JS/ThirdParty"
+    },
+    {
+        "action": "copyfile",
+        "from": "../JS/Common/loader.prod.js",
+        "to": "../Build/JS/Common/loader.prod.js"
+    },
+    {
+        "action": "copyfile",
+        "from": "../JS/Mobile/loader.js",
+        "to": "../Build/JS/Mobile/loader.js"
+    },
+    {
+        "action": "copyfile",
+        "from": "../JS/ThirdParty/lzstring.js",
+        "to": "../Build/JS/ThirdParty/lzstring.js"
+    }
+]
