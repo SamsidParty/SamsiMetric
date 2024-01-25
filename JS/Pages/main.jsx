@@ -24,7 +24,6 @@ async function PageInit() {
     }
 
     if (localStorage.apikey_perms == "manager" || localStorage.apikey_perms == "admin") {
-        await LoadDependency("./JS/Management/metricmanager.jsx");
         await LoadDependency("./JS/Management/groupmanager.jsx");
         await LoadDependency("./JS/Management/projectmanager.jsx");
         await LoadDependency("./JS/Management/editworkspace.jsx");
@@ -34,13 +33,6 @@ async function PageInit() {
 function Topbar()
 {
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
-    var [keyOpen, setKeyOpen] = React.useState(false);
-    var [keyData, setKeyData] = React.useState([]);
-
-    var closeKeyManager = () =>
-    {
-        setKeyOpen(false);
-    };
 
     var keyName = localStorage.apikey_name;
 
@@ -53,16 +45,12 @@ function Topbar()
     {
         if (e == "editkeys")
         {
-            var response = await fetch(Backend, {
-                headers: DefaultHeaders({ "X-Params": '{"action":"key_info","all":"true"}' })
-            });
-            var json = await response.json();
-            setKeyData(json);
-            CurrentlyEditingKeyFile = json[0]["key_info"];
-            ShouldRefreshKeys = true;
-            setKeyOpen(true);
+            await RefreshKeys();
+            DataObject["page"] = "ManageAPIKeys";
+            setExtRedraw(UUID());
         }
     }
+
 
     var workspaceTag = CurrentWorkspace(DataObject)?.tag || "secondary";
     var databaseTag = "error";
@@ -103,12 +91,6 @@ function Topbar()
                     )}
                 </Dropdown.Menu>
             </Dropdown>
-
-            {       
-                localStorage.apikey_perms == "admin" ?
-                <ManageKeysModal open={keyOpen} onClose={closeKeyManager} data={keyData} />
-                : <></>
-            }
         </div>
     );
 }
@@ -119,15 +101,15 @@ function DashboardLayout(props)
 {
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
 
-    props.workspace = CurrentWorkspace(DataObject);
-    LoadGraphDependencies(props.workspace);
+    var workspace = CurrentWorkspace(DataObject);
+    LoadGraphDependencies(workspace);
 
     return (
         <div className="dashboardLayout">
             {
                 CurrentWorkspace(DataObject)?.layouts?.map((l_layout, l_index) => {
                     var LayoutToRender = window.WorkspaceLayouts[l_layout.type];
-                    return (<LayoutToRender key={`${l_layout.type}_${l_index}_${props.workspace.id}`} {...props} layout={l_layout} layoutIndex={l_index}></LayoutToRender>);
+                    return (<LayoutToRender key={`${l_layout.type}_${l_index}_${workspace.id}`} {...props} workspace={workspace} layout={l_layout} layoutIndex={l_index}></LayoutToRender>);
                 })
             }
         </div>
@@ -140,11 +122,12 @@ function CurrentLayout(props)
 
     if (DataObject["page"])
     {
-        return eval(DataObject["page"] + "(props)");
+        var DashboardCustomPage = window[DataObject["page"]];
+        return (<DashboardCustomPage {...props} />);
     }
     else
     {
-        return DashboardLayout(props);
+        return (<DashboardLayout {...props} />);
     }
 }
 

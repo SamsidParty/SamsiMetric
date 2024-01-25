@@ -132,6 +132,10 @@ body {
     padding: 15px !important;
 }
 
+.nextui-modal {
+    background-color: var(--col-contrast) !important;
+}
+
 .ti {
     text-align: center;
     position: relative;
@@ -225,13 +229,6 @@ body {
 
 .iconButtonLarge span {
     position: absolute;
-}
-
-.manageKeysItem {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: 25px;
 }
 
 .apexcharts-legend {

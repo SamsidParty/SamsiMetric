@@ -61,7 +61,7 @@ if ($_SERVER["HTTP_X_MODE"] == "ControlPanel" || $_SERVER["HTTP_X_MODE"] == "Sub
 
     foreach ($keys as $key) 
     {
-        if ($key["value"] == $auth)
+        if (password_verify($auth, $key["value"]))
         {
             $currentKey = $key;
             break;

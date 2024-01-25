@@ -1,89 +1,130 @@
-var ShouldRefreshKeys = false;
-var CurrentlyEditingKeyFile = null;
-function ManageKeysModal(props) {
+RunOnLoad("./JS/Admin/keymanager.jsx", async () => {
+    await LoadDependency("./JS/Admin/keycreator.jsx");
+});
 
-    var [keyItems, setKeyItems] = React.useState([]);
+
+function ValuePerms(perm) {
+    var targetValue = "admin";
+
+    if (perm == "Administrator")
+    {
+        targetValue = "admin";
+    }
+    else if (perm == "Manager")
+    {
+        targetValue = "manager";
+    }
+    else if (perm == "Analytics Viewer")
+    {
+        targetValue = "viewer";
+    }
+    else if (perm == "Data Collector")
+    {
+        targetValue = "collector";
+    }
+
+    return targetValue;
+}
+
+function DisplayPerms(perm) {
+    var targetDisplay = "Administrator";
+
+    if (perm == "admin")
+    {
+        targetDisplay = "Administrator";
+    }
+    else if (perm == "manager")
+    {
+        targetDisplay = "Manager";
+    }
+    else if (perm == "viewer")
+    {
+        targetDisplay = "Analytics Viewer";
+    }
+    else if (perm == "collector")
+    {
+        targetDisplay = "Data Collector";
+    }
+
+    return targetDisplay;
+}
+
+async function ApplyAPIKeyChanges()
+{
+    //Make Sure There Is At Least 1 Admin
+    var hasAdmin = false;
+    window.APIKeyData.forEach((l_key) =>
+    {
+        if (l_key.perms == "admin" && !l_key.name.includes("Revoked Key")) { hasAdmin = true; }
+    });
+
+    if (!hasAdmin)
+    {
+        return "There Must Be At Least 1 Key With Admin Permissions";
+    }
+
+    //Remove Deleted Keys
+    window.APIKeyData = window.APIKeyData.filter((e) => !e.name.includes("Revoked Key"));
+
+    var response = await fetch(Backend, {
+        headers: DefaultHeaders({ "X-Params": '{"action":"key_info"}' }),
+        method: "PATCH",
+        body: JSON.stringify(window.APIKeyData, null, 2)
+    });
+
+    var json = await response.json();
+
+    if (json[0]["type"] == "error")
+    {
+        return json[0]["error"];
+    }
+}
+
+function ManageAPIKeys()
+{
+
+    var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
     var [error, setError] = React.useState("");
 
-    var refreshKeys = () => {
-        var ki = [];
-
-        CurrentlyEditingKeyFile.forEach((k) => {
-            ki.push(<ManageKeysItem setError={setError} keyData={k} key={k.id}></ManageKeysItem>);
-        });
-
-        setKeyItems(ki);
-        ShouldRefreshKeys = false;
+    var close = () =>
+    {
+        DataObject["page"] = null;
+        setDataObject(Object.assign({}, DataObject));
     }
 
-    if (ShouldRefreshKeys) {
-        refreshKeys();
+    var newKey = () =>
+    {
+        DataObject["page"] = "APIKeyCreator";
+        setExtRedraw(UUID());
     }
 
-    var newKey = () => {
-
-        var data = {
-            "value" : GenerateAPIKey(),
-            "id" : UUID(),
-            "name" : "New Key",
-            "perms" : "admin"
+    var save = async () =>
+    {
+        var result = await ApplyAPIKeyChanges();
+        if (result)
+        {
+            setError(result);
         }
-
-        CurrentlyEditingKeyFile.push(data);
-        ShouldRefreshKeys = true;
-        refreshKeys();
+        else
+        {
+            close();
+        }
     }
 
-    var save = async () => {
-        //Make Sure There Is At Least 1 Admin
-        var hasAdmin = false;
-        CurrentlyEditingKeyFile.forEach((e) => {       
-            if (e.perms == "admin" && !e.name.includes("Revoked Key")) { hasAdmin = true; }
-
-            if (e.name.includes("Revoked Key")) {
-                //Save Key To Recently Deleted Locally
-                var otherDeletedKeys = JSON.parse(localStorage.recentlyDeleted || "[]");
-                otherDeletedKeys.push(props.keyData);
-                localStorage.recentlyDeleted = JSON.stringify(otherDeletedKeys);
-            }
-        });
-
-        if (!hasAdmin) {
-            setError("There Must Be At Least 1 Key With Admin Permissions");
-            return;
-        } 
-
-        //Remove Deleted Keys
-        CurrentlyEditingKeyFile = CurrentlyEditingKeyFile.filter((e) => !e.name.includes("Revoked Key"));
-        
-        setError("Connecting...");
-
-        var response = await fetch(Backend, {
-            headers: DefaultHeaders({ "X-Params": '{"action":"key_info"}' }),
-            method: "PATCH",
-            body: JSON.stringify(CurrentlyEditingKeyFile, null, 2)
-        });
-
-        var json = await response.json();
-
-        if (json[0]["type"] == "error") {
-            setError(json[0]["error"]);
-        }
-        else {
-            props.onClose();
-        }
-
-        setError("");
-        
+    var deleteKey = (l_key) => {
+        if (l_key.name.includes("Revoked Key")) { return; }
+        l_key.name = "Revoked Key (" + l_key.name + ")";
+        setExtRedraw(UUID());
     }
 
-    return (        
+    return (
         <Modal
-            closeButton
             aria-labelledby="modal-title"
             width="900px"
-            open={props.open}
-            onClose={props.onClose}
+            closeButton
+            open={true}
+            preventClose
+            className="manageKeysModal"
         >
             <Modal.Header>
                 <Text id="modal-title" b size={20}>
@@ -91,124 +132,65 @@ function ManageKeysModal(props) {
                 </Text>
             </Modal.Header>
             <Modal.Body>
-                {keyItems}
+                <Table className="keyTable" css={{ width: "100%", height: "300px", padding: "0px" }} lined shadow={false}>
+                    <Table.Header>
+                        <Table.Column hideHeader={true}></Table.Column>
+                    </Table.Header>
+                    <Table.Body>
+                        {
+                            APIKeyData?.map((l_key) =>
+                            {
+                                return !l_key.name.includes("Revoked Key") ? (
+                                    <Table.Row key={l_key.value}>
+                                        <Table.Cell>
+                                            <div className="keyTableItem">
+                                                <div className="keyIcon">
+                                                    <CachedIcon src={l_key.icon}></CachedIcon>
+                                                </div>
+                                                <Input bordered placeholder="Key Name" onChange={(e) => {l_key.name = e.target.value}} initialValue={l_key.name} />
+                                                <Dropdown>
+                                                    <Dropdown.Button flat color="secondary">
+                                                        {DisplayPerms(l_key.perms)}
+                                                    </Dropdown.Button>
+                                                    <Dropdown.Menu
+                                                        aria-label="Permissions"
+                                                        color="secondary"
+                                                        disallowEmptySelection
+                                                        selectionMode="single"
+                                                        onSelectionChange={(e) => { l_key.perms = e.currentKey; setExtRedraw(UUID()); }}
+                                                    >
+                                                        <Dropdown.Item key="admin">Administrator</Dropdown.Item>
+                                                        <Dropdown.Item key="viewer">Analytics Viewer</Dropdown.Item>
+                                                        <Dropdown.Item key="manager">Manager</Dropdown.Item>
+                                                        <Dropdown.Item key="collector">Data Collector</Dropdown.Item>
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                                <DeleteButton onDelete={() => deleteKey(l_key)}></DeleteButton>
+                                            </div>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ) : null;
+                            })
+                        }
+                    </Table.Body>
+                    <Table.Pagination noMargin align="center" rowsPerPage={Math.min(6, CurrentProject(DataObject).metrics?.length)} />
+                </Table>
             </Modal.Body>
             <Modal.Footer>
                 <Text color="error" style={{ marginRight: 'auto', letterSpacing: "0.03rem" }}>{error}</Text>
                 <Button flat auto aria-label="New" className="iconButtonLarge" onPress={newKey}><i className="ti ti-plus"></i></Button>
-                <Button auto color="primary" aria-label="Save" onPress={save}>Save</Button>
+                <Button flat auto color="primary" onPress={close}>Discard</Button>
+                <Button auto color="primary" onPress={save}>Save</Button>
             </Modal.Footer>
         </Modal>
     )
 }
 
-function GenerateAPIKey() {
-    var baseKey = Array.from(
-        window.crypto.getRandomValues(new Uint8Array(Math.ceil(32 / 2))),
-        (b) => ("0" + (b & 0xFF).toString(16)).slice(-2)
-    ).join("").toUpperCase();
-
-    var key = "";
-    for (let i = 0; i < baseKey.length; i++) {
-        if (i % 6 == 0 && i != 0) {
-            key += "-";
-        }
-        key += baseKey[i];
-    }
-
-    //Year Signature Just For Reference
-    key += new Date().getFullYear().toString();
-
-    return key;
-}
-
-function ManageKeysItem(props) {
-
-    var [selectedPerm, setSelectedPerm] = React.useState(new Set([""]));
-    var [initialKeyName, setInitialKeyName] = React.useState("");
-    var [keyToShow, setKeyToShow] = React.useState(props.keyData.value);
-
-    var selectedPermValue = React.useMemo(
-      () => Array.from(selectedPerm)[0]
-    );
-
-    if (useFirstRender()) {
-        setInitialKeyName(props.keyData.name);
-
-        if (props.keyData.perms == "admin") { setSelectedPerm(new Set(["Administrator"])) }
-        else if (props.keyData.perms == "viewer") { setSelectedPerm(new Set(["Analytics Viewer"])) }
-        else if (props.keyData.perms == "collector") { setSelectedPerm(new Set(["Data Collector"])) }
-        else if (props.keyData.perms == "manager") { setSelectedPerm(new Set(["Manager"])) }
-    }
-
-    var getCurrentKeyObject = () => {
-        var found = null
-        CurrentlyEditingKeyFile.forEach((e) => {
-            if (e.id == props.keyData.id) { found = e; }
-        });
-        return found;
-    }
-
-    var onDeleted = (e) => {
-        if (getCurrentKeyObject().name.includes("Revoked Key")) { return; }
-        var newName = "Revoked Key (" + getCurrentKeyObject().name + ")";
-        props.setError(`The Key "${getCurrentKeyObject().name}" Will Be Revoked On Save`);
-        getCurrentKeyObject().name = newName;
-        setInitialKeyName(newName);
-        setKeyToShow(newName);
-    }
-
-    var onKeyNameChanged = (e) => {
-        getCurrentKeyObject().name = e.target.value;
-    }
-
-    var onPermChanged = (e) => {
-
-        var targetValue = "admin";
-
-        if (e.currentKey == "Administrator"){
-            targetValue = "admin";
-        }
-        else if (e.currentKey == "Manager"){
-            targetValue = "manager";
-        }
-        else if (e.currentKey == "Analytics Viewer"){
-            targetValue = "viewer";
-        }
-        else if (e.currentKey == "Data Collector"){
-            targetValue = "collector";
-        }
-
-        getCurrentKeyObject().perms = targetValue;
-        setSelectedPerm(e);
-    }
-
-    return (
-        <Card variant="bordered">
-            <Card.Body className="manageKeysItem">
-                <Input bordered placeholder="Key Name" onChange={onKeyNameChanged} initialValue={initialKeyName} />
-                <Input width="500px" readOnly value={keyToShow} />
-                <Dropdown>
-                    <Dropdown.Button flat color="secondary">
-                        {selectedPermValue}
-                    </Dropdown.Button>
-                    <Dropdown.Menu
-                        aria-label="Permissions"
-                        color="secondary"
-                        disallowEmptySelection
-                        selectionMode="single"
-                        selectedKeys={selectedPerm}
-                        onSelectionChange={onPermChanged}
-                    >
-                        <Dropdown.Item key="Administrator">Administrator</Dropdown.Item>
-                        <Dropdown.Item key="Analytics Viewer">Analytics Viewer</Dropdown.Item>
-                        <Dropdown.Item key="Manager">Manager</Dropdown.Item>
-                        <Dropdown.Item key="Data Collector">Data Collector</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-                <Button flat color="error" auto aria-label="New" className="iconButtonLarge" onPress={onDeleted}><i className="ti ti-trash"></i></Button>
-
-            </Card.Body>
-        </Card>
-    )
+async function RefreshKeys()
+{
+    var response = await fetch(Backend, {
+        headers: DefaultHeaders({ "X-Params": '{"action":"key_info","all":"true"}' })
+    });
+    var json = await response.json();
+    window.APIKeyData = json[0].key_info;
 }

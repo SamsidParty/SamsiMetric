@@ -32,12 +32,13 @@ function UUID() {
     return Date.now().toString() + "-" + baseId; // Add Timestamp To Prevent Duplicates
 }
 
-function LoginWithKeyInfo(keyInfo)
+function LoginWithKeyInfo(keyInfo, key)
 {
     for (var [info, value] of Object.entries(keyInfo))
     {
         localStorage.setItem("apikey_" + info, value);
     }
+    localStorage.setItem("apikey_value", key);
 }
 
 //It's Simpler In SQL Terms

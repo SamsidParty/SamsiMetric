@@ -14,7 +14,7 @@ function Sidebar()
         manageProjectsBackup = JSON.parse(JSON.stringify(DataObject));
         manageProjectsQueue = [];
         DataObject["page"] = "ManageProject";
-        setDataObject(Object.assign({}, DataObject));
+        setExtRedraw(UUID());
     }
 
     var workspaceTag = CurrentWorkspace(DataObject)?.tag || "secondary";

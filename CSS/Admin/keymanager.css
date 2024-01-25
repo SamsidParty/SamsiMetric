@@ -1,0 +1,46 @@
+.keyTable thead {
+    display: none;
+}
+
+.keyTableItem {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 15px;
+}
+
+.keyTableItem .deleteButton {
+    margin-left: auto;
+}
+
+.keyTableItem p {
+    line-height: normal;
+    font-size: 20px;
+}
+
+.keyTableItem h1 {
+    font-size: 16px;
+    letter-spacing: normal;
+    line-height: normal;
+    margin: 0;
+    font-weight: 500;
+}
+
+.keyIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 360px;
+    background-color: #ADB5B9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.keyIcon img {
+    width: 70%;
+    height: 70%;
+}
+
+.manageKeysModal .nextui-modal-close-icon {
+    display: none;
+}

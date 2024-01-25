@@ -3,7 +3,7 @@ async function LoadAllDependencies() {
     await LoadDependency("./JS/ThirdParty/nextui.js");
     await LoadDependency("./JS/Viewer/Graphs/common.jsx");
     await LoadDependency("./JS/Viewer/graphmetadata.js"); //TODO: Make RunOnLoad Work So This Loads Automatically
-    await LoadDependency("./Fonts/PJK.ttf");
+    await LoadDependency("./Fonts/Jetbrains.woff2");
     await LoadDependency("./Fonts/InterVariable.woff2");
     await LoadDependency("./Fonts/Tabler.ttf");
     await LoadDependency("./bundle.css");
@@ -33,7 +33,7 @@ async function LoadAllDependencies() {
             else if (json[0]["type"] == "key_info")
             {
                 //Refresh Key, Because Sometimes Permissions / Name Might Have Changed
-                LoginWithKeyInfo(json[0]["key_info"]);
+                LoginWithKeyInfo(json[0]["key_info"], localStorage.apikey_value);
                 defaultPage = "App";
             }
         }

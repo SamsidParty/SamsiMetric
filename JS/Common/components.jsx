@@ -15,7 +15,7 @@ function DeleteButton(props) {
 
     return (
         <>
-            <Button flat color={props.color || "error"} auto className="iconButtonLarge" onPress={startDelete}><i className="ti ti-trash"></i></Button>
+            <Button flat color={props.color || "error"} auto className="iconButtonLarge deleteButton" onPress={startDelete}><i className="ti ti-trash"></i></Button>
             <Modal width="420px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>

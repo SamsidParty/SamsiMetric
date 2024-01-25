@@ -1,7 +1,7 @@
 
 RunOnLoad("./JS/Management/metricmanager.jsx", async () => {
     //Loads The Common Metric Editor Which Will Load All The Other Metric Editors
-    await LoadDependency(`./JS/Management/MetricEditors/common.jsx`);
+    await LoadDependency("./JS/Management/MetricEditors/common.jsx");
 });
 
 var SampleMetric = () =>
@@ -137,7 +137,7 @@ function ManageMetricButton(props)
 
     return (
         <>
-            <Button css={props.css} flat color={props.metric["tag"]} auto onPress={openEditor} className="iconButtonLarge"><i className="ti ti-edit"></i></Button>
+            <Button css={props.css} flat color={props.metric["tag"]} auto onPress={openEditor} className="iconButtonLarge manageMetricButton"><i className="ti ti-edit"></i></Button>
             <Modal closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>

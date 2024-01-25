@@ -19,7 +19,7 @@
     gap: 15px;
 }
 
-.metricTableItem .iconButtonLarge:nth-of-type(1) {
+.metricTableItem .manageMetricButton {
     margin-left: auto;
 }
 

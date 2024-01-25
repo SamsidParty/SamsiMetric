@@ -1,3 +1,6 @@
+RunOnLoad("./JS/Management/projectmanager.jsx", async () => {
+    await LoadDependency("./JS/Management/metricmanager.jsx");
+});
 
 var manageProjectsBackup = {};
 var manageProjectsQueue = []

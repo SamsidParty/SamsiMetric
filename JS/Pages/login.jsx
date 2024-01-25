@@ -40,7 +40,7 @@ function LoginModal()
             setError("Authenticated With Key: " + json[0]["key_info"]["name"]);
             setStatus("success");
 
-            LoginWithKeyInfo(json[0]["key_info"]);
+            LoginWithKeyInfo(json[0]["key_info"], message || preloadKey);
 
             window.location.href = "./Dashboard";
         }

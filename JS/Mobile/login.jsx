@@ -43,7 +43,7 @@ function Login() {
                 {
                     //alert("Authenticated With Key: " + json[0]["key_info"]["name"]);
                     setLoginText("Welcome, " + json[0]["key_info"]["name"]);
-                    LoginWithKeyInfo(json[0]["key_info"]);
+                    LoginWithKeyInfo(json[0]["key_info"], prompt[1]);
                     location.reload();
                 }
             }

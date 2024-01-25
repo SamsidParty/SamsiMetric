@@ -23,10 +23,9 @@ The LOADER LOAD BIN stuff is replaced with a data url at runtime
 }
 
 @font-face {
-    font-family: PlusJakartaSans;
+    font-family: Jetbrains;
     font-style: normal;
-    font-weight: 300 900;
-    src: url("./LOADER_LOAD_BIN/./Fonts/PJK.ttf/FINISH");
+    src: url("./LOADER_LOAD_BIN/./Fonts/Jetbrains.woff2/FINISH") format("woff2");
 }
 
 /* Should Only Be Used On iOS Client Otherwise We Can Run Into Legal Issues */

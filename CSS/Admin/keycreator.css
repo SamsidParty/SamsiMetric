@@ -1,0 +1,53 @@
+.createKeyModal .nextui-modal-close-icon {
+    display: none;
+}
+
+.createKey {
+    display: flex;
+    width: 100%;
+}
+
+.createKey .keyHolder {
+    background-color: var(--col-bg);
+    width: 300px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+.createKey .keyHolder .qrBox {
+    width: 100%;
+    height: 280px;
+    background-color: white;
+    border-radius: 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.createKey .keyBox {
+    width: 100%;
+    height: 40px;
+    background-color: var(--col-contrast);
+    border-radius: 15px;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 5px;
+    font-size: 16px;
+    font-family: Jetbrains !important;
+}
+
+.createKey .keyBox button {
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    margin-left: auto;
+    border-radius: 10px;
+}
