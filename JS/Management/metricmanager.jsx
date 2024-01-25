@@ -39,16 +39,6 @@ function ShouldShowMetric(metricType)
     return true;
 }
 
-function GetMetricPreviewIcon(l_metric)
-{
-    if (l_metric.icon.startsWith("data:image/png"))
-    {
-        return l_metric.icon;
-    }
-
-    return l_metric.icon;
-}
-
 function DeleteMetric(id)
 {
     var metricIndex = ArrayIndex(CurrentProject(window.lastDataObject).metrics, "id", id);
@@ -99,7 +89,7 @@ function ManageMetrics()
                                             <Table.Cell>
                                                 <div className="metricTableItem">
                                                     <div className="metricIcon" style={{ backgroundColor: tagColors[l_metric.tag] }}>
-                                                        <CachedIcon src={GetMetricPreviewIcon(l_metric)}></CachedIcon>
+                                                        <CachedIcon src={l_metric.icon}></CachedIcon>
                                                     </div>
                                                     <h1>{l_metric.name}</h1>
                                                     <Input width="330px" readOnly value={l_metric.id} />
