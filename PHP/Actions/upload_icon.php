@@ -9,9 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     foreach ($iconData as $icon) 
     {
-        if (strlen($icon["value"]) > 1048576 /* 8MB */ ) {
+        if (strlen($icon["value"]) > 1048576 /* 1MB */ ) {
             http_response_code(400);
-            die('[{"type":"error","error":"Image Too Large (8MB Limit)"}]');
+            die('[{"type":"error","error":"Image Too Large (1MB Limit)"}]');
         }
 
         Sanitize($icon["id"]);
