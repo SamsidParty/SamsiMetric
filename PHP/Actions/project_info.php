@@ -1,9 +1,9 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
+if ($virtualAPI["server"]['REQUEST_METHOD'] == 'PATCH') {
     //Replace The Projects File (Admin Only)
 
-    $newProjects = file_get_contents('php://input');
+    $newProjects = $virtualAPI["input"];
 
     ManagerOnly();
     SetConfigFile('projects.json', $newProjects); // Validation Is Client Side, If It Messes Up, Then Someone Made A Bad Request

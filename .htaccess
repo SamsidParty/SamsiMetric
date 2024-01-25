@@ -1,8 +1,9 @@
 RewriteEngine On
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteRule ^Dashboard$ ./Pages/index.php  [L]
 RewriteRule ^Login$ ./Pages/login.php  [L]
 RewriteRule ^MobileClient$ ./Pages/mobile.php  [L]
-
+RewriteRule ^API/(.*)$ ./PHP/API/api.php [L]
 
 RewriteEngine On
 <FilesMatch "\.(html|htm|js|jsx|css)$">

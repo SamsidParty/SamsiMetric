@@ -1,10 +1,10 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($virtualAPI["server"]['REQUEST_METHOD'] == 'POST') {
     ManagerOnly();
     require("./PHP/MetricCreators/" . $params["type"] . ".php");
 }
-else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+else if ($virtualAPI["server"]['REQUEST_METHOD'] == 'DELETE') {
     ManagerOnly();
     require("./PHP/MetricRemovers/" . $params["type"] . ".php");
 }

@@ -1,9 +1,9 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
+if ($virtualAPI["server"]['REQUEST_METHOD'] == 'PATCH') {
     //Replace The Keys File (Admin Only)
 
-    $newKeys = file_get_contents('php://input');
+    $newKeys = $virtualAPI["input"];
 
     AdminOnly();
     SetConfigFile("keys.json", $newKeys); // Validation Is Client Side, If It Messes Up, Then Someone Made A Bad Request

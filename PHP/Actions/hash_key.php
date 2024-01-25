@@ -2,8 +2,8 @@
 
 AdminOnly();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $hashed = password_hash(file_get_contents('php://input'), PASSWORD_DEFAULT, ['cost' => 8]);
+if ($virtualAPI["server"]['REQUEST_METHOD'] == 'POST') {
+    $hashed = password_hash($virtualAPI["input"], PASSWORD_DEFAULT, ['cost' => 8]);
     
     $response = array(
         array(

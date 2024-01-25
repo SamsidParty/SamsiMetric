@@ -1,11 +1,11 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($virtualAPI["server"]['REQUEST_METHOD'] == 'POST') {
     //Create Or Patch Multiple Icons (Admin Only)
 
     ManagerOnly();
 
-    $iconData = json_decode(file_get_contents('php://input'), true);
+    $iconData = json_decode($virtualAPI["input"], true);
 
     foreach ($iconData as $icon) 
     {

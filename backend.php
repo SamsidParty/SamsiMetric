@@ -1,5 +1,12 @@
 <?php
 
+if (!isset($virtualAPI)) {
+    $virtualAPI = array(
+        "server" => $_SERVER,
+        "input" => file_get_contents("php://input")
+    );
+}
+
 require_once("./PHP/config.php");
 header("Content-Type: application/json");
 
@@ -46,10 +53,10 @@ function Sanitize(string $input) {
     }
 }
 
-if ($_SERVER["HTTP_X_MODE"] == "ControlPanel" || $_SERVER["HTTP_X_MODE"] == "Submit") 
+if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["server"]["HTTP_X_MODE"] == "Submit") 
 {
     //Check API Key
-    $auth = $_SERVER["HTTP_X_API_KEY"];
+    $auth = $virtualAPI["server"]["HTTP_X_API_KEY"];
     $keys = json_decode(GetConfigFile("keys.json"), true);
 
     //Enabled Admin Perms Temporarily For All Keys (Only Works In Source)
@@ -75,12 +82,12 @@ if ($_SERVER["HTTP_X_MODE"] == "ControlPanel" || $_SERVER["HTTP_X_MODE"] == "Sub
     }
 }
 
-if ($_SERVER["HTTP_X_MODE"] == "ControlPanel")
+if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel")
 {
 
     ViewerOnly();
 
-    $params = json_decode($_SERVER["HTTP_X_PARAMS"], true);
+    $params = json_decode($virtualAPI["server"]["HTTP_X_PARAMS"], true);
 
     if ($params != null && array_key_exists("action", $params)) {
         //Sanitize And Run Action
@@ -96,13 +103,13 @@ if ($_SERVER["HTTP_X_MODE"] == "ControlPanel")
     }
 
 }
-else if ($_SERVER["HTTP_X_MODE"] == "Submit") 
+else if ($virtualAPI["server"]["HTTP_X_MODE"] == "Submit") 
 {
 
     CollectorOnly();
 
     $projects = json_decode(GetConfigFile('projects.json'), true);
-    $params = json_decode(file_get_contents('php://input'), true);
+    $params = json_decode($virtualAPI["input"], true);
     $foundMetric = false;
 
     foreach ($projects as $proj) 

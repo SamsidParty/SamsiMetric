@@ -92,7 +92,7 @@ function ManageMetrics()
                                                         <CachedIcon src={l_metric.icon}></CachedIcon>
                                                     </div>
                                                     <h1>{l_metric.name}</h1>
-                                                    <Input width="330px" readOnly value={l_metric.id} />
+                                                    <Button flat auto className="iconButton"><i className="ti ti-code"></i></Button>
                                                     <ManageMetricButton key={l_metric.id} metric={l_metric}></ManageMetricButton>
                                                     <DeleteButton onDelete={() => DeleteMetric(l_metric.id)}></DeleteButton>
                                                 </div>

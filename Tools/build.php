@@ -65,10 +65,10 @@ function hashDirectory($directory){
     return md5(implode('', $files));
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($virtualAPI["server"]['REQUEST_METHOD'] == 'POST') {
 
     //Start Build, Which Enables The Build API Key
-    file_put_contents("../.build", file_get_contents('php://input'));
+    file_put_contents("../.build", $virtualAPI["input"]);
 
     //Delete Previous Build
     if (is_dir("../Build/")) {
@@ -79,12 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     exit(0);
 }
-else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
+else if ($virtualAPI["server"]['REQUEST_METHOD'] == 'PATCH') {
 
     //Upload Client Build
     $clientVersion = file_get_contents("../.build");
     $path = "../Build/Clients/" . $clientVersion . ".client"; // No Need To Sanitize, The Person Building Already Has Access To The File System ;)
-    file_put_contents($path, file_get_contents('php://input'));
+    file_put_contents($path, $virtualAPI["input"]);
 
     //Create Server Build
     $buildInstructions = json_decode(file_get_contents("./build.json"), true);
