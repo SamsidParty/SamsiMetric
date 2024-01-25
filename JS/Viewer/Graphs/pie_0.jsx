@@ -56,12 +56,21 @@ function Graphpie_0_Pie(props) {
         colors.push(tagColors.error);
     }
 
+
     var onStartHover = (e, c, hover) => {
+        //Add Tooltip
         var numFormatter = Intl.NumberFormat('en', { notation: 'compact' }); // Add K, M, etc To Numbers To Shorten Them
+        window.lastTTText = `${metric.name}: ${numFormatter.format(values[hover.dataPointIndex])}`;
+        window.lastTTKey = props.graphNonce;
+        window.lastTTPlacement = "bottom";
     }
 
     var onEndHover = (e, context) => {
-        
+        //Remove Tooltip
+        if (window.lastTTKey == props.graphNonce) {
+            window.lastTTText = "";
+            window.lastTTKey = "";
+        }
     }
 
     var chartData = {
