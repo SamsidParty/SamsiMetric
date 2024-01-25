@@ -88,7 +88,7 @@
 }
 
 .sidebarWorkspaces .reorderWorkspaceList {
-    transform: scale(90%);
+    transform: scale(95%);
     background-color: var(--col-bg);
     border-radius: 15px;
     padding: 10px;

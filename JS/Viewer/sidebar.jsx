@@ -85,9 +85,13 @@ function SidebarWorkspaces(props)
             var newOrder = [];
             newState.forEach((l_state) => { newOrder.push(l_state.id); });
             CurrentProject(DataObject).workspaceorder = newOrder;
-            
+            setDataObject(Object.assign({}, DataObject));
 
             //Submit New Order To Server
+            //Will Throw If projectmanager.jsx Is Not Loaded
+            if (window.ApplyProjectChanges) {
+                await ApplyProjectChanges();
+            }
 
             //Disable Reorder Mode
             setReorderMode(false);
