@@ -5,13 +5,11 @@ function Graphpie_0(props) {
     var metrics = CurrentProject(DataObject)["metrics"];
     var metric = ArrayValue(metrics, "id", props.graph["for"]);
 
-    var [ overrideName, setOverrideName ] = React.useState(metric.name);
-
     return (
         <div style={props.style} className={"layoutCard graphPie0 " + props.cardSize}>
             <GraphCommon {...props} />
             <div className="subCard">
-                <h3>{overrideName}</h3>
+                <h3>{metric.name}</h3>
                 <div className="labelHolder">
                 {
                     metric["dependencies"].map((l_dep) => {
@@ -27,7 +25,7 @@ function Graphpie_0(props) {
 
             {
                 window.ReactApexChart != undefined ?
-                Graphpie_0_Pie(props, setOverrideName) :
+                (<Graphpie_0_Pie {...props} />) :
                 (<></>)
             }
 
@@ -39,7 +37,7 @@ function Graphpie_0(props) {
     )
 }
 
-function Graphpie_0_Pie(props, setOverrideName) {
+function Graphpie_0_Pie(props) {
 
     var metrics = CurrentProject(window.lastDataObject)["metrics"];
     var metric = ArrayValue(metrics, "id", props.graph["for"]);
@@ -60,11 +58,10 @@ function Graphpie_0_Pie(props, setOverrideName) {
 
     var onStartHover = (e, c, hover) => {
         var numFormatter = Intl.NumberFormat('en', { notation: 'compact' }); // Add K, M, etc To Numbers To Shorten Them
-        setOverrideName(`${names[hover.dataPointIndex]} (${numFormatter.format(values[hover.dataPointIndex])})`);
     }
 
     var onEndHover = (e, context) => {
-        setOverrideName(metric.name);
+        
     }
 
     var chartData = {
