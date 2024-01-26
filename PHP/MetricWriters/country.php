@@ -218,7 +218,7 @@ if (!$countryIsValid) {
 DB::query("UPDATE data_country SET ReportCount = ReportCount + 1 WHERE MetricID = %s", $metric["id"]); // Increment Reports
 DB::query("UPDATE data_country SET Total = Total + %d WHERE MetricID = %s", $newValue, $metric["id"]); // Update Total
 // Update Country (NOT Vulnerable To SQL Injection Because We Verified Against Trusted Values)
-DB::query("UPDATE data_country SET " . $newCountry . " = %s + %d WHERE MetricID = %s", $newCountry, $newValue, $metric["id"]); 
+DB::query("UPDATE data_country SET " . $newCountry . " = " . $newCountry . " + %d WHERE MetricID = %s", $newValue, $metric["id"]); 
 
 echo('[{"type":"success"}]');
 
