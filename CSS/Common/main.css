@@ -234,30 +234,3 @@ body {
 .apexcharts-legend {
     justify-content: center !important;
 }
-
-#mastertooltip {
-    background-color: var(--col-text);
-    color: var(--col-contrast);
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    min-height: 40px;
-    min-width: 40px;
-    padding: 0px 10px 0px 10px;
-    font-size: 14px;
-    font-weight: 400;
-    border-radius: 10px;
-    z-index: 99999;
-}
-
-
-
-.silentTooltip {
-    position: absolute;
-    z-index: 15;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-}

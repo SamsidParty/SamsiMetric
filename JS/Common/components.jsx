@@ -104,3 +104,16 @@ function CachedIcon(props) {
         <img {...props} src={iconURL} />
     )
 }
+
+function Skeleton(props) {
+    return (
+        <div className="skeleton" style={{ 
+            width: props.width || "100%",
+            height: props.height || "40px",
+            backgroundColor: props.contrast ? "var(--col-bg)" : "var(--col-contrast)", 
+            borderRadius: props.borderRadius || "15px"
+        }}>
+
+        </div>
+    )
+}

@@ -142,6 +142,12 @@ function SidebarWorkspaces(props)
 
             <div className={reorderMode ? "workspaceList reorderWorkspaceList" : "workspaceList"}>
                 {
+                    //Render Skeletons If Workspaces Aren't Loaded
+                    (Object.keys(DataObject.schema).length < 1) ?
+                    (<SidebarWorkspaceSkeletons/>) : 
+                    (<></>)
+                }
+                {
                     //Render A List Of Buttons If Not In Reorder Mode
                     //Render A Sortable List In Reorder Mode
                     (reorderMode && window.ReactSortableJS) ?
@@ -155,10 +161,27 @@ function SidebarWorkspaces(props)
 
 }
 
+function SidebarWorkspaceSkeletons() {
+    return (
+        <>
+            {
+                (Array(parseInt(localStorage.lastWorkspaceCount) || 3).fill(null)).map((l_val, l_index) => {
+                    return (<Skeleton key={l_index.toString()} contrast borderRadius="12px"></Skeleton>);
+                })
+            }
+            
+        </>
+    )
+}
+
 function SidebarWorkspaceList(props)
 {
 
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
+
+    if (props.workspaces.length > 0) {
+        localStorage.lastWorkspaceCount = props.workspaces.length;
+    }
 
     return (
         <>
