@@ -24,6 +24,7 @@ function Graphprogress_0(props) {
     var names = chartFill[1];
     var colors = chartFill[2];
     var icons = chartFill[3];
+    var percents = chartFill[4];
 
     //Add Dummy Data If No Submetrics Assigned
     if (names.length == 0)
@@ -45,7 +46,7 @@ function Graphprogress_0(props) {
                     {
                         names.map((l_name, l_index) => {
 
-                            var showIcon = (values[l_index] >= 14); // Don't Show Icon If The Metric Takes Up Less Than 14% Of The Bar (13% Is The Squish Point)
+                            var showIcon = (percents[l_index] >= 14); // Don't Show Icon If The Metric Takes Up Less Than 14% Of The Bar (13% Is The Squish Point)
 
                             return (   
 
@@ -56,7 +57,7 @@ function Graphprogress_0(props) {
                                         key={UUID()}
                                         style={{ 
                                             backgroundColor: colors[l_index],
-                                            width: `calc(${values[l_index]}% - ${(l_index != 0) ? "3" : "0"}px)`  /* There Should Be values.length - 1 Padding Slots */ 
+                                            width: `calc(${percents[l_index]}% - ${(l_index != 0) ? "3" : "0"}px)`  /* There Should Be percents.length - 1 Padding Slots */ 
                                         }}
                                     >
                                         <CachedIcon style={{ display: showIcon ? "flex" : "none" }} src={icons[l_index]}/>

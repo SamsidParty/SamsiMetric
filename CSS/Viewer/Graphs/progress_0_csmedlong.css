@@ -1,0 +1,69 @@
+
+.csMedLong.graphProgress0 {
+    display: flex;
+    padding: 0px 10px 0px 0px;
+    justify-content: left;
+}
+
+.csMedLong.graphProgress0 .leftBar {
+    height: 100%;
+    width: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.csMedLong.graphProgress0 .leftBar img {
+    width: 35px;
+    height: 35px;
+}
+
+.csMedLong.graphProgress0 .subCard {
+    width: 100%;
+    height: 100%;
+    padding: 10px 0px 10px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+}
+
+.csMedLong.graphProgress0 .progressBar {
+    width: 100%;
+    height: 24px;
+    border-radius: 8px;
+    display: flex;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+.csMedLong.graphProgress0 .progressFill {
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 0px 5px 0px 5px;
+    position: relative;
+}
+
+.csMedLong.graphProgress0 .progressFill:hover {
+    filter: opacity(70%);
+}
+
+.csMedLong.graphProgress0 .progressFill img {
+    width: 18px;
+    height: 18px;
+}
+
+.csMedLong.graphProgress0 h3 {
+    font-family: InterVariable !important;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    margin: 0;
+    font-size: 14px;
+    color: var(--col-text-secondary);
+    letter-spacing: normal;
+}

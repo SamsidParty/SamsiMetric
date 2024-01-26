@@ -211,6 +211,7 @@ function FillChart(metric, DataObject, options) {
     var names = [];
     var colors = [];
     var icons = [];
+    var percents = [];
 
     metric["dependencies"].forEach((l_dependency) =>
     {
@@ -234,16 +235,14 @@ function FillChart(metric, DataObject, options) {
     });
 
     //Convert Values To Percentages
-    if (options && options.includes("percent")) {
-        var totalValue = 0;
-        values.forEach((l_val) => totalValue += l_val);
+    var totalValue = 0;
+    values.forEach((l_val) => totalValue += l_val);
 
-        values = values.map((l_val) => {
-            return Math.round((l_val / totalValue) * 100);
-        });
-    }
+    percents = values.map((l_val) => {
+        return Math.round((l_val / totalValue) * 100);
+    });
 
-    return [values, names, colors, icons]
+    return [values, names, colors, icons, percents]
 }
 
 async function WaitUntil(cond) {
