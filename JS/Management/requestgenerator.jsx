@@ -8,7 +8,13 @@ function GenerateRequestButton(props)
     var generators = {
         "JavaScript": RequestGen_JavaScript,
         "Python": RequestGen_Python,
-        "C#": RequestGen_CSharp,
+        "PHP": RequestGen_PHP,
+    }
+
+    var syntaxHighlighters = {
+        "JavaScript": "language-javascript",
+        "Python": "language-python",
+        "PHP": "language-php",
     }
     
     var updateHighlight = () => {
@@ -43,11 +49,11 @@ function GenerateRequestButton(props)
                         >
                             <Dropdown.Item key="JavaScript">JavaScript</Dropdown.Item>
                             <Dropdown.Item key="Python">Python</Dropdown.Item>
-                            <Dropdown.Item key="C#">C#</Dropdown.Item>
+                            <Dropdown.Item key="PHP">PHP</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     { /* ↓↓↓↓↓↓↓↓↓↓↓↓ Makes Sure The Element Will Be Reset Every Render */ }
-                    <pre key={UUID()}><code ref={codeBlock} className="language-javascript">{generators[selectedLanguage](props.metric)}</code></pre>
+                    <pre key={UUID()}><code ref={codeBlock} className={syntaxHighlighters[selectedLanguage]}>{generators[selectedLanguage](props.metric)}</code></pre>
                 </Modal.Body>
             </Modal>
         </>
@@ -77,7 +83,7 @@ function RequestGen_Common(metric) {
             "country": "string"
         }
         params.argInfo = {
-            "number": "A Floating Point Number To Submit",
+            "number": "An Integer To Submit",
             "country": "The Country To Add Data To, In 2-Digit ISO Format"
         },
         params.data = {
@@ -98,9 +104,9 @@ ${Object.keys(params.argInfo).map((l_arginfo, l_index) => {
     return "// " + l_arginfo + ": " + params.argInfo[l_arginfo] + (l_index == Object.keys(params.argInfo).length - 1 ? "" : "\n");
 }).join("")}
 function ${params.functionName}(${GenerateArgs(params.args)}) {
-    let id = "${metric.id}";
+    let metricid = "${metric.id}";
     let endpoint = "${params.baseURL}";
-    let url = endpoint + id;
+    let url = endpoint + metricid;
     let key = ""; // Enter Your Data Collector API Key Here
 
     fetch(url, {
@@ -118,21 +124,69 @@ function RequestGen_Python(metric) {
 
     var params = RequestGen_Common(metric);
 
-    return `Not Implemented`;
+    return `
+import requests
+
+${Object.keys(params.argInfo).map((l_arginfo, l_index) => {
+    return "# " + l_arginfo + ": " + params.argInfo[l_arginfo] + (l_index == Object.keys(params.argInfo).length - 1 ? "" : "\n");
+}).join("")}
+def ${params.functionName}(${GenerateArgs(params.args)}):
+    metricid = "${metric.id}"
+    endpoint = "${params.baseURL}"
+    url = endpoint + metricid
+    key = ""; # Enter Your Data Collector API Key Here
+
+    data = ${GenerateBody(params)}
+
+    req = requests.post(url, json = data, headers = {"Authorization": key})
+    `.trim();
 }
 
-function RequestGen_CSharp(metric) {
+
+function RequestGen_PHP(metric) {
 
     var params = RequestGen_Common(metric);
 
-    return `Not Implemented`;
+    return `
+<?php
+
+${Object.keys(params.argInfo).map((l_arginfo, l_index) => {
+    return "// " + l_arginfo + ": " + params.argInfo[l_arginfo] + (l_index == Object.keys(params.argInfo).length - 1 ? "" : "\n");
+}).join("")}
+function ${params.functionName}(${GenerateArgs(params.args, false, "$")}) {
+    $metricid = "${metric.id}";
+    $endpoint = "${params.baseURL}";
+    $url = $endpoint . $metricid;
+    $key = ""; // Enter Your Data Collector API Key Here
+
+    $data = [${Object.keys(params.data).map((l_dat) => {
+        return `"${l_dat}" => ${params.data[l_dat].replaceAll("$_", "$")}`;
+    })}];
+
+    $options = [
+        "http" => [
+            "header" => "Authorization: $key\\r\\nContent-Type: application/json\\r\\n",
+            "method" => "POST",
+            "content" => json_encode($data),
+        ]
+    ];
+
+    $context = stream_context_create($options);
+    file_get_contents($url, false, $context);
 }
 
-function GenerateArgs(args, typed) {
+?>
+    `.trim();
+}
+
+function GenerateArgs(args, typed, prefix) {
     var argString = "";
     Object.keys(args).forEach((l_arg, l_index) => {
-        if (!typed) {
-            argString += l_arg;
+        if (typed) {
+            argString += args[l_arg] + " " + (prefix ? prefix + l_arg : l_arg);
+        }
+        else {
+            argString += (prefix ? prefix + l_arg : l_arg);
         }
 
         if (l_index != Object.keys(args).length - 1) {
