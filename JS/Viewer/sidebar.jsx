@@ -26,7 +26,7 @@ function Sidebar()
                     <ClientImage width={40} src="./Images/FullFavicon.png" />
                 </Tooltip>
                 <Dropdown>
-                    <Dropdown.Button color={workspaceTag} flat>{ArrayValue(DataObject.schema, "id", DataObject["selected_project"]).name}</Dropdown.Button>
+                    <Dropdown.Button css={{width: "160px", display: (DataIsValid() ? "flex" : "none")}} color={workspaceTag} flat>{ArrayValue(DataObject.schema, "id", DataObject["selected_project"]).name}</Dropdown.Button>
                     <Dropdown.Menu selectionMode="single" onSelectionChange={switchProject} disallowEmptySelection aria-label="Project" items={DataObject["schema"]}>
                         {(item) => (
                             <Dropdown.Item
@@ -38,21 +38,28 @@ function Sidebar()
                         )}
                     </Dropdown.Menu>
                 </Dropdown>
+                
+                <Skeleton width="160px" contrast/>
 
-                { /* Manage Project Icon, Only Shows When We Have Permissions To Do It */}
+                { /* Manage Project Icon, Only Shows When We Have Permissions To Do It */ }
                 {
                     (() =>
                     {
 
-                        if ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid()) 
+                        if ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager")) 
                         {
-                            return (
-                                <Tooltip ttid="editproject" {...TTContent("static", "Edit Project")}>
-                                    <Button onPress={editProject} color={workspaceTag} className="iconButtonLarge" flat auto>
-                                        <i className="ti ti-edit"></i>
-                                    </Button>
-                                </Tooltip>
-                            )
+                            if (DataIsValid()) {
+                                return (
+                                    <Tooltip ttid="editproject" {...TTContent("static", "Edit Project")}>
+                                        <Button onPress={editProject} color={workspaceTag} className="iconButtonLarge" flat auto>
+                                            <i className="ti ti-edit"></i>
+                                        </Button>
+                                    </Tooltip>
+                                )
+                            }
+                            else {
+                                return (<Skeleton width="40px" contrast/>);
+                            }
                         }
                     })()
                 }
@@ -141,12 +148,7 @@ function SidebarWorkspaces(props)
             </div>
 
             <div className={reorderMode ? "workspaceList reorderWorkspaceList" : "workspaceList"}>
-                {
-                    //Render Skeletons If Workspaces Aren't Loaded
-                    (Object.keys(DataObject.schema).length < 1) ?
-                    (<SidebarWorkspaceSkeletons/>) : 
-                    (<></>)
-                }
+                <SidebarWorkspaceSkeletons/>
                 {
                     //Render A List Of Buttons If Not In Reorder Mode
                     //Render A Sortable List In Reorder Mode
@@ -166,7 +168,7 @@ function SidebarWorkspaceSkeletons() {
         <>
             {
                 (Array(parseInt(localStorage.lastWorkspaceCount) || 3).fill(null)).map((l_val, l_index) => {
-                    return (<Skeleton key={l_index.toString()} contrast borderRadius="12px"></Skeleton>);
+                    return (<Skeleton key={l_index.toString()} contrast></Skeleton>);
                 })
             }
             

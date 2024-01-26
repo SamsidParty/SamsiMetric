@@ -1,8 +1,5 @@
 <?php
 
-//REMOVE, JUST FOR TESTING SKELETON
-sleep(5);
-
 if (!isset($virtualAPI)) {
     $virtualAPI = array(
         "server" => $_SERVER,
