@@ -92,7 +92,9 @@ function ManageMetrics()
                                                         <CachedIcon src={l_metric.icon}></CachedIcon>
                                                     </div>
                                                     <h1>{l_metric.name}</h1>
-                                                    <Button flat auto className="iconButton"><i className="ti ti-code"></i></Button>
+                                                    <Tooltip ttid={"genrequest" + l_metric.id} {...TTContent("static", "Generate API Request")}>
+                                                        <Button color={l_metric.tag} flat auto className="iconButton generateRequestButton"><i className="ti ti-code"></i></Button>
+                                                    </Tooltip>
                                                     <ManageMetricButton key={l_metric.id} metric={l_metric}></ManageMetricButton>
                                                     <DeleteButton onDelete={() => DeleteMetric(l_metric.id)}></DeleteButton>
                                                 </div>
@@ -127,7 +129,9 @@ function ManageMetricButton(props)
 
     return (
         <>
-            <Button css={props.css} flat color={props.metric["tag"]} auto onPress={openEditor} className="iconButtonLarge manageMetricButton"><i className="ti ti-edit"></i></Button>
+            <Tooltip ttid={"managemetric" + props.metric.id} {...TTContent("static", "Manage Metric")}>
+                <Button css={props.css} flat color={props.metric.tag} auto onPress={openEditor} className="iconButtonLarge manageMetricButton"><i className="ti ti-edit"></i></Button>
+            </Tooltip>
             <Modal closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>
