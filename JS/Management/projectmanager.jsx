@@ -1,7 +1,3 @@
-RunOnLoad("./JS/Management/projectmanager.jsx", async () => {
-    await LoadDependency("./JS/Management/metricmanager.jsx");
-});
-
 var manageProjectsBackup = {};
 var manageProjectsQueue = []
 
@@ -56,6 +52,15 @@ function ManageProject()
 {
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
 
+    //Load Metric Managers Async
+    if (useFirstRender() && !window.ManageMetrics) {
+        setTimeout(async () => {
+            await LoadDependency("./JS/Management/metricmanager.jsx");
+            await LoadDependency("./JS/Management/groupmanager.jsx");
+            setExtRedraw(UUID());
+        }, 0)
+    }
+
     var discard = () =>
     {
         setDataObject(manageProjectsBackup);
@@ -91,8 +96,16 @@ function ManageProject()
                                 <h3 className="boldText">Metrics & Groups</h3>
                             </div>
                             <div className="metricPreviewButtons">
-                                <ManageMetrics />
-                                <ManageGroups />
+                                {
+                                    window.ManageMetrics ? 
+                                    (<ManageMetrics/>) : 
+                                    <></>
+                                }
+                                {
+                                    window.ManageGroups ? 
+                                    (<ManageGroups/>) : 
+                                    <></>
+                                }
                             </div>
                         </div>
                     </div>

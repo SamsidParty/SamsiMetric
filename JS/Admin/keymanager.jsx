@@ -1,8 +1,3 @@
-RunOnLoad("./JS/Admin/keymanager.jsx", async () => {
-    await LoadDependency("./JS/Admin/keycreator.jsx");
-});
-
-
 function ValuePerms(perm) {
     var targetValue = "admin";
 
@@ -92,8 +87,13 @@ function ManageAPIKeys()
         setDataObject(Object.assign({}, DataObject));
     }
 
-    var newKey = () =>
+    var newKey = async () =>
     {
+        //Load Creator Dependency
+        if (!window.APIKeyCreator) {
+            await LoadDependency("./JS/Admin/keycreator.jsx");
+        }
+        
         DataObject["page"] = "APIKeyCreator";
         setExtRedraw(UUID());
     }
