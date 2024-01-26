@@ -234,3 +234,16 @@ body {
 .apexcharts-legend {
     justify-content: center !important;
 }
+
+.skeleton {
+    animation: 700ms infinite alternate skeletonFlash;
+}
+
+@keyframes skeletonFlash {
+    0% {
+        opacity: 40%;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
