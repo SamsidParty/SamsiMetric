@@ -2,12 +2,14 @@
 RunOnLoad("./JS/Management/metricmanager.jsx", async () => {
     //Loads The Common Metric Editor Which Will Load All The Other Metric Editors
     await LoadDependency("./JS/Management/MetricEditors/common.jsx");
+    await LoadDependency("./JS/ThirdParty/highlight.js");
+    await LoadDependency("./JS/Management/requestgenerator.jsx");
 });
 
 var SampleMetric = () =>
 {
     return {
-        "id": UUID(),
+        "id": GenerateMetricID(),
         "name": "New Metric",
         "tag": "primary",
         "type": "total",
@@ -92,9 +94,7 @@ function ManageMetrics()
                                                         <CachedIcon src={l_metric.icon}></CachedIcon>
                                                     </div>
                                                     <h1>{l_metric.name}</h1>
-                                                    <Tooltip ttid={"genrequest" + l_metric.id} {...TTContent("static", "Generate API Request")}>
-                                                        <Button color={l_metric.tag} flat auto className="iconButton generateRequestButton"><i className="ti ti-code"></i></Button>
-                                                    </Tooltip>
+                                                    <GenerateRequestButton metric={l_metric}/>
                                                     <ManageMetricButton key={l_metric.id} metric={l_metric}></ManageMetricButton>
                                                     <DeleteButton onDelete={() => DeleteMetric(l_metric.id)}></DeleteButton>
                                                 </div>
@@ -130,9 +130,9 @@ function ManageMetricButton(props)
     return (
         <>
             <Tooltip ttid={"managemetric" + props.metric.id} {...TTContent("static", "Manage Metric")}>
-                <Button css={props.css} flat color={props.metric.tag} auto onPress={openEditor} className="iconButtonLarge manageMetricButton"><i className="ti ti-edit"></i></Button>
+                <Button css={props.css} flat color={props.metric.tag} auto onPress={() => setIsOpen(true)} className="iconButtonLarge manageMetricButton"><i className="ti ti-edit"></i></Button>
             </Tooltip>
-            <Modal closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
+            <Modal closeButton open={isOpen} onClose={() => setIsOpen(false)}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>
                         {
@@ -204,6 +204,35 @@ function MetricCreator(props)
             </Modal.Footer>
         </Modal>
     )
+}
+
+function GenerateMetricID()
+{
+    var baseID = Array.from(
+        window.crypto.getRandomValues(new Uint8Array(Math.ceil(16 / 2))),
+        (b) => ("0" + (b & 0xFF).toString(16)).slice(-2)
+    ).join("").toUpperCase();
+
+    var ID = "";
+    for (let i = 0; i < baseID.length; i++)
+    {
+        if (i % 6 == 0 && i != 0)
+        {
+            ID += "-";
+        }
+        ID += baseID[i];
+    }
+
+    //Year Signature Just For Reference
+    ID += new Date().getFullYear().toString();
+
+    //Check It Doesn't Exist Already Since It's Short
+    //Silly But Quick And Simple Checking Method
+    if (JSON.stringify(window.lastDataObject.schema).includes(ID)) {
+        return GenerateMetricID();
+    }
+
+    return ID;
 }
 
 function MetricDataChanged_input(event)

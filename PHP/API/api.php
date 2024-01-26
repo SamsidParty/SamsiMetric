@@ -20,7 +20,7 @@ $virtualBody = file_get_contents("php://input");
 $virtualServer["HTTP_X_MODE"] = "ControlPanel";
 $virtualServer["HTTP_X_API_KEY"] = $_SERVER["HTTP_AUTHORIZATION"];
 
-if ($apiRelativePath[0] == "submit") {
+if (strtolower($apiRelativePath[0]) == "submit") {
     $virtualServer["HTTP_X_MODE"] = "Submit";
 
     $vbody = array(
