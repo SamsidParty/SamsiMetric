@@ -68,7 +68,7 @@ function ClientImage(props) {
     
 
     return (
-        <img ref={image} {...props} src={LoadingStub} />
+        <img alt={image} ref={image} {...props} src={LoadingStub} />
     )
 }
 
@@ -81,7 +81,7 @@ function CachedIcon(props) {
     if (props.src.startsWith("data:image/")) {
         useFirstRender(); // Fix "Rendered Fewer Hooks Than Expected"
         return (
-            <img {...props} src={props.src} />
+            <img alt="Metric Icon" {...props} src={props.src} />
         );
     }
 
@@ -101,7 +101,7 @@ function CachedIcon(props) {
     }
 
     return (
-        <img {...props} src={iconURL} />
+        <img alt="Metric Icon" {...props} src={iconURL} />
     )
 }
 
