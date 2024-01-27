@@ -15,7 +15,6 @@ var dataStatus = "success";
 
 
 async function PageInit() {
-
     await LoadDependency("./JS/ThirdParty/autotextsize.js");
     await LoadDependency("./JS/Viewer/sidebar.jsx");
 

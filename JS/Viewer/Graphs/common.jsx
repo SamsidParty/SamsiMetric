@@ -103,18 +103,6 @@ function MetricGraph(props)
     }
 }
 
-//TODO: Replace With Real Scaling Library autotextsize.js
-function ScaleText(text, min, max, start) {
-
-    if (text.length > 9 + start) {
-        return min;
-    }
-    if (text.length > start) {
-        return max + (text.length - start) / 10 * ( min - max );
-    }
-    return max;
-}
-
 //Scale The Graph On Mobile
 //Takes In The Graph Type And Returns A Style Object
 //Set raw To True To Obtain The Value Directly

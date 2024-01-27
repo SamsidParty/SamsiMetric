@@ -22,13 +22,20 @@
     gap: 7px;
 }
 
-.csMedLong.graphNum0 .subCard h1 {
+.csMedLong.graphNum0 .subCard .numValueHolder {
+    max-height: 34px;
+    max-width: 200px;
+    width: 200px;
+}
+
+.csMedLong.graphNum0 .subCard .numValue {
     font-family: InterVariable !important;
     font-weight: 500;
     margin: 0;
-    line-height: 34px;
     color: var(--col-text);
+    line-height: 34px;
     letter-spacing: normal;
+    margin-right: 7px;
 
     display: flex;
 }

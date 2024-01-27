@@ -24,13 +24,14 @@
     gap: 1px;
 }
 
-.csShortLong.graphNum0 .subCard h1 {
+.csShortLong.graphNum0 .subCard .numValue {
     font-family: InterVariable !important;
     font-weight: 700;
     color: var(--col-text);
     letter-spacing: normal;
 
     margin: 0;
+    margin-right: 3px;
     display: flex;
 }
 

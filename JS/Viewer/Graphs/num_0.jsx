@@ -6,14 +6,6 @@ function Graphnum_0(props) {
     var metric = ArrayValue(metrics, "id", props.graph["for"]);
 
     var displayValue = ValueFromNumberMetric(metric, DataObject).toLocaleString("en-US");
-    var textSize = 0;
-
-    if (props.cardSize == "csMedLong") {
-        textSize = ScaleText(displayValue, 14, 39, 10);
-    }
-    else if (props.cardSize == "csShortLong") {
-        textSize = 14;
-    }
 
     return (
         <div style={props.style} className={"layoutCard graphNum0 " + props.cardSize}>
@@ -22,8 +14,10 @@ function Graphnum_0(props) {
             <div className="subCard">
                 <h3>{metric.name}</h3>
                 <div className="numberBox">
-                    <h1 style={{ fontSize: `calc(${textSize}px * var(--card-scale))` }}>{props.graph.prefixunit ? metric.unit : ""}{displayValue}</h1>
-                    <h3>{props.graph.prefixunit ? "" : metric.unit}</h3>
+                    <div className="numValueHolder">
+                        <AutoTextSize className="numValue" maxFontSizePx={props.cardSize == "csMedLong" ? 39 : 14} mode="oneline">{props.graph.prefixunit ? metric.unit : ""}{displayValue}</AutoTextSize>
+                        <h3>{props.graph.prefixunit ? "" : metric.unit}</h3>
+                    </div>
                 </div>
             </div>
         </div>
