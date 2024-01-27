@@ -30,7 +30,7 @@ function GenerateRequestButton(props)
     return (
         <>
             <Tooltip ttid={"genrequest" + props.metric.id} {...TTContent("static", "Generate API Request")}>
-                <Button onPress={() => setIsOpen(true)} color={props.metric.tag} flat auto className="iconButton generateRequestButton"><i className="ti ti-code"></i></Button>
+                <Button onPress={() => setIsOpen(true)} color={props.metric.tag} flat auto className="iconButtonLarge generateRequestButton"><i className="ti ti-code"></i></Button>
             </Tooltip>
             <Modal width="fit-content" className="requestGenerator" closeButton open={isOpen} onClose={() => setIsOpen(false)}>
                 <Modal.Header>
