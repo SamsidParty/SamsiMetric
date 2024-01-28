@@ -2,7 +2,7 @@
 
 $clientVersion = "dev00";
 $favicon = "<link rel='icon' type='image/png' href='./Images/SmallFavicon.png'>";
-$productName = "Analytics Platform";
+$productName = "SamsiMetric";
 $loader = "./JS/Common/loader.prod.js";
 
 if (file_exists("../.prod")) {

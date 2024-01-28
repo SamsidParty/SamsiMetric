@@ -21,10 +21,13 @@ function Sidebar()
 
     return (
         <div className="sidebar">
-            <div className="flexx gap10">
+            <div className="flexx gap10 facenter fjcenter fillx" style={{ height: "100px" }}>
                 <Tooltip ttid="favicon" {...TTContent("favicon")}>
-                    <ClientImage width={30} src="./Images/FullFavicon.svg" />
+                    <ClientImage width={35} src="./Images/FullFavicon.svg" />
                 </Tooltip>
+                <AutoTextSize mode="oneline" style={{ margin: 0, fontWeight: 500 }} maxFontSizePx={24}>{ProductName}</AutoTextSize>
+            </div>
+            <div className="flexx gap10">
                 <Dropdown>
                     <Dropdown.Button css={{width: "160px", display: (DataIsValid() ? "flex" : "none")}} color={workspaceTag} flat>{ArrayValue(DataObject.schema, "id", DataObject["selected_project"]).name}</Dropdown.Button>
                     <Dropdown.Menu selectionMode="single" onSelectionChange={switchProject} disallowEmptySelection aria-label="Project" items={DataObject["schema"]}>
