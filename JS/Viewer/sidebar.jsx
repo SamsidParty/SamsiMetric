@@ -23,7 +23,7 @@ function Sidebar()
         <div className="sidebar">
             <div className="flexx gap10">
                 <Tooltip ttid="favicon" {...TTContent("favicon")}>
-                    <ClientImage width={40} src="./Images/FullFavicon.png" />
+                    <ClientImage width={30} src="./Images/FullFavicon.svg" />
                 </Tooltip>
                 <Dropdown>
                     <Dropdown.Button css={{width: "160px", display: (DataIsValid() ? "flex" : "none")}} color={workspaceTag} flat>{ArrayValue(DataObject.schema, "id", DataObject["selected_project"]).name}</Dropdown.Button>
