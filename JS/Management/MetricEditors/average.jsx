@@ -14,7 +14,7 @@ function MetricEdit_average(props)
 
     return (
         <>
-            <MetricEdit_common metric={props.metric} exampleName="eg: Average Money Spent" ></MetricEdit_common>
+            <MetricEdit_common metric={props.metric} exampleName="eg: Average Session Length" ></MetricEdit_common>
             <MetricEdit_common_num {...props} />
         </>
     )

@@ -5,7 +5,7 @@ function MetricEdit_total(props)
 
     return (
         <>
-            <MetricEdit_common metric={props.metric} exampleName="eg: Total Sales" ></MetricEdit_common>
+            <MetricEdit_common metric={props.metric} exampleName="eg: Total User Count" ></MetricEdit_common>
             <MetricEdit_common_num {...props} />
         </>
     )
