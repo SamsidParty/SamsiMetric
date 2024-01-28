@@ -7,6 +7,7 @@ if (!isset($virtualAPI)) {
     );
 }
 
+require_once("./PHP/sql.php");
 require_once("./PHP/config.php");
 require_once("./PHP/auth.php");
 header("Content-Type: application/json");

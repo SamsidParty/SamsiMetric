@@ -1,25 +1,44 @@
 <?php 
 
+require_once("./PHP/sql.php");
+
 if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["server"]["HTTP_X_MODE"] == "Submit") 
 {
     //Check API Key
-    $auth = $virtualAPI["server"]["HTTP_X_API_KEY"];
-    $keys = json_decode(GetConfigFile("keys.json"), true);
+    $clientKey = $virtualAPI["server"]["HTTP_X_API_KEY"];
+    $serverKeys = json_decode(GetConfigFile("keys.json"), true);
+    $sessionBased = str_starts_with($clientKey, "Bearer ");
 
     //Enabled Admin Perms Temporarily For All Keys (Only Works In Source)
     if (file_exists("./.build")) {
-        $keys = array(0 => (array("value" => "build", "id" => "build", "name" => "build", "perms" => "admin")));
+        $serverKeys = array(0 => (array("value" => "build", "id" => "build", "name" => "build", "perms" => "admin")));
     }
 
     $currentKey = null;
 
-    foreach ($keys as $key) 
+    if ($sessionBased) {
+        //Check Against Session Tokens
+        $query = DB::query("SELECT * FROM sessions WHERE Token = %s;", $clientKey);
+        if ($query[0]["Token"] == $clientKey) {
+            $clientKey = $query[0]["KeyID"];
+        }
+    }
+    
+    //Check Against API Keys
+    foreach ($serverKeys as $serverKey) 
     {
-        if (password_verify($auth, $key["value"]))
+        if (($sessionBased && $clientKey == $serverKey["id"]) || password_verify($clientKey, $serverKey["value"]))
         {
-            $currentKey = $key;
+            $currentKey = $serverKey;
             break;
         }
+    }
+
+    //Reject If 2FA Is Required
+    //TODO: Implement 2FA
+    if (isset($currentKey["twofa"]) && !$sessionBased) {
+        http_response_code(424);
+        die('[{"type":"error","error":"2-Factor Authentication Code Invalid"}]');
     }
 
     if ($currentKey == null) 
@@ -34,6 +53,7 @@ function CollectorOnly()
     global $currentKey;
 
     if ($currentKey["perms"] != "collector") {
+        http_response_code(403);
         die('[{"type":"error","error":"This API Key Was Issued For A Different Purpose"}]');
     }
 }
