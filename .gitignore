@@ -1,4 +1,6 @@
 .env
+.build
+.DS_store
 Build
 UploadedIcons/*.png
 UploadedIcons/*.svg
@@ -7,4 +9,4 @@ UploadedIcons/*.jpeg
 UploadedIcons/*.tif
 UploadedIcons/*.gif
 UploadedIcons/*.jfif
-.DS_store
+

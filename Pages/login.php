@@ -26,9 +26,7 @@
     <meta name="client-version" content="<?php echo $clientVersion; ?>">
     <meta name="product-name" content="<?php echo $productName; ?>">
     <meta name="dependencies" content="
-        //ThirdParty/react.dev.js\
-        //Common/helper.js\
-        //ThirdParty/nextui.js\
+        //Pages/common.jsx\
         //Pages/login.jsx\
     ">
     <script src="<?php echo $loader; ?>" type="text/javascript"></script>

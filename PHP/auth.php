@@ -11,7 +11,7 @@ if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["serve
 
     //Enabled Admin Perms Temporarily For All Keys (Only Works In Source)
     if (file_exists("./.build")) {
-        $serverKeys = array(0 => (array("value" => "build", "id" => "build", "name" => "build", "perms" => "admin")));
+        $serverKeys = array(0 => (array("value" => '$2y$10$jnpqFE05BxYeB9h93ht97unngllyGOsELwH8X.J73EK01Hwlrf.OS', "id" => "build", "name" => "build", "perms" => "admin")));
     }
 
     $currentKey = null;

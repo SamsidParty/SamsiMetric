@@ -9,9 +9,7 @@
     <meta name="client-version" content="<?php echo $clientVersion; ?>">
     <meta name="product-name" content="<?php echo $productName; ?>">
     <meta name="dependencies" content="
-        //ThirdParty/react.dev.js\
-        //Common/helper.js\
-        //ThirdParty/nextui.js\
+        //Pages/common.jsx\
         //Viewer/Graphs/common.jsx\
         //Pages/main.jsx\
     ">

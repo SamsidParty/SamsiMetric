@@ -1,3 +1,5 @@
+AutoLoadThisFile();
+
 window.Backend = "./backend.php"
 window.ProductName = document.querySelector('meta[name="product-name"]').content;
 window.isMobile = document.body.classList.contains("mobile");
@@ -98,6 +100,9 @@ async function RefreshData(ignoreSchema)
     });
 
     if (!response.ok) {
+        if (response.status == 401 || response.status == 424) {
+            window.location.href = "./Login"
+        }
         dataStatus = "error";
         return;
     }
@@ -250,15 +255,3 @@ async function WaitUntil(cond) {
     const delayMs = 10;
     while(!cond()) await new Promise(resolve => setTimeout(resolve, delayMs));
 }
-
-window.RunOnLoad("./JS/ThirdParty/nextui.js", () => {
-    window.theme = NextUI.createTheme({
-        type: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? "dark" : "light",
-        theme: {
-            colors: {
-
-            }
-        }
-    })
-});
-
