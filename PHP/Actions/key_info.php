@@ -23,7 +23,7 @@ else {
             array(
                 "type" => "key_info",
                 "all" => "true",
-                "key_info" => $keys
+                "key_info" => $serverKeys
             )
         );
     }
