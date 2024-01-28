@@ -34,11 +34,15 @@ if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["serve
         }
     }
 
-    //Reject If 2FA Is Required
-    //TODO: Implement 2FA
+    //Reject If 2FA Is Wrong
     if (isset($currentKey["twofa"]) && !$sessionBased) {
-        http_response_code(424);
-        die('[{"type":"error","error":"2-Factor Authentication Code Invalid"}]');
+        require_once("./PHP/2fa.php");
+
+        $correctCode = (new Totp())->GenerateToken(Base32::decode($currentKey["twofa"]));
+        if (!isset($virtualAPI["server"]["HTTP_X_2FA"]) || $virtualAPI["server"]["HTTP_X_2FA"] != $correctCode) {
+            http_response_code(424);
+            die('[{"type":"error","error":"2-Factor Authentication Code Invalid"}]');
+        }
     }
 
     if ($currentKey == null) 
