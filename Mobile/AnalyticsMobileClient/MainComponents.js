@@ -1,4 +1,4 @@
-import { StyleSheet, StatusBar, Text, View, ActivityIndicator, Button, Image } from 'react-native';
+import { StyleSheet, StatusBar, Text, View, ActivityIndicator, Button, Image, TouchableOpacity } from 'react-native';
 import { useRef, useState, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
 import { useTheme } from 'react-native-paper';
@@ -18,13 +18,17 @@ export function TopBar()
 
     var style = StyleSheet.create({
         container: {
-            backgroundColor: Global.Colors.Secondary(),
+            backgroundColor: "transparent",
+            display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            position: "absolute",
             width: "100%",
-            height: "8%",
-            marginTop: Platform.OS == "android" ? (StatusBar.currentHeight || 30) : 0,
-            padding: 12
+            height: "7%",
+            top: Global.Platform == "ios" ? "0%" : StatusBar.currentHeight,
+            left: "0%",
+            zIndex: 100,
+            padding: 0
         }
     });
 
@@ -32,7 +36,6 @@ export function TopBar()
         <View style={style.container}>
             <ProjectSelect/>
             <KeyIcon/>
-            <Button title='joe mma' onPress={() => Global.webView.reload()}>yo</Button>
         </View>
     );
 }
@@ -52,12 +55,13 @@ function KeyIcon() {
 
     var style = StyleSheet.create({
         container: {
-            backgroundColor: Global.Colors.IconBackground(),
+            backgroundColor: "#ADB5B9",
             alignItems: "center",
             justifyContent: "center",
             marginLeft: "auto",
-            borderRadius: 10,
-            height: "100%",
+            marginRight: 30,
+            borderRadius: 260,
+            height: "75%",
             aspectRatio: 1
         },
         keyIcon: {
@@ -67,7 +71,7 @@ function KeyIcon() {
     });
 
     return (
-        <View style={style.container}>
+        <TouchableOpacity onPress={Global.webView.reload} style={style.container}>
             {
                 //Show Either A Loading Icon Or A Key Icon (Provided By Server)
                 Global.loaderCount > 0 ?
@@ -77,7 +81,7 @@ function KeyIcon() {
                     source={{uri: "http://192.168.100.8/Analytics/Images/DefaultProfileIcon.png"}}
                 />
             }
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -87,7 +91,8 @@ export function MainView()
         container: {
             backgroundColor: Global.Colors.Background(),
             width: "100%",
-            flex: 8
+            height: "100%",
+            position: "absolute"
         },
         web: {
             backgroundColor: "transparent"
@@ -98,7 +103,6 @@ export function MainView()
 
     Object.entries(matTheme.colors).forEach((l_col) =>
     {
-        console.log(l_col[0]);
         Global.Colors["mat" + l_col[0]] = l_col[1];
     });
 
