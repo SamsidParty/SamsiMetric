@@ -1,6 +1,7 @@
 import { StyleSheet, Platform, PlatformColor, Appearance } from 'react-native';
 
 var Theme = Appearance.getColorScheme() || "light";
+AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 var DarkMode = Theme == "dark";
 
 //Colors Are Functions So That They Respond To Changes

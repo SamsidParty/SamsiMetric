@@ -1,6 +1,7 @@
 import { StyleSheet, StatusBar, Text, View, ActivityIndicator, Button, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { Global } from "./Global.js";
+import { Button as AndroidButton } from 'react-native-paper';
 
 export function NativeComponentBridge()
 {
@@ -59,17 +60,42 @@ function NativeButton(props)
         },
         text: {
             color: "white",
-            fontSize: "20px"
+            fontSize: 17,
+            fontWeight: "700"
+        },
+        androidButton: {
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "0px"
+        },
+        androidContent: {
+            width: props.data.width,
+            height: "100%"
+        },
+        androidText: {
+            fontSize: 17,
+            fontWeight: "700",
+            fontFamily: "InterVariable"
         }
     });
 
     return (
         <View style={style.container}>
-            <TouchableOpacity
-                style={style.button}
-            >
-                <Text style={style.text}> Touch Here </Text>
-            </TouchableOpacity>
+            {
+                Global.Platform == "ios" ?
+                    (
+                        <TouchableOpacity style={style.button}>
+                            <Text style={style.text}>{props.data.text}</Text>
+                        </TouchableOpacity>
+                    ) :
+                    (
+                        <AndroidButton onPress={() => console.log('')} labelStyle={style.androidText} contentStyle={style.androidContent} style={style.androidButton} mode="contained-tonal">
+                            {props.data.text}
+                        </AndroidButton>
+                    )
+            }
+
         </View>
 
     )

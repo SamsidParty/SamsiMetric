@@ -4,7 +4,7 @@ var NativeComponentQueue = [];
 function NativeButton(props) {
 
     var width = props.width || "75vw";
-    var height = props.height || "8vh";
+    var height = props.height || "6.5vh";
     var divRef = React.useRef(null);
 
     var [componentID, setComponentID] = React.useState(UUID());
@@ -19,6 +19,7 @@ function NativeButton(props) {
                 top: divRef.current.getBoundingClientRect().top,
                 left: divRef.current.getBoundingClientRect().left,
                 background: props.background || false,
+                text: props.children.toString(),
             });
         }
     }, []);

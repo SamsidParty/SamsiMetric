@@ -6,7 +6,6 @@ import * as Clipboard from 'expo-clipboard';
 import { decode as atob, encode as btoa } from 'base-64';
 import { Alert } from 'react-native';
 import { Asset } from 'expo-asset';
-import { Buffer } from "buffer";
 
 export var Global = {
     Colors: GlobalColors,

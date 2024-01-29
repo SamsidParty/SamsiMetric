@@ -74,7 +74,6 @@ function Login() {
                     <NativeButton >Continue</NativeButton>
                 </div>
 
-
             </div>
         </>
     )
