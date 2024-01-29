@@ -1,6 +1,6 @@
 AutoLoadThisFile();
 
-RunOnLoad("./JS/Common/fontloader.js", LoadFontFiles);
+RunOnLoad("./JS/Common/theming.js", Theming);
 
 async function LoadFontFiles() {
     await LoadDependency("./Fonts/InterVariable.woff2");
@@ -17,4 +17,13 @@ async function LoadFontFiles() {
         //Replace SFPro With Inter As A Stub
         loadedBinaryDependencies["./Fonts/SFPro.ttf"] = loadedBinaryDependencies["./Fonts/InterVariable.woff2"];
     }
+}
+
+async function Theming() {
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add("dark");
+    }
+
+    await LoadFontFiles();
 }

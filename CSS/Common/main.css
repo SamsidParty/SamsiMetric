@@ -29,14 +29,12 @@
     width: 0px;
 }
 
-@media (prefers-color-scheme: dark) {
-    /*Dark Mode*/
-    * {
-        --col-bg: #161616;
-        --col-contrast: #222222;
-        --col-text: white;
-        --col-text-secondary: #979797;
-    }
+/*Dark Mode*/
+.dark, .dark * {
+    --col-bg: #161616;
+    --col-contrast: #222222;
+    --col-text: white;
+    --col-text-secondary: #979797;
 }
 
 body {
