@@ -33,7 +33,7 @@ The LOADER LOAD BIN stuff is replaced with a data url at runtime
     font-family: SFPro;
     font-style: normal;
     font-weight: 300 900;
-    src: url("./LOADER_LOAD_BIN/./Fonts/SFPro.woff2/FINISH");
+    src: url("./LOADER_LOAD_BIN/./Fonts/SFPro.ttf/FINISH");
 }
 
 /*!

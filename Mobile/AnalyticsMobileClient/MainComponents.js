@@ -30,6 +30,7 @@ export function TopBar()
         <View style={style.container}>
             <ProjectSelect/>
             <KeyIcon/>
+            <Button title='joe mma' onPress={() => Global.webView.reload()}>yo</Button>
         </View>
     );
 }
@@ -101,6 +102,7 @@ export function MainView()
                 style={style.web}
                 onMessage={OnWebMessage}
                 source={GetCurrentProfile().page}
+                webviewDebuggingEnabled={true}
                 onNavigationStateChange={OnWebStateChange}
             />
         </View>
@@ -137,11 +139,5 @@ async function OnWebMessage(e) {
 
 function OnWebStateChange(state)
 {
-    if (state.loading) {
-        Global.increaseLoaderCount();
-    }
-    else {
-        Global.setLoaderCount(0);
-    }
     
 }

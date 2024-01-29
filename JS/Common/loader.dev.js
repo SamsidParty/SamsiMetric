@@ -133,7 +133,7 @@ async function InstallDynamic() {
         }
         else {
             //Load As Binary File
-            script = `LoadBinaryDependency("${btoa(l_dep)}", "${await ConvertBlob(await file)}")`;
+            script = `RunOnLoad("${l_dep}", () => LoadBinaryDependency("${btoa(l_dep)}", "${await ConvertBlob(await file)}"))`;
         }
 
         localforage.setItem(l_dep, script);

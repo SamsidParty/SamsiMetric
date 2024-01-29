@@ -7,6 +7,13 @@
     -webkit-user-select: none;
 }
 
+.mobile .largeIcon {
+    font-size: 25vw;
+    font-weight: 500;
+    color: #007BFF;
+    margin: 0;
+}
+
 .mobile h1, h2, h3, h4, h5, h6, p {
     color: var(--col-text);
 }
@@ -15,6 +22,7 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
+    font-family: SFPro, InterVariable, tabler-icons !important;
 }
 
 .centralIcon {

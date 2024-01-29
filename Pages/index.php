@@ -10,7 +10,6 @@
     <meta name="product-name" content="<?php echo $productName; ?>">
     <meta name="dependencies" content="
         //Pages/common.jsx\
-        //Viewer/Graphs/common.jsx\
         //Pages/main.jsx\
     ">
     <script src="<?php echo $loader; ?>" type="text/javascript"></script>

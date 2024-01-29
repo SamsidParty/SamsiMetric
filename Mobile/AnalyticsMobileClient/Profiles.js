@@ -36,27 +36,6 @@ var DefaultPage = `
 </html>
 `;
 
-export async function LoadClient(version) {
-    Global.increaseLoaderCount();
-
-    Global.loadDependency = async (dep, request) => {
-        await LoadDependency(dep);
-        await ResolveRequest(request, true);
-    };
-
-    //try {
-        await InstallDynamic(version);
-    //}
-    //catch {
-    //    console.log("error");
-    //}
-
-    await LoadDependency("./JS/Common/helper.js");
-    await LoadDependency("./JS/Mobile/main.jsx");
-
-    Global.decreaseLoaderCount();
-}
-
 async function ResolveRequest(request, param) {
     Global.webView?.injectJavaScript(`window.returnQueue["${btoa(request)}"](${param});`);
 }
@@ -111,98 +90,6 @@ async function InstallStatic(version) {
     }
 }
 
-async function InstallDynamic(version) {
-    //Load Babel
-    if (!Global.hasBabelLoaded){
-        var dep = await (await fetch(GetCurrentProfile().host + "/JS/ThirdParty/babel.js")).text();
-        (1, eval)(dep);
-        Global.hasBabelLoaded = true;
-    }
-
-
-    var installerContext = {
-        autoload: []
-    };
-
-    var collectedDependencies = await CollectDependencies(installerContext);
-    var cssBundle = "";
-
-    for (var l_dep of collectedDependencies) {
-        var file = await fetch(l_dep.replace(".", GetCurrentProfile().host), { headers: { 'Cache-Control': 'no-cache' } });
-        //console.log(`Downloaded ${l_dep}`);
-
-        if (l_dep.endsWith(".jsx")){
-            var script = await file.text();
-            //Convert JSX To JS
-            script = Babel.transform(script, { presets: ["react"] }).code;
-        }
-        else if (l_dep.endsWith(".css")){
-            var script = await file.text();
-            //Add To CSSBundle
-            cssBundle += "\n" + script;
-            continue;
-        }
-        else if (l_dep.endsWith(".js")){
-            var script = await file.text();
-        }
-        else {
-            //Load As Binary File
-            var script = `LoadBinaryDependency("${btoa(l_dep)}", "${(await BlobToBase64(await file.blob()))}")`;
-        }
-
-        await SaveDependency(l_dep, script);
-    }
-
-    await SaveDependency("./bundle.css", cssBundle);
-
-    await SaveDependency("client-version", version);
-    await SaveDependency("installer-context", JSON.stringify(installerContext));
-}
-
-//Fetch Indexes To Get All Needed Files
-async function CollectDependencies() {
-
-    var collectedDependencies = [];
-
-    //Collect CSS Files
-    var cssFiles = ParseIndexTree(await (await fetch(GetCurrentProfile().host + "/CSS/")).text(), (l_file) => { return l_file.endsWith(".css"); });
-    cssFiles.forEach((l_file) => collectedDependencies.push("./CSS" + l_file));
-
-    //Collect JS Files
-    var jsFiles = ParseIndexTree(await (await fetch(GetCurrentProfile().host + "/JS/")).text(), (l_file) => { return l_file.includes(".js"); });
-    jsFiles.forEach((l_file) => collectedDependencies.push("./JS" + l_file));
-
-    //Collect Font Files
-    var fontFiles = ParseIndexTree(await (await fetch(GetCurrentProfile().host + "/Fonts/")).text(), (l_file) => { return l_file.includes(".ttf") || l_file.includes(".woff"); });
-    fontFiles.forEach((l_file) => collectedDependencies.push("./Fonts" + l_file));
-
-    //Collect Image Files
-    var imageFiles = ParseIndexTree(await (await fetch(GetCurrentProfile().host + "/Images/")).text(), (l_file) => { return l_file.includes(".png") || l_file.includes(".svg"); });
-    imageFiles.forEach((l_file) => collectedDependencies.push("./Images" + l_file));
-
-    return collectedDependencies;
-}
-
-function ParseIndexTree(treeString, accept) {
-    var parsed = JSON.parse(treeString);
-    var fileList = [];
-
-    var traverseTree = (tree, parent) => {
-        tree.forEach((l_file) => {
-            if (l_file.dir) {
-                traverseTree(l_file.dir, parent + l_file.name + "/");
-            }
-            else if (accept(l_file.file.toLowerCase())) {
-                fileList.push(parent + l_file.file);
-            }
-        });
-    }
-
-    traverseTree(parsed, "/");
-
-    return fileList;
-}
-
 export function GetCurrentProfile() {
     return GetProfiles()[1];
 }
@@ -222,12 +109,4 @@ export function GetProfiles() {
             page: { uri: "http://192.168.100.8/Analytics/MobileClient" },
         }
     ];
-}
-
-function BlobToBase64(blob) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
 }

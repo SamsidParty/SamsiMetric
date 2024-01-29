@@ -1,4 +1,3 @@
-AutoLoadThisFile();
 
 var tooltipTemplates = {
     favicon: {

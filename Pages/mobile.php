@@ -8,11 +8,13 @@
     <?php echo $favicon; ?>
     <meta name="client-version" content="<?php echo $clientVersion; ?>">
     <meta name="product-name" content="<?php echo $productName; ?>">
-    <script src="./JS/Mobile/loader.js"></script>
+    <meta name="dependencies" content="
+        //Mobile/Pages/common.jsx\
+    ">
+    <script src="./JS/Mobile/loader.dev.js"></script>
     <title><?php echo $productName; ?></title>
 </head>
 <body class="mobile" method="App">
     <div id="root"></div>
-    Syncing...
 </body>
 </html>

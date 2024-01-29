@@ -11,6 +11,7 @@
 
 .mobileloginscreen h3 {
     color: var(--col-text);
-    font-size: 6vw;
+    font-size: 8vw;
+    font-weight: 700;
     margin: 0;
 }

@@ -1,4 +1,4 @@
-
+AutoLoadThisFile();
 
 RunOnLoad("./JS/Viewer/Graphs/common.jsx", async () => {
     await LoadDependency("./JS/Viewer/Graphs/layouts.jsx");
