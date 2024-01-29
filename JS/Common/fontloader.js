@@ -8,6 +8,13 @@ async function LoadFontFiles() {
     await LoadDependency("./Fonts/Tabler.ttf");
 
     if (window.GetFromGlobal && isApple) {
-        await LoadDependency("./Fonts/SFPro.ttf");
+        //SFPro Is A Whopping 26MB!
+        //Load It From The iOS Host Instead Of The Client
+        var SFPro = await GetFromGlobal("SFPro");
+        await eval(SFPro);
+    }
+    else {
+        //Replace SFPro With Inter As A Stub
+        loadedBinaryDependencies["./Fonts/SFPro.ttf"] = loadedBinaryDependencies["./Fonts/InterVariable.woff2"];
     }
 }

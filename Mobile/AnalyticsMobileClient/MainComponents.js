@@ -2,6 +2,7 @@ import { StyleSheet, StatusBar, Text, View, ActivityIndicator, Button, Image } f
 import { useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { Global } from "./Global.js";
+import { NativeComponentBridge } from "./NativeComponentBridge.js";
 import { GetCurrentProfile, LoadClient } from './Profiles.js';
 import { decode as atob, encode as btoa } from 'base-64';
 
@@ -103,8 +104,13 @@ export function MainView()
                 onMessage={OnWebMessage}
                 source={GetCurrentProfile().page}
                 webviewDebuggingEnabled={true}
+                allowFileAccess={true}
+                allowFileAccessFromFileURLs={true}
+                allowUniversalAccessFromFileURLs={true}
+                originWhitelist={['*']}
                 onNavigationStateChange={OnWebStateChange}
             />
+            <NativeComponentBridge/>
         </View>
     );
 }

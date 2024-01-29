@@ -11,7 +11,7 @@
     <meta name="dependencies" content="
         //Mobile/Pages/common.jsx\
     ">
-    <script src="./JS/Mobile/loader.dev.js"></script>
+    <script src="./JS/Mobile/Common/loader.dev.js"></script>
     <title><?php echo $productName; ?></title>
 </head>
 <body class="mobile" method="App">

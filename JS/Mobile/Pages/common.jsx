@@ -8,6 +8,8 @@ RunOnLoad("./JS/Mobile/Pages/common.jsx", async () => {
         await LoadDependency("./JS/ThirdParty/react.prod.js");
     }
 
+    await LoadDependency("./JS/Mobile/Common/components.jsx");
+
     var defaultPage = "Login";
 
     //Check If Current Saved Key Is Valid
@@ -41,14 +43,23 @@ RunOnLoad("./JS/Mobile/Pages/common.jsx", async () => {
     }
 
     if (defaultPage == "Login") {
-        await LoadDependency("./JS/Mobile/login.jsx");
+        await LoadDependency("./JS/Mobile/Pages/login.jsx");
     }
     else {
-        await LoadDependency("./JS/Mobile/main.jsx");
+        await LoadDependency("./JS/Mobile/Pages/main.jsx");
     }
 });
 
 function App() {
+
+    //Render Native Components
+    React.useEffect(() => {
+        window.ReactNativeWebView.postMessage(JSON.stringify({
+            RunOnGlobal: "setComponentQueue",
+            Param1: JSON.stringify(NativeComponentQueue)
+        }));
+        NativeComponentQueue = [];
+    }, []);
 
     return (
         <>

@@ -2,16 +2,23 @@
 .mobileloginscreen {
     width: 100vw;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 10vh;
+    padding-top: 10vh;
+    background-color: var(--col-contrast);
 }
 
-.mobileloginscreen h3 {
+.mobileloginscreen .topLogin {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    gap: 20px;
+}
+
+.mobileloginscreen .topLogin h3 {
     color: var(--col-text);
-    font-size: 8vw;
+    font-size: 7vw;
     font-weight: 700;
+    text-align: center;
     margin: 0;
 }

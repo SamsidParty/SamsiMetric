@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "base-64": "^1.0.0",
+    "buffer": "^6.0.3",
     "expo": "~49.0.15",
+    "expo-asset": "~8.10.1",
     "expo-clipboard": "~4.3.1",
     "expo-file-system": "~15.4.5",
     "expo-splash-screen": "~0.20.5",

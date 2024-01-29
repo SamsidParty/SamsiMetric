@@ -1,19 +1,28 @@
-//A Global Object That Is Used To Share Data Between Unrelated Components (Kind Of Like window In Browsers)
+//A Global Object That Is Used To Share Data Between Unrelated Components (Similar To window In Browsers)
 
 import { GlobalColors } from "./GlobalStyles.js";
 import prompt from 'react-native-prompt-android';
 import * as Clipboard from 'expo-clipboard';
 import { decode as atob, encode as btoa } from 'base-64';
 import { Alert } from 'react-native';
+import { Asset } from 'expo-asset';
+import { Buffer } from "buffer";
 
 export var Global = {
     Colors: GlobalColors,
     Platform: Platform.OS,
+    SFPro: GetSFPro,
     consolelog: (e) => console.log(e),
     alert: (e, d) => Alert.alert(e, d),
     prompt: (e, r) => PromptForData(e, r),
     clipboardData: async () => await Clipboard.getStringAsync()
 };
+
+async function GetSFPro() {
+    var url = (await Asset.loadAsync(require("./assets/Fonts/SFPro.ttf.clientplugin")))[0].localUri;
+    var response = await fetch(url);
+    return await response.text();
+}
 
 async function PromptForData(options, request) {
 

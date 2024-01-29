@@ -8,9 +8,9 @@
 }
 
 .mobile .largeIcon {
-    font-size: 25vw;
+    font-size: 15vw;
     font-weight: 500;
-    color: #007BFF;
+    color: #007AFF;
     margin: 0;
 }
 
@@ -22,6 +22,9 @@
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
+}
+
+.mobile.ios * {
     font-family: SFPro, InterVariable, tabler-icons !important;
 }
 

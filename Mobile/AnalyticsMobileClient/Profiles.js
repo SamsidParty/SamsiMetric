@@ -1,7 +1,7 @@
 import { Global } from "./Global.js";
 import LZString from "lz-string";
 import * as FileSystem from 'expo-file-system';
-import {decode as atob, encode as btoa} from 'base-64';
+import { decode as atob, encode as btoa } from 'base-64';
 
 var DefaultPage = `
 <!DOCTYPE html>
