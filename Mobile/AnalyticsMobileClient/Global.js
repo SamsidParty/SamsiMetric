@@ -4,12 +4,13 @@ import { GlobalColors } from "./GlobalStyles.js";
 import prompt from 'react-native-prompt-android';
 import * as Clipboard from 'expo-clipboard';
 import { decode as atob, encode as btoa } from 'base-64';
-import { Alert } from 'react-native';
+import { Alert, Appearance } from 'react-native';
 import { Asset } from 'expo-asset';
 
 export var Global = {
     Colors: GlobalColors,
     Platform: Platform.OS,
+    Theme: () => Appearance.getColorScheme(),
     SFPro: GetSFPro,
     consolelog: (e) => console.log(e),
     alert: (e, d) => Alert.alert(e, d),

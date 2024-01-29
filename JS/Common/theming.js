@@ -21,9 +21,19 @@ async function LoadFontFiles() {
 
 async function Theming() {
 
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var isDarkAndroid = window.GetFromGlobal && await GetFromGlobal("Theme") == "dark";
+    if (isDark || isDarkAndroid) {
         document.body.classList.add("dark");
     }
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        if (event.matches && !document.body.classList.contains("dark")) {
+            document.body.classList.add("dark");
+        } 
+        else if (!event.matches && document.body.classList.contains("dark")) {
+            document.body.classList.remove("dark");
+        } 
+    });
 
     await LoadFontFiles();
 }
