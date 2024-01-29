@@ -10,6 +10,13 @@ RunOnLoad("./JS/Mobile/Pages/common.jsx", async () => {
 
     await LoadDependency("./JS/Mobile/Common/components.jsx");
 
+    if (isApple) {
+        await LoadDependency("./JS/Mobile/iOS/themeloader.js");
+    }
+    else {
+        await LoadDependency("./JS/Mobile/Android/themeloader.js");
+    }
+
     var defaultPage = "Login";
 
     //Check If Current Saved Key Is Valid

@@ -1,6 +1,7 @@
 import { StyleSheet, StatusBar, Text, View, ActivityIndicator, Button, Image } from 'react-native';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
+import { useTheme } from 'react-native-paper';
 import { Global } from "./Global.js";
 import { NativeComponentBridge } from "./NativeComponentBridge.js";
 import { GetCurrentProfile, LoadClient } from './Profiles.js';
@@ -91,6 +92,14 @@ export function MainView()
         web: {
             backgroundColor: "transparent"
         }
+    });
+    
+    var matTheme = useTheme();
+
+    Object.entries(matTheme.colors).forEach((l_col) =>
+    {
+        console.log(l_col[0]);
+        Global.Colors["mat" + l_col[0]] = l_col[1];
     });
 
     Global.webView = useRef();
