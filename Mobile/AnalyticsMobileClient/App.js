@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ActivityIndicator, SafeAreaView } from 'react-native';
 import { TopBar, MainView } from "./MainComponents.js";
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider, useTheme } from 'react-native-paper';
 import { Global } from "./Global.js";
 import { Logs } from 'expo';
 import { useFonts } from 'expo-font';
@@ -10,8 +10,12 @@ Logs.enableExpoCliLogging()
 
 function App()
 {
+  var [fontIsLoaded] = useFonts({ 'Inter-Variable': require('./assets/Fonts/Inter-Variable.ttf') });
+  var matTheme = useTheme();
 
-  var fonts = useFonts({ 'InterVariable': require('./assets/Fonts/InterVariable.ttf') });
+  Object.entries(matTheme.colors).forEach((l_col) => {
+    Global.Colors[l_col[0]] = l_col[1];
+  });
 
   return (
     <>

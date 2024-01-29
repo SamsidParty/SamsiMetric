@@ -76,7 +76,7 @@ function NativeButton(props)
         androidText: {
             fontSize: 17,
             fontWeight: "700",
-            fontFamily: "InterVariable"
+            fontFamily: "Inter-Variable"
         }
     });
 
