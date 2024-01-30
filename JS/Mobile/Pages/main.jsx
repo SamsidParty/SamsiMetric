@@ -8,7 +8,6 @@ var DummyData = {
 }
 var extDataObject;
 var setExtDataObject;
-var setExtRedraw;
 var dataStatus = "success";
 
 var busy = 0;
@@ -18,10 +17,8 @@ function MainApp() {
 
     //Contains Project Schema & User Data
     var [DataObject, setDataObject] = React.useState(DummyData);
-    var [Redraw, setRedraw] = React.useState("");
     extDataObject = DataObject;
     setExtDataObject = setDataObject;
-    setExtRedraw = setRedraw;
 
     var props = [];
 

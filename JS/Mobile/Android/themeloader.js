@@ -7,7 +7,7 @@ setTimeout(async () => {
     }
     
     .android, .android * {
-        --col-contrast: ${await GetFromGlobal("Colors.matbackground")} !important;
+        --col-bg: ${await GetFromGlobal("Colors.matbackground")} !important;
     }
 
     `

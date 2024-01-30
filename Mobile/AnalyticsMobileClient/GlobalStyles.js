@@ -5,7 +5,7 @@ var DarkMode = Theme == "dark";
 
 //Colors Are Functions So That They Respond To Changes
 export var GlobalColors = {
-    Background: () => DarkMode ? "#161616" : "#F0F0F0",
-    Secondary: () => DarkMode ? "#222222" : "#FFFFFF",
+    Background: () => DarkMode ? "#161616" : "#FFFFFF",
+    Secondary: () => DarkMode ? "#222222" : "#F0F0F0",
     IconBackground: () => GlobalColors.Background()
 }

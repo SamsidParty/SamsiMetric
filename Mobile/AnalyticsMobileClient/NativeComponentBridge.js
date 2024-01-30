@@ -40,6 +40,9 @@ function NativeButton(props)
 {
 
     var style = StyleSheet.create({
+        nonce: {
+            display: "none"
+        },
         container: {
             position: "absolute",
             width: props.data.width,
@@ -48,7 +51,7 @@ function NativeButton(props)
             left: props.data.left,
         },
         button: {
-            backgroundColor: "#007AFF",
+            backgroundColor: !props.data.disabled ? "#007AFF" : Global.Colors.Secondary(),
             width: "100%",
             height: "100%",
             padding: 10,
@@ -59,7 +62,7 @@ function NativeButton(props)
             color: "white"
         },
         text: {
-            color: "white",
+            color: !props.data.disabled ? "white" : Global.Colors.Background(),
             fontSize: 17,
             fontWeight: "700"
         },
@@ -80,22 +83,28 @@ function NativeButton(props)
         }
     });
 
+    var onPress = () => {
+        if (!props.data.disabled) {
+            Global.webView?.injectJavaScript(`window.returnQueue["${props.data.id}"]("Button");`);
+        }
+    }
+
     return (
         <View style={style.container}>
             {
                 Global.Platform == "ios" ?
                     (
-                        <TouchableOpacity style={style.button}>
+                        <TouchableOpacity onPress={onPress} style={style.button}>
                             <Text style={style.text}>{props.data.text}</Text>
                         </TouchableOpacity>
                     ) :
                     (
-                        <AndroidButton onPress={() => console.log('')} labelStyle={style.androidText} contentStyle={style.androidContent} style={style.androidButton} mode="contained-tonal">
+                        <AndroidButton disabled={!!props.data.disabled} onPress={onPress} labelStyle={style.androidText} contentStyle={style.androidContent} style={style.androidButton} mode="contained-tonal">
                             {props.data.text}
                         </AndroidButton>
                     )
             }
-
+            <Text style={style.nonce}>{Math.random().toString()}</Text>
         </View>
 
     )

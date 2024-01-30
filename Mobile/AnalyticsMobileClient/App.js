@@ -14,7 +14,7 @@ function App()
 
   return (
     <>
-      <SafeAreaView style={{ flex: 0, backgroundColor: Global.Colors.Secondary() }} />
+      <SafeAreaView style={{ flex: 0, backgroundColor: Global.Colors.Background() }} />
       <PaperProvider>
         <View style={styles.container}>
           <StatusBar style="auto" />

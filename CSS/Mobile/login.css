@@ -1,22 +1,12 @@
 
-.mobileloginscreen {
+.mobileLoginWelcomeScreen, .mobileLoginInputServerScreen {
     width: 100vw;
     height: 100vh;
     padding-top: 10vh;
     position: relative;
-    background-color: var(--col-contrast);
 }
 
-.mobileloginscreen .topLogin {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    width: 100vw;
-    gap: 20px;
-}
-
-.mobileloginscreen .bottomLogin {
+.mobileLoginWelcomeScreen .bottomLogin, .mobileLoginInputServerScreen .bottomLogin {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,11 +17,30 @@
     height: 20vh;
 }
 
+.mobileLoginWelcomeScreen .topLogin, .mobileLoginInputServerScreen .topLogin {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    gap: 20px;
+}
 
-.mobileloginscreen .topLogin h3 {
+.mobileLoginWelcomeScreen .topLogin h4, .mobileLoginInputServerScreen .topLogin h4 {
+    margin: 0;
+}
+
+.mobileLoginWelcomeScreen .topLogin h3, .mobileLoginInputServerScreen .topLogin h3 {
     color: var(--col-text);
     font-size: 7vw;
     font-weight: 700;
     text-align: center;
     margin: 0;
+}
+
+.mobileLoginWelcomeScreen .topLogin p, .mobileLoginInputServerScreen .topLogin p {
+    text-align: center;
+    font-size: 4vw;
+    margin: 0;
+    max-width: 70vw;
 }

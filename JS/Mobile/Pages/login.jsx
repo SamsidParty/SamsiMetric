@@ -4,80 +4,77 @@ function Login() {
     //Whether The Continue Button Is Disabled
     var [ loginDisabled, setLoginDisabled ] = React.useState(false);
     var [ loginText, setLoginText ] = React.useState("Continue");
+    var [ loginStage, setLoginStage ] = React.useState([".mobileLoginWelcomeScreen"]);
 
-    var loginPrompt = async () => {
-        setLoginDisabled(true);
-        setLoginText("Authenticating...");
+    var pageContents = {
+        ".mobileLoginWelcomeScreen": () => LoginWelcomeStage,
+        ".mobileLoginInputServerScreen": () => LoginInputServerStage
+    }
 
-        window.ReactNativeWebView.postMessage(JSON.stringify({
-            RunOnGlobal: "increaseLoaderCount"
-        }));
+    var loginChangeStage = (from, to) => {
+        var screen = document.querySelector(from);
 
-        //FEATURE (NOT IMPLEMENTED):
-        //Detect A Key In The Clipboard And Login With That
-        //var clip = await GetFromGlobal("clipboardData");
-
-        //var prompt = await AskForAPIKey();
-        var prompt = ["confirm", "default"];
-
-        setLoginText("Connecting...");
-        
-        if (prompt[0] == "confirm") {
-            var params = {
-                "action": "key_info"
-            };
-    
-            try {
-                var response = await tfetch(Backend, {
-                    ...DefaultOptions(),
-                    headers: DefaultHeaders({ "X-Params": JSON.stringify(params), "X-API-Key": prompt[1] })
-                });
-    
-                var json = await response.json();
-        
-                if (json[0]["type"] == "error")
-                {
-                    alert("Authentication Failed", json[0]["error"]);
-                    setLoginText("Try Again");
-                }
-                else if (json[0]["type"] == "key_info")
-                {
-                    //alert("Authenticated With Key: " + json[0]["key_info"]["name"]);
-                    setLoginText("Welcome, " + json[0]["key_info"]["name"]);
-                    LoginWithKeyInfo(json[0]["key_info"], prompt[1]);
-                    location.reload();
-                }
-            }
-            catch (ex) {
-                alert("Connection Error", window.devMode ? ex.toString() : "Failed To Connect To The Server, Ensure You Have A Stable Network Connection");
-                setLoginText("Try Again");
-            }
+        if (screen.classList.contains("pageIn")) {
+            screen.classList.remove("pageIn");
         }
 
-        window.ReactNativeWebView.postMessage(JSON.stringify({
-            RunOnGlobal: "decreaseLoaderCount"
-        }));
+        screen.classList.add("pageOut");
 
-        setLoginDisabled(false);
+        setTimeout(() => { 
+            setLoginStage([to]);
+        }, 400);
     }
 
     document.body.style.overflow = "hidden";
+    var LoginStageContent = pageContents[loginStage]();
+
+    return (
+        <>  
+            {pageContents[loginStage]()(loginChangeStage)}
+        </>
+    )
+}
+
+function LoginWelcomeStage(loginChangeStage) {
 
     return (
         <>
-            <div className="mobileloginscreen">
+                       { /* ↓↓↓↓↓↓ Makes Sure That Classes Are Reset Every Render  */ }
+            <div className={UUID() + " loginScreen pageIn mobileLoginWelcomeScreen"}>
                 <div className="topLogin">
                     <h4 className="largeIcon">{ isApple ? "\udbc2\udeac" : "\ueb1f" }</h4>
                     <h3>Connect To A<br/> SamsiMetric Server</h3>
+                    <p>Connect And Authenticate With A SamsiMetric Instance Of Your Choice</p>
                 </div>
                 <div className="bottomLogin">
-                    <NativeButton >Continue</NativeButton>
+                    <NativeButton onPress={() => loginChangeStage(".mobileLoginWelcomeScreen", ".mobileLoginInputServerScreen")}>Continue</NativeButton>
                 </div>
 
             </div>
         </>
     )
 }
+
+function LoginInputServerStage(loginChangeStage) {
+
+    return (
+        <>
+                       { /* ↓↓↓↓↓↓ Makes Sure That Classes Are Reset Every Render  */ }
+            <div className={UUID() + " loginScreen pageIn mobileLoginInputServerScreen"}>
+                <div className="topLogin">
+                    <h4 className="largeIcon">{ isApple ? "\udbc2\udeac" : "\ueb1f" }</h4>
+                    <h3>Connect To A<br/> SamsiMetric Server</h3>
+                    <p>Enter The Web Address Of The Server To Connect To</p>
+                </div>
+                <div className="bottomLogin">
+                    <NativeButton disabled={true} onPress={null}>Continue</NativeButton>
+                </div>
+
+            </div>
+        </>
+    )
+}
+
 
 async function AskForAPIKey() {
     var keyPrompt = await prompt({

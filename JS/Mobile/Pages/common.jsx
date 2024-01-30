@@ -1,4 +1,6 @@
 
+var setExtRedraw;
+
 RunOnLoad("./JS/Mobile/Pages/common.jsx", async () => {
 
     if (devMode) {
@@ -57,15 +59,22 @@ RunOnLoad("./JS/Mobile/Pages/common.jsx", async () => {
     }
 });
 
+function ReloadNativeComponents() {
+    window.ReactNativeWebView.postMessage(JSON.stringify({
+        RunOnGlobal: "setComponentQueue",
+        Param1: JSON.stringify(NativeComponentQueue)
+    }));
+    NativeComponentQueue = [];
+}
+
 function App() {
+
+    var [Redraw, setRedraw] = React.useState("");
+    setExtRedraw = setRedraw;
 
     //Render Native Components
     React.useEffect(() => {
-        window.ReactNativeWebView.postMessage(JSON.stringify({
-            RunOnGlobal: "setComponentQueue",
-            Param1: JSON.stringify(NativeComponentQueue)
-        }));
-        NativeComponentQueue = [];
+        ReloadNativeComponents();
     }, []);
 
     return (

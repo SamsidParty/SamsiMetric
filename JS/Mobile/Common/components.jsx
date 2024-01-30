@@ -9,6 +9,8 @@ function NativeButton(props) {
 
     var [componentID, setComponentID] = React.useState(UUID());
 
+    
+
     React.useEffect(() => {
         if (divRef.current) {
             NativeComponentQueue.push({
@@ -19,10 +21,19 @@ function NativeButton(props) {
                 top: divRef.current.getBoundingClientRect().top,
                 left: divRef.current.getBoundingClientRect().left,
                 background: props.background || false,
+                disabled: props.disabled || false,
                 text: props.children.toString(),
             });
+            setTimeout(() => {
+                if (NativeComponentQueue.length > 0) {
+                    ReloadNativeComponents();
+                }
+            }, 0);
+
         }
     }, []);
+
+    window.returnQueue[componentID] = props.onPress || console.log;
 
     return (
         <div ref={divRef} className="nativeButton" style={{ width: width, height: height }}>

@@ -1,0 +1,25 @@
+.pageOut {
+    animation: pageOut 300ms linear 0ms 1 forwards;
+}
+
+.pageIn {
+    animation: pageIn 300ms linear 0ms 1 forwards;
+}
+
+@keyframes pageOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes pageIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

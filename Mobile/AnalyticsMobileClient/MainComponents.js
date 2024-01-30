@@ -71,7 +71,7 @@ function KeyIcon() {
     });
 
     return (
-        <TouchableOpacity onPress={Global.webView.reload} style={style.container}>
+        <TouchableOpacity onPress={() => Global.webView.reload()} style={style.container}>
             {
                 //Show Either A Loading Icon Or A Key Icon (Provided By Server)
                 Global.loaderCount > 0 ?
