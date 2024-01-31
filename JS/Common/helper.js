@@ -228,7 +228,7 @@ function FillChart(metric, DataObject, options) {
             names.push(dep.name);
             values.push(parseFloat(value));
             icons.push(dep.icon);
-            if (colors.length >= 5) {
+            if (colors.length >= 5 && !options.rawColor) {
                 //TODO: Make A Better Color Generator
                 var randomByte = () => Math.floor(Math.random() * 254);
                 colors.push(`rgb(${randomByte()}, ${randomByte()}, ${randomByte()})`);
