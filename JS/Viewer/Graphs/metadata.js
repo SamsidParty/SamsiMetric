@@ -38,6 +38,14 @@ var GraphTypes = [
         ]
     },
     {
+        "name": "table_0",
+        "for": ["group"],
+        "size": ["csLongDouble"],
+        "render": () => Graphtable_0,
+        "settingsui": (props) => graphsettings_standard(props),
+        "settings": []
+    },
+    {
         "name": "pie_0",
         "for": ["group"],
         "size": ["csMedLong"],

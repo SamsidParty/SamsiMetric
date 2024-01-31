@@ -1,0 +1,8 @@
+.csLongDouble.graphTable0 .nextui-table-container {
+    width: 100%;
+    height: 100%;
+}
+
+.csLongDouble.graphTable0 th {
+    background-color: var(--col-tablehead) !important;
+}
