@@ -115,6 +115,7 @@ export function MainView()
                 ref={(ref) => (Global.webView = ref)}
                 style={style.web}
                 onMessage={OnWebMessage}
+                Tim
                 source={GetCurrentProfile().page}
                 webviewDebuggingEnabled={true}
                 allowFileAccess={true}
@@ -158,5 +159,5 @@ async function OnWebMessage(e) {
 
 function OnWebStateChange(state)
 {
-    
+
 }

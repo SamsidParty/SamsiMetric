@@ -63,7 +63,7 @@ function LoginInputServerStage(loginChangeStage) {
             <div className={UUID() + " loginScreen pageIn mobileLoginInputServerScreen"}>
                 <div className="topLogin">
                     <h4 className="largeIcon">{ isApple ? "\udbc2\udeac" : "\ueb1f" }</h4>
-                    <h3>Connect To A<br/> SamsiMetric Server</h3>
+                    <h3>Let's Get Setup</h3>
                     <p>Enter The Web Address Of The Server To Connect To</p>
                 </div>
                 <div className="bottomLogin">
