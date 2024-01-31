@@ -20,6 +20,15 @@ function Graphtable_0(props)
     var colors = chartFill[2];
     var percents = chartFill[4];
 
+    //Return Empty Graph Until Country List Is Available
+    if (countryMode && !window.listOfCountries) {
+        return (
+            <div style={props.style} className={"layoutCard graphTable0 " + props.cardSize}>
+                <GraphCommon {...props} />
+            </div>
+        )
+    }
+
     return (
         <div style={props.style} className={"layoutCard graphTable0 " + props.cardSize}>
             <GraphCommon {...props} />
@@ -40,13 +49,13 @@ function Graphtable_0(props)
                                     return metric.dependencies.map((l_dep) =>
                                     {
                                         var dep = ArrayValue(CurrentProject(DataObject).metrics, "id", l_dep);
-                                        return (<Table.Column key={l_dep}>{dep.name.toUpperCase()}</Table.Column>);
+                                        columns.push(<Table.Column key={UUID()}>{dep.name.toUpperCase()}</Table.Column>);
                                     });
                                 }
                                 else if (countryMode)
                                 {
-                                    columns.push(<Table.Column key={UUID()}>{metric.unit?.toUpperCase()}</Table.Column>);
-                                    columns.push(<Table.Column key={UUID()}>% OF {metric.unit?.toUpperCase()}</Table.Column>);
+                                    columns.push(<Table.Column key={UUID()}>{(metric.unit || "VALUE").toUpperCase()}</Table.Column>);
+                                    columns.push(<Table.Column key={UUID()}>% OF {(metric.unit || "VALUE").toUpperCase()}</Table.Column>);
                                 }
                                 else
                                 {
@@ -58,22 +67,52 @@ function Graphtable_0(props)
                     }
                 </Table.Header>
                 <Table.Body>
-                    {
-                        names.map((l_name, l_index) =>
+                {
+                    (() =>
                         {
-                            return (
-                                <Table.Row key={l_index}>
-                                    <Table.Cell>
-                                        <div className="metricIcon" style={{ backgroundColor: colors[l_index] }}>
-                                            <CachedIcon src={metric.icon} />
-                                        </div>
-                                    </Table.Cell>
-                                    <Table.Cell>{l_name}</Table.Cell>
-                                    <Table.Cell>{values[l_index]}</Table.Cell>
-                                    <Table.Cell>{percents[l_index]}%</Table.Cell>
-                                </Table.Row>
-                            )
-                        })
+                                if (false && multiCountryMode) // Not Implemented Yet
+                                {
+                                    return metric.dependencies.map((l_dep) =>
+                                    {
+                                        var dep = ArrayValue(CurrentProject(DataObject).metrics, "id", l_dep);
+                                        columns.push(<Table.Column key={UUID()}>{dep.name.toUpperCase()}</Table.Column>);
+                                    });
+                                }
+                                else if (countryMode)
+                                {
+                                    return window.listOfCountries.map((l_country, l_index) =>
+                                    {
+                                        return (
+                                            <Table.Row key={l_index}>
+                                                <Table.Cell>
+                                                    <Flag code={l_country.alpha2} size="L" hasBorder={true} ></Flag>   
+                                                </Table.Cell>
+                                                <Table.Cell>{l_country.name}</Table.Cell>
+                                                <Table.Cell>{l_country.alpha2}</Table.Cell>
+                                                <Table.Cell>{l_country.alpha3}</Table.Cell>
+                                            </Table.Row>
+                                        )
+                                    })
+                                }
+                                else
+                                {
+                                    return names.map((l_name, l_index) =>
+                                    {
+                                        return (
+                                            <Table.Row key={l_index}>
+                                                <Table.Cell>
+                                                    <div className="metricIcon" style={{ backgroundColor: colors[l_index] }}>
+                                                        <CachedIcon src={metric.icon} />
+                                                    </div>
+                                                </Table.Cell>
+                                                <Table.Cell>{l_name}</Table.Cell>
+                                                <Table.Cell>{values[l_index]}</Table.Cell>
+                                                <Table.Cell>{percents[l_index]}%</Table.Cell>
+                                            </Table.Row>
+                                        )
+                                    })
+                                }
+                        })()
                     }
                 </Table.Body>
             </Table>

@@ -43,7 +43,10 @@ var GraphTypes = [
         "size": ["csLongDouble"],
         "render": () => Graphtable_0,
         "settingsui": (props) => graphsettings_standard(props),
-        "settings": []
+        "settings": [],
+        "dependencies": [
+            "./JS/ThirdParty/countries.js" // Only Needed For Country Table But No Harm In Loading It Anyways
+        ]
     },
     {
         "name": "pie_0",
