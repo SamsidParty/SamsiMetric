@@ -244,7 +244,7 @@ function FillChart(metric, DataObject, options) {
     values.forEach((l_val) => totalValue += l_val);
 
     percents = values.map((l_val) => {
-        return Math.round((l_val / totalValue) * 100);
+        return ((l_val / totalValue) * 100).toFixed(2);
     });
 
     return [values, names, colors, icons, percents]

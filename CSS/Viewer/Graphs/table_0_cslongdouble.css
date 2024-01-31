@@ -5,4 +5,5 @@
 
 .csLongDouble.graphTable0 th {
     background-color: var(--col-tablehead) !important;
+    color: white !important;
 }
