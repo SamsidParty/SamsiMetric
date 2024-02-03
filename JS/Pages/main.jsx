@@ -17,6 +17,7 @@ var dataStatus = "success";
 async function PageInit() {
     await LoadDependency("./JS/ThirdParty/autotextsize.js");
     await LoadDependency("./JS/Viewer/sidebar.jsx");
+    await LoadDependency("./JS/Common/errorhandler.jsx");
 
     if (localStorage.apikey_perms == "admin") {
         await LoadDependency("./JS/Admin/keymanager.jsx");

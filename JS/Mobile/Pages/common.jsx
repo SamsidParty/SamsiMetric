@@ -11,6 +11,7 @@ RunOnLoad("./JS/Mobile/Pages/common.jsx", async () => {
     }
 
     await LoadDependency("./JS/Mobile/Common/components.jsx");
+    await LoadDependency("./JS/Common/errorhandler.jsx");
 
     if (isApple) {
         await LoadDependency("./JS/Mobile/iOS/themeloader.js");

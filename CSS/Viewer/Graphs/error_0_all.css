@@ -1,0 +1,10 @@
+.graphError0 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.graphError0 .ti-alert-triangle {
+    font-size: 35px;
+    color: var(--nextui-colors-error);
+}   
