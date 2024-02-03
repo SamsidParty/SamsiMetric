@@ -55,6 +55,12 @@ var GraphTypes = [
                     "Alphabetical - A To Z",
                     "Alphabetical - Z To A"
                 ]
+            },
+            {
+                "type": "bool",
+                "displayname": "Hide Empty Rows",
+                "name": "hidenullrows",
+                "default": false
             }
         ],
         "dependencies": [

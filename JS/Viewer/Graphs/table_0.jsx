@@ -132,7 +132,10 @@ function Graphtable_0(props)
                                 return a[2] > b[2] ? -1 : 1;
                             }
 
-                        }).map((l_row) => l_row[0])
+                        }).map((l_row) => { 
+                            //Hide Rows With A Value Of Zero If hidenullrows Is True
+                            return props.graph.hidenullrows ? (l_row[1] == 0 ? null : l_row[0]) : l_row[0];
+                        })
                     }
                 </Table.Body>
             </Table>
