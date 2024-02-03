@@ -87,7 +87,7 @@ function Graphtable_0(props)
                                         var value = row["Country" + l_country.alpha2.toUpperCase()];
                                         var valuePercent = ConvertPercents(row, (l_key) => l_key.includes("Country"))["Country" + l_country.alpha2.toUpperCase()];
 
-                                        return (
+                                        return [(
                                             <Table.Row key={l_index}>
                                                 <Table.Cell>
                                                     <Flag code={l_country.alpha2} size="L" hasBorder={true} ></Flag>   
@@ -96,14 +96,14 @@ function Graphtable_0(props)
                                                 <Table.Cell>{value.toString()}</Table.Cell>
                                                 <Table.Cell>{valuePercent.toString()}%</Table.Cell>
                                             </Table.Row>
-                                        )
+                                        ), value]
                                     })
                                 }
                                 else
                                 {
                                     return names.map((l_name, l_index) =>
                                     {
-                                        return (
+                                        return [(
                                             <Table.Row key={l_index}>
                                                 <Table.Cell>
                                                     <div className="metricIcon" style={{ backgroundColor: colors[l_index] }}>
@@ -114,10 +114,10 @@ function Graphtable_0(props)
                                                 <Table.Cell>{values[l_index]}</Table.Cell>
                                                 <Table.Cell>{percents[l_index]}%</Table.Cell>
                                             </Table.Row>
-                                        )
+                                        ), values[l_index]]
                                     })
                                 }
-                        })()
+                        })().sort((a, b) => b[1] - a[1]).map((l_row) => l_row[0])
                     }
                 </Table.Body>
             </Table>
