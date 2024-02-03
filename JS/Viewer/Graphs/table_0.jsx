@@ -1,3 +1,26 @@
+Array.prototype.Graphtable_0_sorting = function(setting) {
+
+    if (setting == 0) {
+        return this;
+    }
+
+    return this.sort((a, b) => { 
+        //Sort Array
+        if (setting == 1) { // Value - High To Low
+            return b[1] - a[1];
+        }
+        else if (setting == 2) { // Value - Low To High
+            return a[1] - b[1];
+        }
+        else if (setting == 3) { // Alphabetical - A To Z
+            return a[2] < b[2] ? -1 : 1;
+        }
+        else { // Value - Alphabetical - Z To A
+            return a[2] > b[2] ? -1 : 1;
+        }
+    });
+}
+
 function Graphtable_0(props)
 {
 
@@ -46,21 +69,21 @@ function Graphtable_0(props)
                                 var columns = [];
                                 if (multiCountryMode)
                                 {
-                                    metric.dependencies.map((l_dep) =>
+                                    metric.dependencies.map((l_dep, l_index) =>
                                     {
                                         var dep = ArrayValue(CurrentProject(DataObject).metrics, "id", l_dep);
-                                        columns.push(<Table.Column key={UUID()}>{dep.name.toUpperCase()}</Table.Column>);
+                                        columns.push(<Table.Column key={l_index}>{dep.name.toUpperCase()}</Table.Column>);
                                     });
                                 }
                                 else if (countryMode)
                                 {
-                                    columns.push(<Table.Column key={UUID()}>{(metric.unit || "VALUE").toUpperCase()}</Table.Column>);
-                                    columns.push(<Table.Column key={UUID()}>% OF {(metric.unit || "VALUE").toUpperCase()}</Table.Column>);
+                                    columns.push(<Table.Column key={0}>{(metric.unit || "VALUE").toUpperCase()}</Table.Column>);
+                                    columns.push(<Table.Column key={1}>% OF {(metric.unit || "VALUE").toUpperCase()}</Table.Column>);
                                 }
                                 else
                                 {
-                                    columns.push(<Table.Column key={UUID()}>VALUE</Table.Column>);
-                                    columns.push(<Table.Column key={UUID()}>% OF VALUE</Table.Column>);
+                                    columns.push(<Table.Column key={0}>VALUE</Table.Column>);
+                                    columns.push(<Table.Column key={1}>% OF VALUE</Table.Column>);
                                 }
                                 return columns;
                         })()
@@ -87,13 +110,13 @@ function Graphtable_0(props)
                                                     (() =>
                                                     {
                                                         var columns = [];
-                                                        metric.dependencies.map((l_dep) =>
+                                                        metric.dependencies.map((l_dep, l_index) =>
                                                         {
                                                             var dep = ArrayValue(CurrentProject(DataObject).metrics, "id", l_dep);
                                                             var row = ArrayValue(DataObject.data.data_country, "MetricID", l_dep);
                                                             var value = row["Country" + l_country.alpha2.toUpperCase()];
                                                             totalValue += value;
-                                                            columns.push(<Table.Cell key={UUID()}>{value}</Table.Cell>);
+                                                            columns.push(<Table.Cell key={l_index}>{value}</Table.Cell>);
                                                         })
                                                         return columns;
                                                     })()
@@ -141,22 +164,7 @@ function Graphtable_0(props)
                                         ), values[l_index], l_name]
                                     });
                                 }
-                        })().sort((a, b) => { 
-                            //Sort Array
-                            if (props.graph.sorting == 0) { // Value - High To Low
-                                return b[1] - a[1];
-                            }
-                            else if (props.graph.sorting == 1) { // Value - Low To High
-                                return a[1] - b[1];
-                            }
-                            else if (props.graph.sorting == 2) { // Alphabetical - A To Z
-                                return a[2] < b[2] ? -1 : 1;
-                            }
-                            else { // Value - Alphabetical - Z To A
-                                return a[2] > b[2] ? -1 : 1;
-                            }
-
-                        }).map((l_row) => { 
+                        })().Graphtable_0_sorting(props.graph.sorting).map((l_row) => { 
                             //Hide Rows With A Value Of Zero If hidenullrows Is True
                             return props.graph.hidenullrows ? (l_row[1] == 0 ? null : l_row[0]) : l_row[0];
                         })

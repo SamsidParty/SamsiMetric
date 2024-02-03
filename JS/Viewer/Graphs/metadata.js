@@ -50,6 +50,7 @@ var GraphTypes = [
                 "name": "sorting",
                 "default": 0,
                 "options": [
+                    "None - Best Performance",
                     "Value - High To Low",
                     "Value - Low To High",
                     "Alphabetical - A To Z",
