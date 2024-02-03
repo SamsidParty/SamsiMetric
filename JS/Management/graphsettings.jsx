@@ -1,9 +1,11 @@
-function GraphEditor(props) {
+function GraphEditor(props)
+{
 
     var graphMeta = ArrayValue(window.GraphTypes, "name", props.graph.type);
     var GraphSettings = graphMeta.settingsui;
 
-    var apply = async (settings) => {
+    var apply = async (settings) =>
+    {
         props.layout.graphs[props.graphIndex] = Object.assign({}, settings);
 
         await SyncWorkspaceChanges();
@@ -27,7 +29,8 @@ function GraphEditor(props) {
     )
 }
 
-function graphsettings_standard(props) {
+function graphsettings_standard(props)
+{
 
     var [settings, setSettings] = React.useState(
         {
@@ -36,7 +39,8 @@ function graphsettings_standard(props) {
         }
     );
 
-    var apply = () => {
+    var apply = () =>
+    {
         props.onApply(settings);
     }
 
@@ -46,34 +50,45 @@ function graphsettings_standard(props) {
         <div className="graphSettings" key={settings.for}>
             <MetricGraph key={settings.for} {...props} graph={settings}></MetricGraph>
             <div className={"graphSettingsBox graphSettings" + props.cardSize}>
-                { <GraphSettingsCommon {...props} settings={settings} setSettings={setSettings} /> }
+                {<GraphSettingsCommon {...props} settings={settings} setSettings={setSettings} />}
                 <Button flat auto css={{ marginLeft: "auto" }} className="applyGraphSettings" onPress={apply}>Apply</Button>
             </div>
         </div>
     )
 }
 
-function graphsettings_common(props) {
+function graphsettings_common(props)
+{
 
-    var setSetting = (setting, value) => {
+    var setSetting = (setting, value) =>
+    {
         props.settings[setting.name] = value;
         props.setSettings(Object.assign({}, props.settings));
     }
 
-    var renderSetting = (setting) => {
+    var renderSetting = (setting) =>
+    {
 
-        if (useFirstRender()) {
-            setTimeout(() => {
+        if (useFirstRender())
+        {
+            setTimeout(() =>
+            {
                 setSetting(setting, props.graph[setting.name] || setting.default);
             }, 0);
         }
 
-        if (setting.type == "bool"){
+        if (setting.type == "bool")
+        {
             return renderSetting_bool(setting);
+        }
+        else if (setting.type == "select")
+        {
+            return renderSetting_select(setting);
         }
     }
 
-    var renderSetting_bool = (setting) => {
+    var renderSetting_bool = (setting) =>
+    {
         return (
             <div className="graphSetting" key={setting.name}>
                 <h3 style={{ margin: "0" }} className="boldText">{setting.displayname}</h3>
@@ -82,7 +97,37 @@ function graphsettings_common(props) {
         )
     }
 
-    return props.graphmeta.settings.map((l_setting) => {
+    var renderSetting_select = (setting) =>
+    {
+        var setSelected = (s) => {
+            setSetting(setting, parseInt(s.currentKey));
+        }
+
+        return (
+            <div className="graphSetting" key={setting.name}>
+                <h3 style={{ margin: "0" }} className="boldText">{setting.displayname}</h3>
+                <Dropdown>
+                    <Dropdown.Button flat color="secondary" css={{ tt: "capitalize" }}>
+                        {(props.settings[setting.name] != undefined) ? setting.options[props.settings[setting.name]] : setting.options[setting.default]}
+                    </Dropdown.Button>
+                    <Dropdown.Menu
+                        selectionMode="single"
+                        selectedKeys={[]}
+                        onSelectionChange={setSelected}
+                    >
+                        {
+                            setting.options.map((l_option, l_index) => {
+                                return (<Dropdown.Item key={l_index}>{l_option}</Dropdown.Item>)
+                            })
+                        }
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
+        )
+    }
+
+    return props.graphmeta.settings.map((l_setting) =>
+    {
         return renderSetting(l_setting);
     });
 }

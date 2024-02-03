@@ -43,7 +43,20 @@ var GraphTypes = [
         "size": ["csLongDouble"],
         "render": () => Graphtable_0,
         "settingsui": (props) => graphsettings_standard(props),
-        "settings": [],
+        "settings": [
+            {
+                "type": "select",
+                "displayname": "Sorting",
+                "name": "sorting",
+                "default": 0,
+                "options": [
+                    "Value - High To Low",
+                    "Value - Low To High",
+                    "Alphabetical - A To Z",
+                    "Alphabetical - Z To A"
+                ]
+            }
+        ],
         "dependencies": [
             "./JS/ThirdParty/countries.js" // Only Needed For Country Table But No Harm In Loading It Anyways
         ]

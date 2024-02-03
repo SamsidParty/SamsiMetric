@@ -96,7 +96,7 @@ function Graphtable_0(props)
                                                 <Table.Cell>{value.toString()}</Table.Cell>
                                                 <Table.Cell>{valuePercent.toString()}%</Table.Cell>
                                             </Table.Row>
-                                        ), value]
+                                        ), value, name]
                                     })
                                 }
                                 else
@@ -114,10 +114,25 @@ function Graphtable_0(props)
                                                 <Table.Cell>{values[l_index]}</Table.Cell>
                                                 <Table.Cell>{percents[l_index]}%</Table.Cell>
                                             </Table.Row>
-                                        ), values[l_index]]
+                                        ), values[l_index], l_name]
                                     })
                                 }
-                        })().sort((a, b) => b[1] - a[1]).map((l_row) => l_row[0])
+                        })().sort((a, b) => { 
+                            //Sort Array
+                            if (props.graph.sorting == 0) { // Value - High To Low
+                                return b[1] - a[1];
+                            }
+                            else if (props.graph.sorting == 1) { // Value - Low To High
+                                return a[1] - b[1];
+                            }
+                            else if (props.graph.sorting == 2) { // Alphabetical - A To Z
+                                return a[2] < b[2] ? -1 : 1;
+                            }
+                            else { // Value - Alphabetical - Z To A
+                                return a[2] > b[2] ? -1 : 1;
+                            }
+
+                        }).map((l_row) => l_row[0])
                     }
                 </Table.Body>
             </Table>
