@@ -43,7 +43,7 @@ function GraphSelect(props) {
                     </div>
                 </Modal.Body>
             </Modal>
-            <Modal width="900px" closeButton open={p2IsOpen} onClose={() => setp2IsOpen(false)}>
+            <Modal width="1200px" closeButton open={p2IsOpen} onClose={() => setp2IsOpen(false)}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>
                         Graphs For "{selectedMetric?.name}"

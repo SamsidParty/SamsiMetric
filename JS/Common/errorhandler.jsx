@@ -18,7 +18,7 @@ class MetricErrorBoundary extends React.Component
         if (error)
         {
             return (
-                <div className={"layoutCard graphError0 " + this.props.cardSize}>
+                <div style={this.props.style} className={"layoutCard graphError0 " + this.props.cardSize}>
                     <GraphCommon {...this.props} />
                     <i className="ti ti-alert-triangle"></i>
                 </div>

@@ -13,7 +13,7 @@ function GraphEditor(props)
     }
 
     return (
-        <Modal width="900px" closeButton open={props.isOpen} onClose={() => props.setIsOpen(false)}>
+        <Modal width="1200px" closeButton open={props.isOpen} onClose={() => props.setIsOpen(false)}>
             <Modal.Header>
                 <Text b id="modal-title" size={20}>
                     Edit Graph Settings
