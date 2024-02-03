@@ -1,5 +1,8 @@
 <?php
 
+require_once("./PHP/sql.php");
+$responseCurrentKey = $currentKey;
+
 if ($virtualAPI["server"]['REQUEST_METHOD'] == 'PATCH') {
     //Replace The Keys File (Admin Only)
 
@@ -15,7 +18,24 @@ if ($virtualAPI["server"]['REQUEST_METHOD'] == 'PATCH') {
         )
     );
 }
+else if ($virtualAPI["server"]['REQUEST_METHOD'] == 'POST') {
+    //Create New Session
+    $token = "Bearer " . bin2hex(random_bytes(16));
+    DB::query("INSERT INTO sessions (Token, KeyID, Identity) VALUES (%s, %s, %s)", $token, $currentKey["id"], $virtualAPI["server"]["REMOTE_ADDR"]);
+
+    $responseCurrentKey["value"] = $token;
+
+    //Return Info On Current Key
+    $response = array(
+        array(
+            "type" => "key_info",
+            "key_info" => $responseCurrentKey
+        )
+    );
+}
 else {
+
+
     if (array_key_exists("all", $params) && $params["all"] == "true") {
         //Return Info On ALL Keys (Admin Only)
         AdminOnly();
@@ -32,7 +52,7 @@ else {
         $response = array(
             array(
                 "type" => "key_info",
-                "key_info" => $currentKey
+                "key_info" => $responseCurrentKey
             )
         );
     }

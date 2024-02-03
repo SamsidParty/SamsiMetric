@@ -26,6 +26,7 @@ function LoginModal()
         };
 
         var response = await fetch(Backend, {
+            method: "POST",
             headers: DefaultHeaders({ "X-Params": JSON.stringify(params), "X-API-Key": message || preloadKey })
         })
         var json = await response.json();

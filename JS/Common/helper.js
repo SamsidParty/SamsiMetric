@@ -40,7 +40,11 @@ function LoginWithKeyInfo(keyInfo, key)
     {
         localStorage.setItem("apikey_" + info, value);
     }
-    localStorage.setItem("apikey_value", key);
+
+    //Prefer Session Token Over Raw Key For Security
+    if (!keyInfo.value.includes("Bearer")) {
+        localStorage.setItem("apikey_value", key);
+    }
 }
 
 //It's Simpler In SQL Terms
