@@ -44,9 +44,9 @@ function Graphtable_0(props)
                         (() =>
                         {
                                 var columns = [];
-                                if (false && multiCountryMode) // Not Implemented Yet
+                                if (multiCountryMode)
                                 {
-                                    return metric.dependencies.map((l_dep) =>
+                                    metric.dependencies.map((l_dep) =>
                                     {
                                         var dep = ArrayValue(CurrentProject(DataObject).metrics, "id", l_dep);
                                         columns.push(<Table.Column key={UUID()}>{dep.name.toUpperCase()}</Table.Column>);
@@ -70,13 +70,37 @@ function Graphtable_0(props)
                 {
                     (() =>
                         {
-                                if (false && multiCountryMode) // Not Implemented Yet
+                                if (multiCountryMode)
                                 {
-                                    return metric.dependencies.map((l_dep) =>
+                                    return window.listOfCountries.map((l_country, l_index) =>
                                     {
-                                        var dep = ArrayValue(CurrentProject(DataObject).metrics, "id", l_dep);
-                                        columns.push(<Table.Column key={UUID()}>{dep.name.toUpperCase()}</Table.Column>);
-                                    });
+                                        var name = l_country.name;
+                                        var totalValue = 0;
+
+                                        return [(
+                                            <Table.Row key={l_index}>
+                                                <Table.Cell>
+                                                    <Flag code={l_country.alpha2} size="L" hasBorder={true} ></Flag>   
+                                                </Table.Cell>
+                                                <Table.Cell>{name}</Table.Cell>
+                                                {
+                                                    (() =>
+                                                    {
+                                                        var columns = [];
+                                                        metric.dependencies.map((l_dep) =>
+                                                        {
+                                                            var dep = ArrayValue(CurrentProject(DataObject).metrics, "id", l_dep);
+                                                            var row = ArrayValue(DataObject.data.data_country, "MetricID", l_dep);
+                                                            var value = row["Country" + l_country.alpha2.toUpperCase()];
+                                                            totalValue += value;
+                                                            columns.push(<Table.Cell key={UUID()}>{value}</Table.Cell>);
+                                                        })
+                                                        return columns;
+                                                    })()
+                                                }
+                                            </Table.Row>
+                                        ), totalValue, name]
+                                    })
                                 }
                                 else if (countryMode)
                                 {
@@ -97,7 +121,7 @@ function Graphtable_0(props)
                                                 <Table.Cell>{valuePercent.toString()}%</Table.Cell>
                                             </Table.Row>
                                         ), value, name]
-                                    })
+                                    });
                                 }
                                 else
                                 {
@@ -115,7 +139,7 @@ function Graphtable_0(props)
                                                 <Table.Cell>{percents[l_index]}%</Table.Cell>
                                             </Table.Row>
                                         ), values[l_index], l_name]
-                                    })
+                                    });
                                 }
                         })().sort((a, b) => { 
                             //Sort Array
