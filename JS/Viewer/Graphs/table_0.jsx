@@ -82,14 +82,19 @@ function Graphtable_0(props)
                                 {
                                     return window.listOfCountries.map((l_country, l_index) =>
                                     {
+                                        var name = l_country.name;
+                                        var row = ArrayValue(DataObject.data.data_country, "MetricID", metric.id);
+                                        var value = row["Country" + l_country.alpha2.toUpperCase()];
+                                        var valuePercent = ConvertPercents(row, (l_key) => l_key.includes("Country"))["Country" + l_country.alpha2.toUpperCase()];
+
                                         return (
                                             <Table.Row key={l_index}>
                                                 <Table.Cell>
                                                     <Flag code={l_country.alpha2} size="L" hasBorder={true} ></Flag>   
                                                 </Table.Cell>
-                                                <Table.Cell>{l_country.name}</Table.Cell>
-                                                <Table.Cell>{l_country.alpha2}</Table.Cell>
-                                                <Table.Cell>{l_country.alpha3}</Table.Cell>
+                                                <Table.Cell>{name}</Table.Cell>
+                                                <Table.Cell>{value.toString()}</Table.Cell>
+                                                <Table.Cell>{valuePercent.toString()}%</Table.Cell>
                                             </Table.Row>
                                         )
                                     })

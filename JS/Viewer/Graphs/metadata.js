@@ -39,7 +39,7 @@ var GraphTypes = [
     },
     {
         "name": "table_0",
-        "for": ["group"],
+        "for": ["group", "country"],
         "size": ["csLongDouble"],
         "render": () => Graphtable_0,
         "settingsui": (props) => graphsettings_standard(props),

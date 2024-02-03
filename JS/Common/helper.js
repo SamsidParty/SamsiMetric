@@ -240,14 +240,39 @@ function FillChart(metric, DataObject, options) {
     });
 
     //Convert Values To Percentages
-    var totalValue = 0;
-    values.forEach((l_val) => totalValue += l_val);
-
-    percents = values.map((l_val) => {
-        return ((l_val / totalValue) * 100).toFixed(2);
-    });
+    percents = ConvertPercents(values);
 
     return [values, names, colors, icons, percents]
+}
+
+//Converts An Array Of Numbers Into An Array Of Percents
+function ConvertPercents(values, filter) {
+
+    if (!Array.isArray(values)) {
+        var totalValue = 0;
+        var percentedObj = {};
+        Object.keys(values).forEach((l_key) => { 
+            if (parseFloat(values[l_key]) != NaN && (!filter || filter(l_key))) {
+                totalValue += parseFloat(values[l_key]);
+            }
+        });
+        Object.keys(values).forEach((l_key) => { 
+            if (parseFloat(values[l_key]) != NaN && (!filter || filter(l_key))) {
+                percentedObj[l_key] = ((parseFloat(values[l_key]) / totalValue) * 100).toFixed(2);
+            }
+            else {
+                percentedObj[l_key] = values[l_key];
+            }
+        });
+
+        return percentedObj;
+    }
+
+    var totalValue = 0;
+    values.forEach((l_val) => totalValue += l_val);
+    return values.map((l_val) => {
+        return ((l_val / totalValue) * 100).toFixed(2);
+    });
 }
 
 async function WaitUntil(cond) {
