@@ -112,7 +112,6 @@ function Graphtable_0(props)
                                                         var columns = [];
                                                         metric.dependencies.map((l_dep, l_index) =>
                                                         {
-                                                            var dep = ArrayValue(CurrentProject(DataObject).metrics, "id", l_dep);
                                                             var row = ArrayValue(DataObject.data.data_country, "MetricID", l_dep);
                                                             var value = row["Country" + l_country.alpha2.toUpperCase()];
                                                             totalValue += value;

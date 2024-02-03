@@ -61,7 +61,7 @@ var GraphTypes = [
                 "type": "bool",
                 "displayname": "Hide Empty Rows",
                 "name": "hidenullrows",
-                "default": false
+                "default": true
             }
         ],
         "dependencies": [
