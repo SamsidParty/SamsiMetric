@@ -3,6 +3,7 @@ AutoLoadThisFile();
 
 RunOnLoad("./JS/Viewer/Graphs/common.jsx", async () =>
 {
+    await LoadDependency("./JS/Viewer/snapshot.jsx");
     await LoadDependency("./JS/Viewer/Graphs/layouts.jsx");
     await LoadDependency("./JS/Viewer/Graphs/metadata.js");
 

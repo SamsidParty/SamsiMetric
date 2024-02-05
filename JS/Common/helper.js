@@ -125,6 +125,9 @@ async function RefreshData(ignoreSchema)
     }
     extDataObject["data"] = json["data"];
 
+    //Load Snapshots From Last 24 Hours
+    LoadSnapshotRange(Math.floor(Date.now() / 1000) - 86400, Math.floor(Date.now() / 1000));
+
     dataStatus = "success";
     setExtDataObject(Object.assign({}, extDataObject));
 }
