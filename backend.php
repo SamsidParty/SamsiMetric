@@ -12,6 +12,12 @@ require_once("./PHP/sql.php");
 require_once("./PHP/config.php");
 require_once("./PHP/auth.php");
 
+if (!file_exists("./.prod")) {
+    //Enable Error Reporting
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+}
 
 if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel")
 {

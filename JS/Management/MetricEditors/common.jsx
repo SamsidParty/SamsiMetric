@@ -3,7 +3,8 @@ var AllMetricEditors = [
     "average",
     "common_num",
     "country",
-    "group"
+    "group",
+    "snapshot"
 ]
 
 RunOnLoad("./JS/Management/MetricEditors/common.jsx", async () => {

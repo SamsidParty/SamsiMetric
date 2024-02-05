@@ -22,12 +22,14 @@ var SampleMetric = () =>
 var MetricNames = {
     "total": "Total Number",
     "average": "Average Number",
-    "country": "Numbers By Country"
+    "country": "Numbers By Country",
+    "snapshot": "Snapshot"
 }
 var MetricTypeDetails = {
     "total": "The Sum Of Multiple Data Submissions",
     "average": "The Average Of Multiple Data Submissions",
-    "country": "Total Numbers Arranged By Country"
+    "country": "Total Numbers Arranged By Country",
+    "snapshot": "Capture Data Over Time"
 }
 var MetricTypes = Object.fromEntries(
     Object
