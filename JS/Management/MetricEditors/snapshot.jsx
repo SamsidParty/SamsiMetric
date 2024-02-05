@@ -1,4 +1,6 @@
 var SnappableMetrics = [
+    "total",
+    "average",
     "group"
 ]
 
@@ -25,10 +27,32 @@ function MetricEdit_snapshot(props)
         setExtDataObject(Object.assign({}, DataObject));
     }
 
+    var selectRounding = (e) => {
+        props.metric.rounding = e.currentKey;
+        setExtDataObject(Object.assign({}, DataObject));
+    }
+
     return (
         <>
             <MetricEdit_common metric={props.metric} exampleName="eg: Operating System" ></MetricEdit_common>
-            <p style={{ fontSize: "0.875rem", marginBottom: "6px", marginLeft: "4px", letterSpacing: "initial" }} className="nextui-input-block-label">SNAPSHOT TARGET</p>
+            <p style={{ fontSize: "0.875rem", marginBottom: "6px", marginLeft: "4px", letterSpacing: "initial" }} className="nextui-input-block-label">SNAPSHOT FREQUENCY</p>
+
+            <Dropdown>
+                <Dropdown.Button flat color="secondary" css={{ tt: "capitalize" }}>
+                    {props.metric.rounding}
+                </Dropdown.Button>
+                <Dropdown.Menu
+                    selectionMode="single"
+                    onSelectionChange={selectRounding}
+                >
+                    <Dropdown.Item key={0}>Every Minute</Dropdown.Item>
+                    <Dropdown.Item key={1}>Every 10 Minutes</Dropdown.Item>
+                    <Dropdown.Item key={2}>Every Hour</Dropdown.Item>
+                    <Dropdown.Item key={3}>Every Day</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+
+            <p style={{ fontSize: "0.875rem", marginBottom: "6px", marginLeft: "4px", letterSpacing: "initial" }} className="nextui-input-block-label">SNAPSHOT TARGETS</p>
             <Dropdown>
                 <Dropdown.Button flat color="secondary" css={{ tt: "capitalize" }}>
                     {selected.length} Submetrics Added
