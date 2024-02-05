@@ -32,6 +32,13 @@ function MetricEdit_snapshot(props)
         setExtDataObject(Object.assign({}, DataObject));
     }
 
+    var snapshotFrequencies = [
+        "Every Minute",
+        "Every 10 Minutes",
+        "Every Hour",
+        "Every Day"
+    ]
+
     return (
         <>
             <MetricEdit_common metric={props.metric} exampleName="eg: Operating System" ></MetricEdit_common>
@@ -39,7 +46,7 @@ function MetricEdit_snapshot(props)
 
             <Dropdown>
                 <Dropdown.Button flat color="secondary" css={{ tt: "capitalize" }}>
-                    {props.metric.rounding}
+                    {snapshotFrequencies[props.metric.rounding]}
                 </Dropdown.Button>
                 <Dropdown.Menu
                     selectionMode="single"
