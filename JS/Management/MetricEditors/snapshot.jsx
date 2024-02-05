@@ -28,7 +28,7 @@ function MetricEdit_snapshot(props)
     return (
         <>
             <MetricEdit_common metric={props.metric} exampleName="eg: Operating System" ></MetricEdit_common>
-            <p style={{ fontSize: "0.875rem", marginBottom: "6px", marginLeft: "4px", letterSpacing: "initial" }} className="nextui-input-block-label">Comparison</p>
+            <p style={{ fontSize: "0.875rem", marginBottom: "6px", marginLeft: "4px", letterSpacing: "initial" }} className="nextui-input-block-label">SNAPSHOT TARGET</p>
             <Dropdown>
                 <Dropdown.Button flat color="secondary" css={{ tt: "capitalize" }}>
                     {selected.length} Submetrics Added
