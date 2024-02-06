@@ -1,5 +1,6 @@
 var LoadedSnapshotRanges = [];
 var LoadedSnapshots = [];
+var SnapshotsFor = {};
 
 async function LoadSnapshotRange(from, to) {
     //Sync Snapshot Range From Server
@@ -24,7 +25,28 @@ async function LoadSnapshotRange(from, to) {
         if (LoadedSnapshots[identity] == undefined) {
             LoadedSnapshots[identity] = l_snap;
         }
+        if (SnapshotsFor[l_snap.MetricID] == undefined) {
+            SnapshotsFor[l_snap.MetricID] = {};
+        }
+        SnapshotsFor[l_snap.MetricID][l_snap.SnapTime] = l_snap;
     });
     LoadedSnapshotRanges.push([from, to]);
+}
 
+function SnapshotAt(metric, time) {
+    if (SnapshotsFor[metric] == undefined) {
+        return null;
+    }
+
+    var closestSnapshot = {
+        SnapTime: -Infinity
+    };
+    Object.keys(SnapshotsFor[metric]).forEach((l_key) => {
+        var l_snap = SnapshotsFor[metric][l_key];
+        if (Math.abs(l_snap.SnapTime - time) < Math.abs(closestSnapshot.SnapTime - time)) {
+            closestSnapshot = l_snap;
+        }
+    });
+
+    return closestSnapshot;
 }

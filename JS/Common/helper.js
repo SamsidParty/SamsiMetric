@@ -218,7 +218,7 @@ function ValueFromNumberMetric(metric, DataObject, extraParam) {
 function FillChart(metric, DataObject, options) {
 
     var depList = metric.dependencies;
-    if (metric.type == "snapshot") {
+    if (options?.snapshotMode) {
         depList = ShakeDependencyTree(metric, DataObject);
     }
 
