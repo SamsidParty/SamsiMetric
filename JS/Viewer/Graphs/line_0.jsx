@@ -10,11 +10,20 @@ function Graphline_0(props)
     return (
         <div style={props.style} className={"layoutCard graphLine0 " + props.cardSize}>
             <GraphCommon {...props} />
-            {
-                window.ReactApexChart != undefined ?
-                    (<Graphline_0_Line {...props} />) :
-                    (<></>)
-            }
+            {(() => {
+                if (SnapshotAt(metric.id, Infinity) == null) {
+                    //No Snapshots Available
+                    return (<i className="ti ti-hourglass-empty"></i>);
+                }
+                else if (window.ReactApexChart == undefined) {
+                    //Still Loading
+                    return (<></>);
+                }
+                else {
+                    //Render The Graph
+                    return (<Graphline_0_Line {...props} />);
+                }
+            })()}
         </div>
     )
 }
@@ -36,23 +45,29 @@ function Graphline_0_Line(props)
     var unixSeconds = Math.floor(Date.now() / 1000);
     var detail = 24;
 
-    if (timeRange == 0) {
+    if (timeRange == 0)
+    {
         timeRangeUnix = [unixSeconds - 3600, unixSeconds];
     }
-    else if (timeRange == 1) {
+    else if (timeRange == 1)
+    {
         timeRangeUnix = [unixSeconds - 86400, unixSeconds];
     }
-    else if (timeRange == 2) {
+    else if (timeRange == 2)
+    {
         timeRangeUnix = [unixSeconds - 604800, unixSeconds];
     }
-    else if (timeRange == 3) {
+    else if (timeRange == 3)
+    {
         timeRangeUnix = [unixSeconds - 31536000, unixSeconds];
     }
 
     var [isDataLoaded, setIsDataLoaded] = React.useState(false);
 
-    setTimeout(async () => {
-        if (!isDataLoaded) {
+    setTimeout(async () =>
+    {
+        if (!isDataLoaded)
+        {
             await LoadSnapshotRange(timeRangeUnix[0], timeRangeUnix[1]);
             setIsDataLoaded(true);
         }
@@ -96,13 +111,17 @@ function Graphline_0_Line(props)
     }
 
     //Add Series Data To The Chart
-    names.forEach((l_name, l_index) => {
+    names.forEach((l_name, l_index) =>
+    {
         var values = [];
 
-        for (let i = 0; i < detail; i++) {
+        for (let i = 0; i < detail; i++)
+        {
             var timeOfSnap = Math.floor(timeRangeUnix[0] + ((Math.abs(timeRangeUnix[0] - timeRangeUnix[1]) / detail) * i));
             var snap = SnapshotAt(metric.id, timeOfSnap);
-            values.push(snap.SnapTime);
+            var stubDataObject = { data: {} };
+            stubDataObject.data[SnapshotTables[metric.type]] = JSON.parse(snap.SnapData);
+            values.push(ValueFromNumberMetric(metric, stubDataObject));
         }
 
         chartData.series.push({

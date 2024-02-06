@@ -2,6 +2,13 @@ var LoadedSnapshotRanges = [];
 var LoadedSnapshots = [];
 var SnapshotsFor = {};
 
+//The Names Of The Tables That Snapshots Are Taken From
+var SnapshotTables = {
+    total: "data_total",
+    average: "data_average",
+    country: "data_country"
+}
+
 async function LoadSnapshotRange(from, to) {
     //Sync Snapshot Range From Server
     var response = await fetch(Backend, {
