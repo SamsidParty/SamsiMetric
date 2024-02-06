@@ -6,12 +6,20 @@ function Graphline_0(props)
     var metrics = CurrentProject(DataObject)["metrics"];
     var metric = ArrayValue(metrics, "id", props.graph["for"]);
 
+    //Check If Self Or Any Dependencies Have Snaphots
+    var hasSnapshots = SnapshotAt(metric.id, Infinity) != null;
+    var tree = ShakeDependencyTree(metric, DataObject);
+    tree.forEach((l_dep) => {
+        if (SnapshotAt(l_dep, Infinity) != null) {
+            hasSnapshots = true;
+        }
+    });
 
     return (
         <div style={props.style} className={"layoutCard graphLine0 " + props.cardSize}>
             <GraphCommon {...props} />
             {(() => {
-                if (SnapshotAt(metric.id, Infinity) == null) {
+                if (!hasSnapshots) {
                     //No Snapshots Available
                     return (<i className="ti ti-hourglass-empty"></i>);
                 }
@@ -120,8 +128,11 @@ function Graphline_0_Line(props)
             var timeOfSnap = Math.floor(timeRangeUnix[0] + ((Math.abs(timeRangeUnix[0] - timeRangeUnix[1]) / detail) * i));
             var snap = SnapshotAt(metric.id, timeOfSnap);
             var stubDataObject = { data: {} };
-            stubDataObject.data[SnapshotTables[metric.type]] = JSON.parse(snap.SnapData);
-            values.push(ValueFromNumberMetric(metric, stubDataObject));
+
+            if (snap && snap.SnapData) {
+                stubDataObject.data[SnapshotTables[metric.type]] = JSON.parse(snap.SnapData);
+                values.push(ValueFromNumberMetric(metric, stubDataObject));
+            }
         }
 
         chartData.series.push({
