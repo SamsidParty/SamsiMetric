@@ -1,16 +1,4 @@
 
-//Register Tooltip
-var progressGraphTooltipTemplate = {
-    content: (param) => `${param[0]}: ${param[1]}`, // 0: Metric Name, 1: Metric Value
-    placement: "bottom"
-}
-if (window.tooltipTemplates) {
-    window.tooltipTemplates["progressgraph"] = progressGraphTooltipTemplate;
-}
-else {
-    RunOnLoad("./JS/Viewer/tooltip.jsx", async () => window.tooltipTemplates["progressgraph"] = progressGraphTooltipTemplate);
-}
-
 function Graphprogress_0(props) {
 
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
@@ -50,7 +38,7 @@ function Graphprogress_0(props) {
 
                             return (   
 
-                                <Tooltip key={`${props.graphNonce}_${l_index}_${l_name}`} ttid={`${props.graph["for"]}_${l_index}_ProgressGraph_${l_name}`} {...TTContent("progressgraph", [names[l_index], values[l_index]])}>
+                                <Tooltip key={`${props.graphNonce}_${l_index}_${l_name}`} ttid={`${props.graph["for"]}_${l_index}_ProgressGraph_${l_name}`} {...TTContent("graphmetric", [names[l_index], values[l_index]])}>
                                     <div
                                         id={l_index}
                                         className="progressFill" 

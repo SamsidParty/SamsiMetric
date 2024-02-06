@@ -156,7 +156,7 @@ function Graphmap_0_Map(props)
 
 
     var hoverCountry = (e) => {
-        window.lastTTText = `${getCountryInfo(e).name}: ${getCountryValue(e).toString()} ${metric.unit || ""}`;
+        window.lastTTText = tooltipTemplates["graphmetric"].content([getCountryInfo(e).name, getCountryValue(e).toString()]);
         window.lastTTKey = props.graphNonce;
         window.lastTTPlacement = "bottom";
     }

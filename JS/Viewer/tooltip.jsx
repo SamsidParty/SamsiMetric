@@ -7,6 +7,10 @@ var tooltipTemplates = {
     static: {
         content: (param) => param,
         placement: "bottom"
+    },
+    graphmetric: {
+        content: (param) => `${param[0]}: ${param[1].toLocaleString("en-US")}`,
+        placement: "bottom"
     }
 }
 

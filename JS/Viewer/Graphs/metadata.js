@@ -98,8 +98,7 @@ var GraphTypes = [
         "size": ["csMedLong", "csShortLong"],
         "render": () => Graphprogress_0,
         "settingsui": (props) => graphsettings_standard(props),
-        "settings": [
-        ]
+        "settings": []
     },
     {
         "name": "map_0",
