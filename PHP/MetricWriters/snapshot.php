@@ -56,15 +56,9 @@ foreach ($projects as $project) {
                 $timeDiff -= $time_day;
             }
 
-            //Take Snapshot
+            //Update Snapshot Lists
             if ($timeDiff > 0) {
-
-                AddSubmetrics($projects, $metric, $metricsToSnapshot);
-                $metricsToSnapshot = array_unique($metricsToSnapshot);
-                
-                foreach ($metricsToSnapshot as $metricToSnapshot) {
-                    TakeSnapshot(GetMetricFromID($projects, $metricToSnapshot));
-                }
+                AddSubmetrics($projects, $metric, $metricsToSnapshot);         
 
                 //Add To Snapshot History
                 DB::query("UPDATE snapshot_history SET LastSnap = %d WHERE MetricID = %s", time(), $metric["id"]);
@@ -73,6 +67,12 @@ foreach ($projects as $project) {
             $log .= $timeDiff . "\n";
         }
     }
+}
+
+//Take The Snapshots
+$metricsToSnapshot = array_unique($metricsToSnapshot); // No Need To Snapshot The Same Metric Multiple Times
+foreach ($metricsToSnapshot as $metricToSnapshot) {
+    TakeSnapshot(GetMetricFromID($projects, $metricToSnapshot));
 }
 
 function AddSubmetrics($projects, $metric, &$pushto) {
@@ -92,7 +92,5 @@ function TakeSnapshot($metric) {
     $dump = DumpMetric($metric);
     DB::query("INSERT INTO data_snapshot (MetricID, SnapTime, SnapData) VALUES (%s, %d, %s)", $metric["id"], time(), $dump);
 }
-
-file_put_contents("/tmp/testcron.txt", $log);
 
 ?>
