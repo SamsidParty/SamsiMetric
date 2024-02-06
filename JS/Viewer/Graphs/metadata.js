@@ -38,6 +38,17 @@ var GraphTypes = [
         ]
     },
     {
+        "name": "line_0",
+        "for": ["snapshot"],
+        "size": ["csMedLong"],
+        "render": () => Graphline_0,
+        "settingsui": (props) => graphsettings_standard(props),
+        "settings": [],
+        "dependencies": [
+            "./JS/ThirdParty/apexcharts.js"
+        ]
+    },
+    {
         "name": "table_0",
         "for": ["group", "country"],
         "size": ["csLongDouble"],

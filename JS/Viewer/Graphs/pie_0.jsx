@@ -116,8 +116,8 @@ function Graphpie_0_Pie(props) {
         options={chartData.options}
         series={chartData.series}
         className="graphChart"
-        key={props.isPreview ? UUID() : metric.id}
-        type={props.graph.hollow ? "donut" : "pie" /* Updates Every Time Only If We Are In Preview Mode*/}
+        key={props.isPreview ? UUID() : metric.id /* Updates Every Time Only If We Are In Preview Mode*/}
+        type={props.graph.hollow ? "donut" : "pie"}
         width={ScaleGraph(props.cardSize, true) * 115}
         height={ScaleGraph(props.cardSize, true) * 115}
         />

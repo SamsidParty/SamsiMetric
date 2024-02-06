@@ -217,6 +217,11 @@ function ValueFromNumberMetric(metric, DataObject, extraParam) {
 
 function FillChart(metric, DataObject, options) {
 
+    var depList = metric.dependencies;
+    if (metric.type == "snapshot") {
+        depList = ShakeDependencyTree(metric, DataObject);
+    }
+
     var metrics = CurrentProject(DataObject)["metrics"];
 
     var values = [];
@@ -225,17 +230,17 @@ function FillChart(metric, DataObject, options) {
     var icons = [];
     var percents = [];
 
-    metric["dependencies"].forEach((l_dependency) =>
+    depList.forEach((l_dep) =>
     {
-        var dep = ArrayValue(metrics, "id", l_dependency);
+        var dep = ArrayValue(metrics, "id", l_dep);
 
         if (dep.length != 0)
         {
-            var value = ValueFromNumberMetric(dep, DataObject)
+            var value = ValueFromNumberMetric(dep, DataObject);
             names.push(dep.name);
             values.push(parseFloat(value));
             icons.push(dep.icon);
-            if (colors.length >= 5 && !options.rawColor) {
+            if (colors.length >= 5 && !options?.rawColor) {
                 //TODO: Make A Better Color Generator
                 var randomByte = () => Math.floor(Math.random() * 254);
                 colors.push(`rgb(${randomByte()}, ${randomByte()}, ${randomByte()})`);
@@ -249,7 +254,28 @@ function FillChart(metric, DataObject, options) {
     //Convert Values To Percentages
     percents = ConvertPercents(values);
 
-    return [values, names, colors, icons, percents]
+    return [values, names, colors, icons, percents];
+}
+
+//Returns An Array Of IDs Of All The Dependencies Recursively With No Duplicates
+function ShakeDependencyTree(metric, DataObject) {
+
+    //There Is No Tree To Shake
+    if (!metric.dependencies || metric.dependencies.length == 0) {
+        return [metric.id];
+    }
+
+    var depList = [];
+    metric.dependencies.forEach((l_dep) => {
+        var dep = ArrayValue(CurrentProject(DataObject).metric, "id", l_dep);
+        if (dep.dependencies && dep.dependencies.length > 0) {
+            depList.concat(ShakeDependencyTree(dep, DataObject));
+        }
+        else {
+            depList.push(l_dep);
+        }
+    });
+    return depList.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
 }
 
 //Converts An Array Of Numbers Into An Array Of Percents
