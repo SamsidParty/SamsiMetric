@@ -57,3 +57,9 @@ function SnapshotAt(metric, time) {
 
     return closestSnapshot;
 }
+
+function ClearLoadedSnapshots() {
+    LoadedSnapshotRanges = [];
+    LoadedSnapshots = [];
+    SnapshotsFor = {};
+}

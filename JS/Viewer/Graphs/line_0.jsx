@@ -9,8 +9,10 @@ function Graphline_0(props)
     //Check If Self Or Any Dependencies Have Snaphots
     var hasSnapshots = SnapshotAt(metric.id, Infinity) != null;
     var tree = ShakeDependencyTree(metric, DataObject);
-    tree.forEach((l_dep) => {
-        if (SnapshotAt(l_dep, Infinity) != null) {
+    tree.forEach((l_dep) =>
+    {
+        if (SnapshotAt(l_dep, Infinity) != null)
+        {
             hasSnapshots = true;
         }
     });
@@ -18,16 +20,20 @@ function Graphline_0(props)
     return (
         <div style={props.style} className={"layoutCard graphLine0 " + props.cardSize}>
             <GraphCommon {...props} />
-            {(() => {
-                if (!hasSnapshots) {
+            {(() =>
+            {
+                if (!hasSnapshots)
+                {
                     //No Snapshots Available
                     return (<i className="ti ti-hourglass-empty"></i>);
                 }
-                else if (window.ReactApexChart == undefined) {
+                else if (window.ReactApexChart == undefined)
+                {
                     //Still Loading
                     return (<></>);
                 }
-                else {
+                else
+                {
                     //Render The Graph
                     return (<Graphline_0_Line {...props} />);
                 }
@@ -48,7 +54,7 @@ function Graphline_0_Line(props)
     //1: Past 24 Hours
     //2: Past Week
     //3: Past Year
-    var timeRange = props.graph.timeRange || 1;
+    var timeRange = props.graph.timeRange || 0;
     var timeRangeUnix = [0, 0];
     var unixSeconds = Math.floor(Date.now() / 1000);
     var detail = 24;
@@ -93,12 +99,15 @@ function Graphline_0_Line(props)
                 },
                 toolbar: {
                     show: false,
+                },
+                animations: {
+                    enabled: false
                 }
             },
             grid: {
                 show: false,
                 padding: {
-                    top: 15,
+                    top: 30,
                     right: 0,
                     bottom: 5,
                     left: 0
@@ -108,10 +117,22 @@ function Graphline_0_Line(props)
                 enabled: false
             },
             legend: {
-                show: false,
+                show: false
             },
             stroke: {
-                width: 4
+                width: 4,
+                curve: 'smooth'
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    inverseColors: false,
+                    opacityFrom: 0.5,
+                    opacityTo: 0,
+                    stops: [0, 90, 100],
+                    colors: colors
+                }
             },
             colors: colors
         },
@@ -125,13 +146,17 @@ function Graphline_0_Line(props)
 
         for (let i = 0; i < detail; i++)
         {
-            var timeOfSnap = Math.floor(timeRangeUnix[0] + ((Math.abs(timeRangeUnix[0] - timeRangeUnix[1]) / detail) * i));
+            var timeOfSnap = Math.ceil(timeRangeUnix[0] + ((Math.abs(timeRangeUnix[0] - timeRangeUnix[1]) / detail) * (i + 1)));
             var snap = SnapshotAt(metric.id, timeOfSnap);
             var stubDataObject = { data: {} };
 
-            if (snap && snap.SnapData) {
+            if (snap && snap.SnapData)
+            {
                 stubDataObject.data[SnapshotTables[metric.type]] = JSON.parse(snap.SnapData);
-                values.push(ValueFromNumberMetric(metric, stubDataObject));
+                values.push({
+                    x: UUID(),
+                    y: ValueFromNumberMetric(metric, stubDataObject)
+                });
             }
         }
 
@@ -147,7 +172,7 @@ function Graphline_0_Line(props)
             series={chartData.series}
             className="graphChart"
             key={props.isPreview ? UUID() : metric.id /* Updates Every Time Only If We Are In Preview Mode*/}
-            type={"line"}
+            type={"area"}
             width={310}
             height={140}
         />
