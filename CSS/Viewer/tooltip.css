@@ -23,3 +23,7 @@
     left: 0;
     top: 0;
 }
+
+.hideTooltips .apexcharts-tooltip, .hideTooltips .apexcharts-series-markers-wrap {
+    display: none !important;
+}
