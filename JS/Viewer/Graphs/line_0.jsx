@@ -53,7 +53,8 @@ function Graphline_0_Line(props)
     //0: Past Hour
     //1: Past 24 Hours
     //2: Past Week
-    //3: Past Year
+    //3: Past Month
+    //4: Past Year
     var timeRange = props.graph.timeRange || 0;
     var timeRangeUnix = [0, 0];
     var unixSeconds = Math.floor(Date.now() / 1000);
@@ -62,18 +63,27 @@ function Graphline_0_Line(props)
     if (timeRange == 0)
     {
         timeRangeUnix = [unixSeconds - 3600, unixSeconds];
+        detail = 30;
     }
     else if (timeRange == 1)
     {
         timeRangeUnix = [unixSeconds - 86400, unixSeconds];
+        detail = 24;
     }
     else if (timeRange == 2)
     {
         timeRangeUnix = [unixSeconds - 604800, unixSeconds];
+        detail = 28;
     }
     else if (timeRange == 3)
     {
+        timeRangeUnix = [unixSeconds - 2592000, unixSeconds];
+        detail = 30;
+    }
+    else if (timeRange == 4)
+    {
         timeRangeUnix = [unixSeconds - 31536000, unixSeconds];
+        detail = 365;
     }
 
     var [isDataLoaded, setIsDataLoaded] = React.useState(false);
@@ -89,6 +99,7 @@ function Graphline_0_Line(props)
 
 
     var names = chartFill[1];
+    var dates = [];
     var colors = chartFill[2];
 
     var chartData = {
@@ -153,10 +164,8 @@ function Graphline_0_Line(props)
             if (snap && snap.SnapData)
             {
                 stubDataObject.data[SnapshotTables[metric.type]] = JSON.parse(snap.SnapData);
-                values.push({
-                    x: UUID(),
-                    y: ValueFromNumberMetric(metric, stubDataObject)
-                });
+                values.push(ValueFromNumberMetric(metric, stubDataObject));
+                dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
             }
         }
 
