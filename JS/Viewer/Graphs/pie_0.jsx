@@ -59,7 +59,7 @@ function Graphpie_0_Pie(props) {
 
     var onStartHover = (e, c, hover) => {
         //Add Tooltip
-        window.lastTTText = tooltipTemplates["graphmetric"].content([metric.name, values[hover.dataPointIndex]]);
+        window.lastTTText = tooltipTemplates["graphmetric"].content([names[hover.dataPointIndex], values[hover.dataPointIndex]]);
         window.lastTTKey = props.graphNonce;
         window.lastTTPlacement = "bottom";
     }

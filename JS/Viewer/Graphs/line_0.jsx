@@ -124,6 +124,9 @@ function Graphline_0_Line(props)
                     left: 0
                 }
             },
+            tooltip: {
+                theme: document.body.classList.contains("dark") ? "dark" : "light"
+            },
             dataLabels: {
                 enabled: false
             },
