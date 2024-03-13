@@ -120,7 +120,7 @@ function Graphline_0_Line(props) {
             grid: {
                 show: false,
                 padding: {
-                    top: 30,
+                    top: 45,
                     right: 0,
                     bottom: 5,
                     left: 0
@@ -139,7 +139,7 @@ function Graphline_0_Line(props) {
                 show: false
             },
             stroke: {
-                width: 4,
+                width: 3,
                 curve: props.graph.lineSmoothing ? "monotoneCubic" : "straight",
                 lineCap: "round"
             },
@@ -171,18 +171,19 @@ function Graphline_0_Line(props) {
 
             if (snap && snap.SnapData) {
                 stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
+                var lastValue = realValues[realValues.length - 1];
+                var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
 
                 //Make Value The Difference From The Last
                 if (!props.graph.additive && values.length > 0) {
-                    var lastValue = realValues[realValues.length - 1];
-                    var diff = ValueFromNumberMetric(metricDatas[l_index], stubDataObject) - lastValue;
+                    var diff = value - lastValue;
                     values.push(diff);
                 }
                 else {
-                    values.push(ValueFromNumberMetric(metricDatas[l_index], stubDataObject));
+                    values.push(value);
                 }
 
-                realValues.push(ValueFromNumberMetric(metricDatas[l_index], stubDataObject));
+                realValues.push(value);
 
                 dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
             }
@@ -208,14 +209,15 @@ function Graphline_0_Line(props) {
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
+            <h3 className="metricName">{metric.name}</h3>
             <Chart
                 options={chartData.options}
                 series={chartData.series}
                 className="graphChart"
                 key={UUID() /* Updates Every Render */}
                 type={"area"}
-                width={310}
-                height={140}
+                width={props.cardSize == "csLongDouble" ? 640 : 310}
+                height={props.cardSize == "csLongDouble" ? 270 : 140}
             />
         </>
 

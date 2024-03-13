@@ -40,7 +40,7 @@ var GraphTypes = [
     {
         "name": "line_0",
         "for": ["snapshot", "total", "average", "country", "group"],
-        "size": ["csMedLong"],
+        "size": ["csMedLong", "csLongDouble"],
         "render": () => Graphline_0,
         "settingsui": (props) => graphsettings_standard(props),
         "settings": [
