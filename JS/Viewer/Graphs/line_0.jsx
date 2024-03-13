@@ -1,5 +1,4 @@
-function Graphline_0(props)
-{
+function Graphline_0(props) {
 
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
 
@@ -9,10 +8,8 @@ function Graphline_0(props)
     //Check If Self Or Any Dependencies Have Snaphots
     var hasSnapshots = SnapshotAt(metric.id, Infinity) != null;
     var tree = ShakeDependencyTree(metric, DataObject);
-    tree.forEach((l_dep) =>
-    {
-        if (SnapshotAt(l_dep, Infinity) != null)
-        {
+    tree.forEach((l_dep) => {
+        if (SnapshotAt(l_dep, Infinity) != null) {
             hasSnapshots = true;
         }
     });
@@ -20,20 +17,17 @@ function Graphline_0(props)
     return (
         <div style={props.style} className={"layoutCard graphLine0 " + props.cardSize}>
             <GraphCommon {...props} />
-            {(() =>
-            {
-                if (!hasSnapshots)
-                {
+
+            {(() => {
+                if (!hasSnapshots) {
                     //No Snapshots Available
                     return (<i className="ti ti-hourglass-empty"></i>);
                 }
-                else if (window.ReactApexChart == undefined)
-                {
+                else if (window.ReactApexChart == undefined) {
                     //Still Loading
                     return (<></>);
                 }
-                else
-                {
+                else {
                     //Render The Graph
                     return (<Graphline_0_Line {...props} />);
                 }
@@ -42,8 +36,10 @@ function Graphline_0(props)
     )
 }
 
-function Graphline_0_Line(props)
-{
+function Graphline_0_Line(props) {
+
+    var [timeRangeIndex, setTimeRangeIndex] = React.useState(props.graph.timeRange || 0);
+
     var metrics = CurrentProject(window.lastDataObject)["metrics"];
     var metric = ArrayValue(metrics, "id", props.graph["for"]);
 
@@ -55,44 +51,49 @@ function Graphline_0_Line(props)
     //2: Past Week
     //3: Past Month
     //4: Past Year
-    var timeRange = props.graph.timeRange || 0;
-    var timeRangeUnix = [0, 0];
-    var unixSeconds = Math.floor(Date.now() / 1000);
-    var detail = 24;
 
-    if (timeRange == 0)
-    {
-        timeRangeUnix = [unixSeconds - 3600, unixSeconds];
-        detail = 30;
-    }
-    else if (timeRange == 1)
-    {
-        timeRangeUnix = [unixSeconds - 86400, unixSeconds];
-        detail = 24;
-    }
-    else if (timeRange == 2)
-    {
-        timeRangeUnix = [unixSeconds - 604800, unixSeconds];
-        detail = 28;
-    }
-    else if (timeRange == 3)
-    {
-        timeRangeUnix = [unixSeconds - 2592000, unixSeconds];
-        detail = 30;
-    }
-    else if (timeRange == 4)
-    {
-        timeRangeUnix = [unixSeconds - 31536000, unixSeconds];
-        detail = 365;
-    }
+    var unixSeconds = Math.floor(Date.now() / 1000);
+
+    var timeRanges = [
+        {
+            name: "1H",
+            fullName: "Past Hour",
+            unix: [unixSeconds - 3600, unixSeconds],
+            detail: 240
+        },
+        {
+            name: "24H",
+            fullName: "Past 24 Hours",
+            unix: [unixSeconds - 86400, unixSeconds],
+            detail: 240
+        },
+        {
+            name: "7D",
+            fullName: "Past Week",
+            unix: [unixSeconds - 604800, unixSeconds],
+            detail: 240
+        },
+        {
+            name: "30D",
+            fullName: "Past Month",
+            unix: [unixSeconds - 2592000, unixSeconds],
+            detail: 240
+        },        
+        {
+            name: "1Y",
+            fullName: "Past Year",
+            unix: [unixSeconds - 31536000, unixSeconds],
+            detail: 365
+        },
+    ]
+
+    var timeRange = timeRanges[timeRangeIndex];
 
     var [isDataLoaded, setIsDataLoaded] = React.useState(false);
 
-    setTimeout(async () =>
-    {
-        if (!isDataLoaded)
-        {
-            await LoadSnapshotRange(timeRangeUnix[0], timeRangeUnix[1]);
+    setTimeout(async () => {
+        if (!isDataLoaded) {
+            await LoadSnapshotRange(timeRange.unix[0],timeRange.unix[1]);
             setIsDataLoaded(true);
         }
     }, 0);
@@ -125,7 +126,10 @@ function Graphline_0_Line(props)
                 }
             },
             tooltip: {
-                theme: document.body.classList.contains("dark") ? "dark" : "light"
+                theme: document.body.classList.contains("dark") ? "dark" : "light",
+                x: {
+                    formatter: (value) => { return dates[value] }
+                }
             },
             dataLabels: {
                 enabled: false
@@ -135,7 +139,7 @@ function Graphline_0_Line(props)
             },
             stroke: {
                 width: 4,
-                curve: 'smooth'
+                curve: 'straight',
             },
             fill: {
                 type: 'gradient',
@@ -154,18 +158,15 @@ function Graphline_0_Line(props)
     }
 
     //Add Series Data To The Chart
-    names.forEach((l_name, l_index) =>
-    {
+    names.forEach((l_name, l_index) => {
         var values = [];
 
-        for (let i = 0; i < detail; i++)
-        {
-            var timeOfSnap = Math.ceil(timeRangeUnix[0] + ((Math.abs(timeRangeUnix[0] - timeRangeUnix[1]) / detail) * (i + 1)));
+        for (let i = 0; i < timeRange.detail; i++) {
+            var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
             var snap = SnapshotAt(metric.id, timeOfSnap);
             var stubDataObject = { data: {} };
 
-            if (snap && snap.SnapData)
-            {
+            if (snap && snap.SnapData) {
                 stubDataObject.data[SnapshotTables[metric.type]] = JSON.parse(snap.SnapData);
                 values.push(ValueFromNumberMetric(metric, stubDataObject));
                 dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
@@ -179,14 +180,29 @@ function Graphline_0_Line(props)
     });
 
     return (
-        <Chart
-            options={chartData.options}
-            series={chartData.series}
-            className="graphChart"
-            key={props.isPreview ? UUID() : metric.id /* Updates Every Time Only If We Are In Preview Mode*/}
-            type={"area"}
-            width={310}
-            height={140}
-        />
+        <>
+            <div className="cardActionRow" style={{ backgroundColor: "var(--col-bg)", zIndex: "10" }}>
+                <Dropdown>
+                    <Dropdown.Button size="xs" auto light>{timeRange.name}</Dropdown.Button>
+                    <Dropdown.Menu onAction={setTimeRangeIndex}>
+                        {
+                            timeRanges.map((l_range, l_index) => {
+                                return (<Dropdown.Item key={l_index}>{l_range.fullName}</Dropdown.Item>);
+                            })
+                        }
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
+            <Chart
+                options={chartData.options}
+                series={chartData.series}
+                className="graphChart"
+                key={UUID() /* Updates Every Render */}
+                type={"area"}
+                width={310}
+                height={140}
+            />
+        </>
+
     )
 }

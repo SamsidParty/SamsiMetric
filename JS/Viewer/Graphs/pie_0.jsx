@@ -8,6 +8,7 @@ function Graphpie_0(props) {
     return (
         <div style={props.style} className={"layoutCard graphPie0 " + props.cardSize}>
             <GraphCommon {...props} />
+
             <div className="subCard">
                 <h3>{metric.name}</h3>
                 <div className="labelHolder">
