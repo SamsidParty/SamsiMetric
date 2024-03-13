@@ -139,7 +139,8 @@ function Graphline_0_Line(props) {
             },
             stroke: {
                 width: 4,
-                curve: 'straight',
+                curve: "monotoneCubic",
+                lineCap: "round"
             },
             fill: {
                 type: 'gradient',
