@@ -185,7 +185,7 @@ function DefaultOptions() {
     return {
         timeout: 5000,
         throw: true
-    }; // Nothing Here Yet
+    };
 }
 
 function useFirstRender()
@@ -230,6 +230,7 @@ function FillChart(metric, DataObject, options) {
     var colors = [];
     var icons = [];
     var percents = [];
+    var metricDatas = [];
 
     depList.forEach((l_dep) =>
     {
@@ -241,6 +242,7 @@ function FillChart(metric, DataObject, options) {
             names.push(dep.name);
             values.push(parseFloat(value));
             icons.push(dep.icon);
+            metricDatas.push(dep);
             if (colors.length >= 5 && !options?.rawColor) {
                 //TODO: Make A Better Color Generator
                 var randomByte = () => Math.floor(Math.random() * 254);
@@ -255,7 +257,7 @@ function FillChart(metric, DataObject, options) {
     //Convert Values To Percentages
     percents = ConvertPercents(values);
 
-    return [values, names, colors, icons, percents];
+    return [values, names, colors, icons, percents, metricDatas];
 }
 
 //Returns An Array Of IDs Of All The Dependencies Recursively With No Duplicates

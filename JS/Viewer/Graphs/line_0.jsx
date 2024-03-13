@@ -100,8 +100,9 @@ function Graphline_0_Line(props) {
 
 
     var names = chartFill[1];
-    var dates = [];
     var colors = chartFill[2];
+    var metricDatas = chartFill[5];
+    var dates = [];
 
     var chartData = {
         options: {
@@ -164,12 +165,12 @@ function Graphline_0_Line(props) {
 
         for (let i = 0; i < timeRange.detail; i++) {
             var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
-            var snap = SnapshotAt(metric.id, timeOfSnap);
+            var snap = SnapshotAt(metricDatas[l_index].id, timeOfSnap);
             var stubDataObject = { data: {} };
 
             if (snap && snap.SnapData) {
-                stubDataObject.data[SnapshotTables[metric.type]] = JSON.parse(snap.SnapData);
-                values.push(ValueFromNumberMetric(metric, stubDataObject));
+                stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
+                values.push(ValueFromNumberMetric(metricDatas[l_index], stubDataObject));
                 dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
             }
         }
