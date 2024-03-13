@@ -140,7 +140,7 @@ function Graphline_0_Line(props) {
             },
             stroke: {
                 width: 4,
-                curve: "monotoneCubic",
+                curve: props.graph.lineSmoothing ? "monotoneCubic" : "straight",
                 lineCap: "round"
             },
             fill: {
@@ -161,6 +161,7 @@ function Graphline_0_Line(props) {
 
     //Add Series Data To The Chart
     names.forEach((l_name, l_index) => {
+        var realValues = [];
         var values = [];
 
         for (let i = 0; i < timeRange.detail; i++) {
@@ -170,7 +171,19 @@ function Graphline_0_Line(props) {
 
             if (snap && snap.SnapData) {
                 stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
-                values.push(ValueFromNumberMetric(metricDatas[l_index], stubDataObject));
+
+                //Make Value The Difference From The Last
+                if (!props.graph.additive && values.length > 0) {
+                    var lastValue = realValues[realValues.length - 1];
+                    var diff = ValueFromNumberMetric(metricDatas[l_index], stubDataObject) - lastValue;
+                    values.push(diff);
+                }
+                else {
+                    values.push(ValueFromNumberMetric(metricDatas[l_index], stubDataObject));
+                }
+
+                realValues.push(ValueFromNumberMetric(metricDatas[l_index], stubDataObject));
+
                 dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
             }
         }

@@ -43,7 +43,20 @@ var GraphTypes = [
         "size": ["csMedLong"],
         "render": () => Graphline_0,
         "settingsui": (props) => graphsettings_standard(props),
-        "settings": [],
+        "settings": [
+            {
+                "type": "bool",
+                "displayname": "Line Smoothing",
+                "name": "lineSmoothing",
+                "default": true
+            },
+            {
+                "type": "bool",
+                "displayname": "Additive",
+                "name": "additive",
+                "default": true
+            },
+        ],
         "dependencies": [
             "./JS/ThirdParty/apexcharts.js"
         ]

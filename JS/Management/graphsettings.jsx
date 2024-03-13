@@ -21,7 +21,7 @@ function GraphEditor(props)
             </Modal.Header>
             <Modal.Body>
                 <div className="graphSelect" style={{ minHeight: "0" }}>
-                    <GraphSettings onApply={apply} {...props} isPreview={true} graphmeta={graphMeta} graph={props.graph} />
+                    <GraphSettings key={UUID()} onApply={apply} {...props} isPreview={true} graphmeta={graphMeta} graph={props.graph} />
                 </div>
                 <NextUI.Spacer y={0} />
             </Modal.Body>
@@ -31,13 +31,7 @@ function GraphEditor(props)
 
 function graphsettings_standard(props)
 {
-
-    var [settings, setSettings] = React.useState(
-        {
-            "for": props.graph.for,
-            "type": props.graph.type
-        }
-    );
+    var [settings, setSettings] = React.useState(Object.assign({}, props.graph));
 
     var apply = () =>
     {
@@ -81,7 +75,7 @@ function graphsettings_common(props)
         {
             setTimeout(() =>
             {
-                setSetting(setting, props.graph[setting.name] || setting.default);
+                setSetting(setting, (props.graph[setting.name] != undefined) ? props.graph[setting.name] : setting.default);
             }, 0);
         }
 
