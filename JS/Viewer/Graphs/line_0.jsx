@@ -29,7 +29,7 @@ function Graphline_0(props) {
                 }
                 else {
                     //Render The Graph
-                    return (<Graphline_0_Line {...props} />);
+                    return (<Graphline_0_Line key={props.isPreview ? UUID() : metric.id /* Updates Every Time Only If We Are In Preview Mode*/} {...props} />);
                 }
             })()}
         </div>
@@ -44,6 +44,11 @@ function Graphline_0_Line(props) {
     var metric = ArrayValue(metrics, "id", props.graph["for"]);
 
     var chartFill = FillChart(metric, window.lastDataObject, { snapshotMode: true });
+
+    var refreshGraph = () => {
+        chartData.shouldRefresh = true;
+        setChartData(Object.assign({}, chartData));
+    }
 
     //Time Ranges
     //0: Past Hour
@@ -104,7 +109,7 @@ function Graphline_0_Line(props) {
     var metricDatas = chartFill[5];
     var dates = [];
 
-    var chartData = {
+    var defaultChartData = {
         labels: [],
         datasets: [],
         options: {
@@ -133,74 +138,98 @@ function Graphline_0_Line(props) {
                     radius: 0
                 },
                 line: {
-                    tension: 0.5
+                    tension: 0.4
                 }
             },
             hover: {
                 mode: 'index',
                 intersect: false
             },
+            layout: {
+                padding: {
+                  top: 10
+                }
+            },
             maintainAspectRatio: false,
             datasetStrokeWidth: 3,
-        }
+        },
+        shouldRefresh: true
     }
 
-    //Add Series Data To The Chart
-    names.forEach((l_name, l_index) => {
-        var realValues = [];
-        var values = [];
+    var [chartData, setChartData] = React.useState(defaultChartData);
 
-        for (let i = 0; i < timeRange.detail; i++) {
-            var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
-            var snap = SnapshotAt(metricDatas[l_index].id, timeOfSnap);
-            var stubDataObject = { data: {} };
+    if (chartData.shouldRefresh && isDataLoaded) {
+        //Add Series Data To The Chart
+        names.forEach((l_name, l_index) => {
 
-            if (snap && snap.SnapData) {
-                stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
-                var lastValue = realValues[realValues.length - 1];
-                var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
+            var realValues = [];
+            var values = [];
 
-                //Make Value The Difference From The Last
-                if (!props.graph.additive && values.length > 0) {
-                    var diff = value - lastValue;
-                    values.push(diff);
+            for (let i = 0; i < timeRange.detail; i++) {
+                var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
+                var snap = SnapshotAt(metricDatas[l_index].id, timeOfSnap);
+                var stubDataObject = { data: {} };
+
+                if (snap && snap.SnapData) {
+                    stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
+                    var lastValue = realValues[realValues.length - 1];
+                    var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
+
+                    //Make Value The Difference From The Last
+                    if (!props.graph.additive && values.length > 0) {
+                        var diff = value - lastValue;
+                        values.push(diff);
+                    }
+                    else {
+                        values.push(value);
+                    }
+
+                    realValues.push(value);
+
+                    dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
                 }
-                else {
-                    values.push(value);
+
+                if (l_index == 0) {
+                    var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
+                    defaultChartData.labels.push(timeOfAxis);
                 }
-
-                realValues.push(value);
-
-                dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
             }
 
-            if (l_index == 0) {
-                var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
-                chartData.labels.push(timeOfAxis);
+            //Enable Line Smoothing
+            if (props.graph.lineSmoothing) {
+                var nullDupes = data => data.map((x, i) => data[i - 1] === x ? null : x);
+                var lastValidValue = values[values.length - 1];
+                values = nullDupes(values);
+                values[defaultChartData.labels.length - 1] = lastValidValue;
             }
-        }
 
-        chartData.datasets.push({
-            data: values,
-            label: l_name,
-            backgroundColor: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-                gradient.addColorStop(0, tagColors[metricDatas[l_index].tag] + "41");
-                gradient.addColorStop(1, tagColors[metricDatas[l_index].tag] + "00");
-                return gradient;
-            },
-            fill: true,
-            borderColor: tagColors[metricDatas[l_index].tag]
+            defaultChartData.datasets.push({
+                data: values,
+                label: l_name,
+                backgroundColor: (context) => {
+                    const ctx = context.chart.ctx;
+                    const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.offsetHeight);
+                    gradient.addColorStop(0, tagColors[metricDatas[l_index].tag] + "41");
+                    gradient.addColorStop(1, tagColors[metricDatas[l_index].tag] + "00");
+                    return gradient;
+                },
+                fill: true,
+                borderColor: tagColors[metricDatas[l_index].tag],
+                spanGaps: true,
+            });
         });
-    });
+        defaultChartData.shouldRefresh = false;
+        setChartData(defaultChartData);
+    }
+
+
 
     return (
         <>
             <div className="cardActionRow" style={{ backgroundColor: "var(--col-bg)", zIndex: "10" }}>
                 <Dropdown>
                     <Dropdown.Button size="xs" auto light>{timeRange.name}</Dropdown.Button>
-                    <Dropdown.Menu onAction={setTimeRangeIndex}>
+                    <Dropdown.Menu onAction={(e) => { setTimeRangeIndex(e); refreshGraph(); }}>
                         {
                             timeRanges.map((l_range, l_index) => {
                                 return (<Dropdown.Item key={l_index}>{l_range.fullName}</Dropdown.Item>);
@@ -210,7 +239,7 @@ function Graphline_0_Line(props) {
                 </Dropdown>
             </div>
             <h3 className="metricName">{metric.name}</h3>
-            <ChartJSLine options={chartData.options} data={chartData} style={{ marginTop: "45px" }}>
+            <ChartJSLine options={chartData.options} data={chartData} style={{ marginTop: "40px" }}>
 
             </ChartJSLine>
         </>
