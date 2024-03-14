@@ -23,7 +23,7 @@ function Graphline_0(props) {
                     //No Snapshots Available
                     return (<i className="ti ti-hourglass-empty"></i>);
                 }
-                else if (window.ReactApexChart == undefined) {
+                else if (window.ChartJS == undefined) {
                     //Still Loading
                     return (<></>);
                 }
@@ -78,7 +78,7 @@ function Graphline_0_Line(props) {
             fullName: "Past Month",
             unix: [unixSeconds - 2592000, unixSeconds],
             detail: 240
-        },        
+        },
         {
             name: "1Y",
             fullName: "Past Year",
@@ -93,7 +93,7 @@ function Graphline_0_Line(props) {
 
     setTimeout(async () => {
         if (!isDataLoaded) {
-            await LoadSnapshotRange(timeRange.unix[0],timeRange.unix[1]);
+            await LoadSnapshotRange(timeRange.unix[0], timeRange.unix[1]);
             setIsDataLoaded(true);
         }
     }, 0);
@@ -105,58 +105,44 @@ function Graphline_0_Line(props) {
     var dates = [];
 
     var chartData = {
+        labels: [],
+        datasets: [],
         options: {
-            chart: {
-                sparkline: {
-                    enabled: true
+            plugins: {
+                legend: {
+                    display: false
                 },
-                toolbar: {
-                    show: false,
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
                 },
-                animations: {
-                    enabled: false
+                dashedline: {
+                    color: 'black',
                 }
             },
-            grid: {
-                show: false,
-                padding: {
-                    top: 45,
-                    right: 0,
-                    bottom: 5,
-                    left: 0
-                }
-            },
-            tooltip: {
-                theme: document.body.classList.contains("dark") ? "dark" : "light",
+            scales: {
                 x: {
-                    formatter: (value) => { return dates[value] }
+                    display: false
+                },
+                y: {
+                    display: false
                 }
             },
-            dataLabels: {
-                enabled: false
-            },
-            legend: {
-                show: false
-            },
-            stroke: {
-                width: 3,
-                curve: props.graph.lineSmoothing ? "monotoneCubic" : "straight",
-                lineCap: "round"
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    inverseColors: false,
-                    opacityFrom: 0.5,
-                    opacityTo: 0,
-                    stops: [0, 90, 100],
-                    colors: colors
+            elements: {
+                point: {
+                    radius: 0
+                },
+                line: {
+                    tension: 0.5
                 }
             },
-            colors: colors
-        },
-        series: []
+            hover: {
+                mode: 'index',
+                intersect: false
+            },
+            maintainAspectRatio: false,
+            datasetStrokeWidth: 3,
+        }
     }
 
     //Add Series Data To The Chart
@@ -187,11 +173,25 @@ function Graphline_0_Line(props) {
 
                 dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
             }
+
+            if (l_index == 0) {
+                var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
+                chartData.labels.push(timeOfAxis);
+            }
         }
 
-        chartData.series.push({
-            name: l_name,
-            data: values
+        chartData.datasets.push({
+            data: values,
+            label: l_name,
+            backgroundColor: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+                gradient.addColorStop(0, tagColors[metricDatas[l_index].tag] + "41");
+                gradient.addColorStop(1, tagColors[metricDatas[l_index].tag] + "00");
+                return gradient;
+            },
+            fill: true,
+            borderColor: tagColors[metricDatas[l_index].tag]
         });
     });
 
@@ -210,15 +210,9 @@ function Graphline_0_Line(props) {
                 </Dropdown>
             </div>
             <h3 className="metricName">{metric.name}</h3>
-            <Chart
-                options={chartData.options}
-                series={chartData.series}
-                className="graphChart"
-                key={UUID() /* Updates Every Render */}
-                type={"area"}
-                width={props.cardSize == "csLongDouble" ? 640 : 310}
-                height={props.cardSize == "csLongDouble" ? 270 : 140}
-            />
+            <ChartJSLine options={chartData.options} data={chartData} style={{ marginTop: "45px" }}>
+
+            </ChartJSLine>
         </>
 
     )
