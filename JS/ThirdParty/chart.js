@@ -213,12 +213,25 @@ window.ChartJSDashedLine = {
     afterInit: (chart, args, opts) => {
         chart.dashedline = {
             x: 0,
-            y: 0
+            y: 0,
+            nonce: UUID()
         }
     },
     afterEvent: (chart, args) => {
         const { inChartJSArea } = args
         const { type, x, y } = args.event
+
+        if (args.event.type == "mousemove") {
+            window.lastTTText = "Not Implemented";
+            window.lastTTKey = chart.dashedline.nonce;
+            window.lastTTPlacement = "bottom";
+        }
+        else if (args.event.type == "mouseout") {
+            if (window.lastTTKey == chart.dashedline.nonce) {
+                window.lastTTText = "";
+                window.lastTTKey = "";
+            }
+        }
 
         chart.dashedline = { x, y, draw: inChartJSArea }
         chart.draw()

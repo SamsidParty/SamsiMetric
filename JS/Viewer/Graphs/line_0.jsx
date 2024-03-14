@@ -118,8 +118,7 @@ function Graphline_0_Line(props) {
                     display: false
                 },
                 tooltip: {
-                    mode: 'index',
-                    intersect: false
+                    enabled: false
                 },
                 dashedline: {
                     color: 'black',
