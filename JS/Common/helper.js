@@ -125,6 +125,9 @@ async function RefreshData(ignoreSchema)
     }
     extDataObject["data"] = json["data"];
 
+    //Insert Extra Context
+    extDataObject.syncTime = Math.floor(Date.now() / 1000)
+
     //Load Snapshots From Last 24 Hours
     ClearLoadedSnapshots();
     await LoadSnapshotRange(Math.floor(Date.now() / 1000) - 86400, Math.floor(Date.now() / 1000));

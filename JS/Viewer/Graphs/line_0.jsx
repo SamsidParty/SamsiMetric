@@ -38,6 +38,8 @@ function Graphline_0(props) {
 
 function Graphline_0_Line(props) {
 
+    var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
+
     var [timeRangeIndex, setTimeRangeIndex] = React.useState(props.graph.timeRange || 0);
 
     var metrics = CurrentProject(window.lastDataObject)["metrics"];
@@ -57,7 +59,7 @@ function Graphline_0_Line(props) {
     //3: Past Month
     //4: Past Year
 
-    var unixSeconds = Math.floor(Date.now() / 1000);
+    var unixSeconds = DataObject.syncTime;
 
     var timeRanges = [
         {
@@ -93,6 +95,15 @@ function Graphline_0_Line(props) {
     ]
 
     var timeRange = timeRanges[timeRangeIndex];
+
+    var loadTimeRange = (l_index) => {
+        timeRange = timeRanges[l_index];
+        if (!IsRangeLoaded(timeRange.unix)) {
+            setIsDataLoaded(false);
+        }
+        setTimeRangeIndex(l_index);
+        refreshGraph();
+    }
 
     var [isDataLoaded, setIsDataLoaded] = React.useState(false);
 
@@ -228,7 +239,7 @@ function Graphline_0_Line(props) {
             <div className="cardActionRow" style={{ backgroundColor: "var(--col-bg)", zIndex: "10" }}>
                 <Dropdown>
                     <Dropdown.Button size="xs" auto light>{timeRange.name}</Dropdown.Button>
-                    <Dropdown.Menu onAction={(e) => { setTimeRangeIndex(e); refreshGraph(); }}>
+                    <Dropdown.Menu onAction={loadTimeRange}>
                         {
                             timeRanges.map((l_range, l_index) => {
                                 return (<Dropdown.Item key={l_index}>{l_range.fullName}</Dropdown.Item>);

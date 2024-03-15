@@ -37,7 +37,7 @@ async function LoadSnapshotRange(from, to) {
         }
         SnapshotsFor[l_snap.MetricID][l_snap.SnapTime] = l_snap;
     });
-    LoadedSnapshotRanges.push([from, to]);
+    LoadedSnapshotRanges.push(from + "_" + to);
 }
 
 function SnapshotAt(metric, time) {
@@ -62,4 +62,8 @@ function ClearLoadedSnapshots() {
     LoadedSnapshotRanges = [];
     LoadedSnapshots = [];
     SnapshotsFor = {};
+}
+
+function IsRangeLoaded(range) {
+    return LoadedSnapshotRanges.includes(range[0] + "_" + range[1]);
 }

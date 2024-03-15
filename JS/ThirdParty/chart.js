@@ -214,6 +214,7 @@ window.ChartJSDashedLine = {
         chart.dashedline = {
             x: 0,
             y: 0,
+            draw: false,
             nonce: UUID()
         }
     },
@@ -233,7 +234,9 @@ window.ChartJSDashedLine = {
             }
         }
 
-        chart.dashedline = { x, y, draw: inChartJSArea }
+        chart.dashedline.x = x;
+        chart.dashedline.y = y;
+        chart.dashedline.draw = inChartJSArea;
         chart.draw()
     },
     beforeDatasetsDraw: (chart, args, opts) => {
