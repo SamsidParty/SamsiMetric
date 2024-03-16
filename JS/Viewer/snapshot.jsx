@@ -29,8 +29,7 @@ async function LoadSnapshotRange(from, to) {
         }
 
         MessagePack.decode((await response.arrayBuffer())).data_snapshot.forEach((l_snap) => {
-            l_snap.SnapData = LZString.decompressFromUTF16(l_snap.SnapData);
-            console.log(l_snap);
+            l_snap.SnapData = new TextDecoder().decode(fflate.decompressSync(l_snap.SnapData));
             var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
             if (LoadedSnapshots[identity] == undefined) {
                 LoadedSnapshots[identity] = l_snap;
@@ -42,8 +41,9 @@ async function LoadSnapshotRange(from, to) {
         });
         LoadedSnapshotRanges.push(from + "_" + to);
     }
-    catch {
+    catch (err) {
         //TODO: GUI Error Handler
+        console.error(err);
     }
 }
 
