@@ -240,6 +240,7 @@ function Graphline_0_Line(props) {
 
     return (
         <>
+            <GraphLoadingOverlay {...props} hide={isDataLoaded} />
             <div className="cardActionRow" style={{ backgroundColor: "var(--col-bg)", zIndex: "10" }}>
                 <Dropdown>
                     <Dropdown.Button size="xs" auto light>{timeRange.name}</Dropdown.Button>
