@@ -22,6 +22,10 @@ var initalDependencies = document.querySelector('meta[name="dependencies"]').con
 MainLoader();
 
 async function MainLoader() {
+
+    var lz = await (await fetch("./JS/ThirdParty/fflate.js")).text();
+    (1, eval)(lz);
+
     var currentVersion = await localforage.getItem("client-version");
     if (currentVersion != latestVersion || devMode) {
         await Install();
@@ -69,9 +73,6 @@ async function Install() {
 async function InstallStatic(binary) {
 
     console.log(`Static Install Started (Version ${latestVersion})`);
-
-    var lz = await (await fetch("./JS/ThirdParty/fflate.js")).text();
-    (1, eval)(lz);
 
     bundle = new TextDecoder().decode(fflate.unzlibSync(binary));
     var contents = bundle.split(String.fromCharCode(0x1C));
