@@ -64,23 +64,16 @@ function LoginModal()
 
 
     return (
-        <Modal
-            preventClose
-            aria-labelledby="modal-title"
-            open="true"
-        >
-            <Modal.Header>
-                <Text id="modal-title" b size={20}>
-                    API Key Required
-                </Text>
-            </Modal.Header>
-            <Modal.Body>
-                <Input label={error} status={status} aria-label="Enter API Key" autoFocus={true} bordered placeholder="Enter API Key" onChange={onKeyChanged} onKeyDown={onEnter} initialValue={preloadKey} />
-            </Modal.Body>
-            <Modal.Footer>
-                <Button auto color="primary" aria-label="Continue" onClick={onContinue}>Continue</Button>
-            </Modal.Footer>
-        </Modal>
+        <ClientImage background="true" className="loginPage" src="./Images/BackgroundDecoration.jpg">
+            <div className="loginContainer">
+                <div className="loginModal">
+                    <h1>Sign In To SamsiMetric</h1>
+                    <Input size="xl" label={error} status={status} autoFocus={true} bordered placeholder="Enter API Key" onChange={onKeyChanged} onKeyDown={onEnter} initialValue={preloadKey} />
+                    <ClientImage className="loginIcon" src="./Images/LoginIcon.png"></ClientImage>
+                    <Button size="lg" auto color="primary" onClick={onContinue}>Continue</Button>
+                </div>
+            </div>
+        </ClientImage>
     );
 }
 

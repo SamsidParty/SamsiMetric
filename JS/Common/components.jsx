@@ -49,7 +49,12 @@ function ClientImage(props) {
         setTimeout(() => {
             if (loadedBinaryDependencies[props.src] != undefined) {
                 if (image.current) {
-                    image.current.src = loadedBinaryDependencies[props.src];
+                    if (props.background) {
+                        image.current.style.backgroundImage = "url('" + loadedBinaryDependencies[props.src] + "')";
+                    }
+                    else {
+                        image.current.src = loadedBinaryDependencies[props.src];
+                    }
                 }
             }
             else {
@@ -68,7 +73,13 @@ function ClientImage(props) {
     
 
     return (
-        <img alt={image} ref={image} {...props} src={LoadingStub} />
+        <>
+            {
+                props.background ? 
+                (<div ref={image} {...props}></div>) : 
+                (<img alt={image} ref={image} {...props} src={LoadingStub} />)
+            }
+        </>
     )
 }
 

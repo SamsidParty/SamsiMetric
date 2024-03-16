@@ -136,7 +136,7 @@ async function CollectDependencies(installerContext) {
     fontFiles.forEach((l_file) => collectedDependencies.push("./Fonts" + l_file));
 
     //Collect Image Files
-    var imageFiles = ParseIndexTree(await (await fetch("./Images/")).text(), (l_file) => { return l_file.includes(".png") || l_file.includes(".svg"); });
+    var imageFiles = ParseIndexTree(await (await fetch("./Images/")).text(), (l_file) => { return l_file.includes(".png") || l_file.includes(".svg") || l_file.includes(".jpg"); });
     imageFiles.forEach((l_file) => collectedDependencies.push("./Images" + l_file));
 
     return collectedDependencies;
