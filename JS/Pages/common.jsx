@@ -8,5 +8,6 @@ RunOnLoad("./JS/Pages/common.jsx", async () => {
         await LoadDependency("./JS/ThirdParty/react.prod.js");
     }
 
+    await LoadDependency("./JS/ThirdParty/msgpack.js");
     await LoadDependency("./JS/Viewer/tooltip.jsx");
 });
