@@ -23,6 +23,7 @@ window.Radio = NextUI.Radio;
 window.Table = NextUI.Table;
 window.Switch = NextUI.Switch;
 window.NextThemesProvider = NextUI.NextThemesProvider;
+window.Loading = NextUI.Loading;
 
 window.theme = NextUI.createTheme({
     type: (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? "dark" : "light",

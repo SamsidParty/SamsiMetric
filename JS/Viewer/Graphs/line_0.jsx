@@ -19,9 +19,10 @@ function Graphline_0(props) {
             <GraphCommon {...props} />
 
             {(() => {
-                if (!hasSnapshots) {
+                if (!hasSnapshots || !window.ChartJS) {
                     //No Snapshots Available
-                    return (<i className="ti ti-hourglass-empty"></i>);
+                    //Or Chart.JS Hasn't Loaded
+                    return (<GraphLoading {...props}></GraphLoading>);
                 }
                 else if (window.ChartJS == undefined) {
                     //Still Loading

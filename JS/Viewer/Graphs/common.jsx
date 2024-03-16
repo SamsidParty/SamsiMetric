@@ -62,6 +62,18 @@ function GraphCommon(props)
     )
 }
 
+function GraphLoading(props) {
+
+    var metrics = CurrentProject(window.lastDataObject)["metrics"];
+    var metric = ArrayValue(metrics, "id", props.graph["for"]);
+
+    return (
+        <div className="graphLoading">
+            <Loading type="points-opacity" color={metric.tag} size="lg" />
+        </div>
+    )
+}
+
 //Some Graphs Need Dependencies Like React Simple Maps
 //Collect The Needed Dependencies And Load Them
 async function LoadGraphDependencies(workspace)

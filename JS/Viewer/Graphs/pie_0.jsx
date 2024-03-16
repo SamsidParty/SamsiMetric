@@ -27,7 +27,7 @@ function Graphpie_0(props) {
             {
                 window.ReactApexChart != undefined ?
                 (<Graphpie_0_Pie {...props} />) :
-                (<></>)
+                (<GraphLoading {...props}></GraphLoading>)
             }
 
             <div className="iconHolder" style={{ backgroundColor: tagColors[metric.tag], display: props.graph.showicon ? "flex" : "none" }}>

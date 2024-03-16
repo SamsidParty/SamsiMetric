@@ -24,7 +24,7 @@ function Graphmap_0(props)
                 //Render The Map Only If React Simple Maps Is Loaded
                 window.ReactSimpleMaps != undefined ?
                 Graphmap_0_Map({...props, metric: selectedMetric || metric}) :
-                (<></>)
+                (<GraphLoading {...props}></GraphLoading>)
             }
             {
                 //Render Group Header Or Standalone Header
