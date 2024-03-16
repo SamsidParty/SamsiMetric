@@ -58,7 +58,7 @@ async function Install() {
     var binaryCheck = await fetch("./Clients/" + latestVersion + ".client");
 
     if (binaryCheck.ok && !devMode) {
-        await InstallStatic(await binaryCheck.text()); // Install From Static Binary
+        await InstallStatic(new Uint8Array(await binaryCheck.arrayBuffer())); // Install From Static Binary
     }
     else {
         alert("No Build On Server Named ./Clients/" + latestVersion + ".client (USE dev BUILD FOR DYNAMIC INSTALLS)");
@@ -70,10 +70,10 @@ async function InstallStatic(binary) {
 
     console.log(`Static Install Started (Version ${latestVersion})`);
 
-    var lz = await (await fetch("./JS/ThirdParty/lzstring.js")).text();
+    var lz = await (await fetch("./JS/ThirdParty/fflate.js")).text();
     (1, eval)(lz);
 
-    bundle = LZString.decompressFromUTF16(binary);
+    bundle = new TextDecoder().decode(fflate.unzlibSync(binary));
     var contents = bundle.split(String.fromCharCode(0x1C));
 
     for (var i = 0; i < contents.length; i++) {

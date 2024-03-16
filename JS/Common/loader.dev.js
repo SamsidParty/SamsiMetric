@@ -12,7 +12,7 @@
 var buildDependencies = [
     "./JS/ThirdParty/babel.js",
     "./JS/ThirdParty/filesaver.js",
-    "./JS/ThirdParty/lzstring.js",
+    "./JS/ThirdParty/fflate.js",
 ]
 
 var latestVersion = document.querySelector('meta[name="client-version"]').content;
@@ -63,35 +63,7 @@ async function MainLoader() {
 async function Install() {
     LoadingScreen();
     await localforage.clear();
-
-    //Check For Static Binaries On The Server
-    var binaryCheck = await fetch("./Clients/" + latestVersion + ".client");
-
-    if (binaryCheck.ok && !devMode) {
-        await InstallStatic(await binaryCheck.text()); // Install From Static Binary
-    }
-    else {
-        await InstallDynamic();
-    }
-
-}
-
-async function InstallStatic(binary) {
-
-    console.log(`Static Install Started (Version ${latestVersion})`);
-
-    var lz = await (await fetch("./JS/ThirdParty/lzstring.js")).text();
-    (1, eval)(lz);
-
-    bundle = LZString.decompressFromUTF16(binary);
-    var contents = bundle.split(String.fromCharCode(0x1C));
-
-    for (var i = 0; i < contents.length; i++) {
-        if (contents[i] == "") { continue; }
-        if (i % 2 != 0) {
-            await localforage.setItem(contents[i - 1], contents[i]);
-        }
-    }
+    await InstallDynamic();
 }
 
 async function InstallDynamic() {
@@ -227,16 +199,14 @@ async function CreateStaticBundle(version) {
         }
     });
 
-    var compressed = LZString.compressToUTF16(bundle);
+    var compressed = fflate.zlibSync(new TextEncoder().encode(bundle), { level: 9 });
 
     var blob = new Blob([compressed], {
         type: "text/plain;charset=utf-8;",
     });
 
-    var fileName = await localforage.getItem("client-version") + ".client";
-
     window.createdStaticBundle = blob;
-    //saveAs(blob, fileName);
+    localforage.clear();
 }
 
 async function StartReact() {

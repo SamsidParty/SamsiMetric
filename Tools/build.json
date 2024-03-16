@@ -61,7 +61,7 @@
     },
     {
         "action": "copyfile",
-        "from": "../JS/ThirdParty/lzstring.js",
-        "to": "../Build/JS/ThirdParty/lzstring.js"
+        "from": "../JS/ThirdParty/fflate.js",
+        "to": "../Build/JS/ThirdParty/fflate.js"
     }
 ]

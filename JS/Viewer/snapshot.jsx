@@ -28,7 +28,9 @@ async function LoadSnapshotRange(from, to) {
             return;
         }
 
-        (await response.json()).data_snapshot.forEach((l_snap) => {
+        MessagePack.decode((await response.arrayBuffer())).data_snapshot.forEach((l_snap) => {
+            l_snap.SnapData = LZString.decompressFromUTF16(l_snap.SnapData);
+            console.log(l_snap);
             var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
             if (LoadedSnapshots[identity] == undefined) {
                 LoadedSnapshots[identity] = l_snap;
