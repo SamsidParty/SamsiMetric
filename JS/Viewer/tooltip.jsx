@@ -1,4 +1,7 @@
 
+window.lastTTOX = -1;
+window.lastTTOY = -1;
+
 var tooltipTemplates = {
     favicon: {
         content: () => `${window.ProductName} ${latestVersion}`,
@@ -42,8 +45,15 @@ function UpdateTT(e) {
         offsetY += placementOffset;
     }
 
-    TTBody.style.left = `${offsetX}px`;
-    TTBody.style.top = `${offsetY}px`;
+    if (window.lastTTOX >= 0) {
+        TTBody.style.left = `${window.lastTTOX}px`;
+        TTBody.style.top = `${window.lastTTOY}px`;
+    }
+    else {
+        TTBody.style.left = `${offsetX}px`;
+        TTBody.style.top = `${offsetY}px`;
+    }
+
 
     //Set Visibility Based On Body Class
     if (document.body.classList.contains("hideTooltips") || text == "") {

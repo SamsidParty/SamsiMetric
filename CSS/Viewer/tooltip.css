@@ -12,6 +12,7 @@
     font-weight: 400;
     border-radius: 10px;
     z-index: 99999;
+    pointer-events: none;
 }
 
 .silentTooltip {
@@ -22,6 +23,7 @@
     height: 100%;
     left: 0;
     top: 0;
+    pointer-events: none;
 }
 
 .hideTooltips .apexcharts-tooltip, .hideTooltips .apexcharts-series-markers-wrap {

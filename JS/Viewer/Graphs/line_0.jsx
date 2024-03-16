@@ -129,7 +129,10 @@ function Graphline_0_Line(props) {
                     display: false
                 },
                 tooltip: {
-                    enabled: false
+                    enabled: false,
+                    intersect: false,
+                    position: "nearest",
+                    external: window.ChartJSTooltipInterop,
                 },
                 dashedline: {
                     color: 'black',

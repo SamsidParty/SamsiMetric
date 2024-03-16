@@ -222,18 +222,6 @@ window.ChartJSDashedLine = {
         const { inChartJSArea } = args
         const { type, x, y } = args.event
 
-        if (args.event.type == "mousemove") {
-            window.lastTTText = "Not Implemented";
-            window.lastTTKey = chart.dashedline.nonce;
-            window.lastTTPlacement = "bottom";
-        }
-        else if (args.event.type == "mouseout") {
-            if (window.lastTTKey == chart.dashedline.nonce) {
-                window.lastTTText = "";
-                window.lastTTKey = "";
-            }
-        }
-
         chart.dashedline.x = x;
         chart.dashedline.y = y;
         chart.dashedline.draw = inChartJSArea;
@@ -256,6 +244,27 @@ window.ChartJSDashedLine = {
         ctx.stroke()
 
         ctx.restore()
+    }
+}
+
+window.ChartJSTooltipInterop = (context) => {
+
+    var { chart, tooltip } = context;
+
+    if (tooltip.opacity > 0 && tooltip.body.length > 0 && tooltip.body[0].lines.length > 0) {   
+        window.lastTTText = tooltip.body[0].lines[0];
+        window.lastTTKey = "ChartJSTooltip_" + chart.id;
+        window.lastTTPlacement = "bottom";
+        window.lastTTOX = chart.canvas.getBoundingClientRect().left + tooltip.caretX;
+        window.lastTTOY = chart.canvas.getBoundingClientRect().top + tooltip.caretY;
+    }
+    else {
+        if (window.lastTTKey == "ChartJSTooltip_" + chart.id) {
+            window.lastTTText = "";
+            window.lastTTKey = "";
+            window.lastTTOX = -1;
+            window.lastTTOY = -1;
+        }
     }
 }
 
