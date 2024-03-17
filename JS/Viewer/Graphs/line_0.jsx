@@ -2,6 +2,11 @@ function Graphline_0(props) {
 
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
 
+    //The ChartJS Graph Takes A Long Time To Init, And Therefore Freezes For A Bit
+    //So We Will Mount The ChartJS Graph After Everything Else Has Rendered For Better UX
+    var [mountDelay, setMountDelay] = React.useState(true);
+    React.useEffect(() => setMountDelay(false));
+
     var metrics = CurrentProject(DataObject)["metrics"];
     var metric = ArrayValue(metrics, "id", props.graph["for"]);
 
@@ -19,7 +24,7 @@ function Graphline_0(props) {
             <GraphCommon {...props} />
 
             {(() => {
-                if (!hasSnapshots || !window.ChartJS) {
+                if (!hasSnapshots || !window.ChartJS || mountDelay) {
                     //No Snapshots Available
                     //Or Chart.JS Hasn't Loaded
                     return (<GraphLoading {...props}></GraphLoading>);
@@ -162,82 +167,87 @@ function Graphline_0_Line(props) {
             },
             layout: {
                 padding: {
-                  top: 10
+                    top: 10
                 }
             },
             maintainAspectRatio: false,
-            datasetStrokeWidth: 3,
+            datasetStrokeWidth: 3
         },
-        shouldRefresh: true
+        shouldRefresh: true,
+        key: "default"
     }
 
     var [chartData, setChartData] = React.useState(defaultChartData);
 
-    if (chartData.shouldRefresh && isDataLoaded) {
-        //Add Series Data To The Chart
-        names.forEach((l_name, l_index) => {
-
-            var realValues = [];
-            var values = [];
-
-            for (let i = 0; i < timeRange.detail; i++) {
-                var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
-                var snap = SnapshotAt(metricDatas[l_index].id, timeOfSnap);
-                var stubDataObject = { data: {} };
-
-                if (snap && snap.SnapData) {
-                    stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
-                    var lastValue = realValues[realValues.length - 1];
-                    var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
-
-                    //Make Value The Difference From The Last
-                    if (!props.graph.additive && values.length > 0) {
-                        var diff = value - lastValue;
-                        values.push(diff);
+    React.useEffect(() => {
+        async function _() {
+            if (chartData.shouldRefresh && isDataLoaded) {
+                //Add Series Data To The Chart
+                names.forEach((l_name, l_index) => {
+    
+                    var realValues = [];
+                    var values = [];
+    
+                    for (let i = 0; i < timeRange.detail; i++) {
+                        var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
+                        var snap = SnapshotAt(metricDatas[l_index].id, timeOfSnap);
+                        var stubDataObject = { data: {} };
+    
+                        if (snap && snap.SnapData) {
+                            stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
+                            var lastValue = realValues[realValues.length - 1];
+                            var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
+    
+                            //Make Value The Difference From The Last
+                            if (!props.graph.additive && values.length > 0) {
+                                var diff = value - lastValue;
+                                values.push(diff);
+                            }
+                            else {
+                                values.push(value);
+                            }
+    
+                            realValues.push(value);
+    
+                            dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
+                        }
+    
+                        if (l_index == 0) {
+                            var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
+                            defaultChartData.labels.push(timeOfAxis);
+                        }
                     }
-                    else {
-                        values.push(value);
+    
+                    //Enable Line Smoothing
+                    if (props.graph.lineSmoothing) {
+                        var nullDupes = data => data.map((x, i) => data[i - 1] === x ? null : x);
+                        var lastValidValue = values[values.length - 1];
+                        values = nullDupes(values);
+                        values[defaultChartData.labels.length - 1] = lastValidValue;
                     }
-
-                    realValues.push(value);
-
-                    dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
-                }
-
-                if (l_index == 0) {
-                    var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
-                    defaultChartData.labels.push(timeOfAxis);
-                }
+    
+                    defaultChartData.datasets.push({
+                        data: values,
+                        label: l_name,
+                        backgroundColor: (context) => {
+                            const ctx = context.chart.ctx;
+                            const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.offsetHeight);
+                            gradient.addColorStop(0, tagColors[metricDatas[l_index].tag] + "41");
+                            gradient.addColorStop(1, tagColors[metricDatas[l_index].tag] + "00");
+                            return gradient;
+                        },
+                        fill: true,
+                        borderColor: tagColors[metricDatas[l_index].tag],
+                        spanGaps: true,
+                    });
+                });
+                defaultChartData.key = UUID();
+                defaultChartData.shouldRefresh = false;
+                setChartData(Object.assign({}, defaultChartData));
             }
-
-            //Enable Line Smoothing
-            if (props.graph.lineSmoothing) {
-                var nullDupes = data => data.map((x, i) => data[i - 1] === x ? null : x);
-                var lastValidValue = values[values.length - 1];
-                values = nullDupes(values);
-                values[defaultChartData.labels.length - 1] = lastValidValue;
-            }
-
-            defaultChartData.datasets.push({
-                data: values,
-                label: l_name,
-                backgroundColor: (context) => {
-                    const ctx = context.chart.ctx;
-                    const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.offsetHeight);
-                    gradient.addColorStop(0, tagColors[metricDatas[l_index].tag] + "41");
-                    gradient.addColorStop(1, tagColors[metricDatas[l_index].tag] + "00");
-                    return gradient;
-                },
-                fill: true,
-                borderColor: tagColors[metricDatas[l_index].tag],
-                spanGaps: true,
-            });
-        });
-        defaultChartData.shouldRefresh = false;
-        setChartData(defaultChartData);
-    }
-
-
+        }
+        _();
+    });
 
     return (
         <>
@@ -255,7 +265,7 @@ function Graphline_0_Line(props) {
                 </Dropdown>
             </div>
             <h3 className="metricName">{metric.name}</h3>
-            <ChartJSLine options={chartData.options} data={chartData} style={{ marginTop: "40px" }}>
+            <ChartJSLine key={chartData.key} options={chartData.options} data={chartData} style={{ marginTop: "40px" }}>
 
             </ChartJSLine>
         </>
