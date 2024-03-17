@@ -102,11 +102,12 @@ function Graphline_0_Line(props) {
         if (!IsRangeLoaded(timeRange.unix)) {
             setIsDataLoaded(false);
         }
+        props.graph.timeRange = l_index;
         setTimeRangeIndex(l_index);
         refreshGraph();
     }
 
-    var [isDataLoaded, setIsDataLoaded] = React.useState(false);
+    var [isDataLoaded, setIsDataLoaded] = React.useState(IsRangeLoaded(timeRange.unix));
 
     setTimeout(async () => {
         if (!isDataLoaded) {
