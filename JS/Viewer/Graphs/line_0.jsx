@@ -184,8 +184,6 @@ function Graphline_0_Line(props) {
             if (chartData.shouldRefresh && isDataLoaded) {
                 //Add Series Data To The Chart
                 names.forEach((l_name, l_index) => {
-    
-                    var realValues = [];
                     var values = [];
     
                     for (let i = 0; i < timeRange.detail; i++) {
@@ -195,19 +193,9 @@ function Graphline_0_Line(props) {
     
                         if (snap && snap.SnapData) {
                             stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
-                            var lastValue = realValues[realValues.length - 1];
                             var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
     
-                            //Make Value The Difference From The Last
-                            if (!props.graph.additive && values.length > 0) {
-                                var diff = value - lastValue;
-                                values.push(diff);
-                            }
-                            else {
-                                values.push(value);
-                            }
-    
-                            realValues.push(value);
+                            values.push(value);
     
                             dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
                         }

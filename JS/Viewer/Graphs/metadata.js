@@ -49,13 +49,7 @@ var GraphTypes = [
                 "displayname": "Line Smoothing",
                 "name": "lineSmoothing",
                 "default": true
-            },
-            {
-                "type": "bool",
-                "displayname": "Additive",
-                "name": "additive",
-                "default": true
-            },
+            }
         ],
         "dependencies": [
             "./JS/ThirdParty/chart.js"
