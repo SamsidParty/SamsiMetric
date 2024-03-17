@@ -85,9 +85,17 @@ function ManageProject()
                     <NextUI.Spacer x={0.5} />
                     <div className={`metricPreview ${(CurrentProject(DataObject).metrics.length > 0) ? "hasMetrics" : "noMetrics"}`}> { /* Show Different UI If There Are No Metrics */}
                         <div className="metricPreviewTrackHolder">
-                            <MetricPreviewTrack index={0} />
-                            <MetricPreviewTrack index={1} />
-                            <MetricPreviewTrack index={2} />
+                        {
+                            window.ManageMetrics ? 
+                                (
+                                    <>
+                                        <MetricPreviewTrack index={0} />
+                                        <MetricPreviewTrack index={1} />
+                                        <MetricPreviewTrack index={2} />
+                                    </>
+                                ) : 
+                                (<></>)
+                            }
                         </div>
                         <ClientImage className="tooltipNoMetrics" src="./Images/TooltipNoMetrics.png" />
 
