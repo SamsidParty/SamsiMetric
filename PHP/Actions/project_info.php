@@ -1,5 +1,7 @@
 <?php
 
+require_once("./PHP/sql.php");
+
 if ($virtualAPI["server"]['REQUEST_METHOD'] == 'PATCH') {
     //Replace The Projects File (Admin Only)
 
@@ -11,12 +13,12 @@ if ($virtualAPI["server"]['REQUEST_METHOD'] == 'PATCH') {
     //Purge Unused Icons To Save Space
     //There's No Need To Traverse The JSON Tree, A Simple Contains Check Is Fine
     $projectData = GetConfigFile('projects.json');
-    $allIcons = glob("./UploadedIcons/*.png");
+    $allIcons = DB::query("SELECT * FROM icons");
 
     foreach ($allIcons as $storedIcon) {
-        $iconName = pathinfo($storedIcon)["filename"];
-        if (!str_contains($projectData, $iconName)){
-            unlink($storedIcon); //Icon Is Not Needed
+        $iconID = $storedIcon["IconID"];
+        if (!str_contains($projectData, $iconID)) { //Quick And Dirty Lookup
+            DB::query("DELETE FROM icons WHERE IconID=%s", $iconID); //Icon Is Not Needed
         }
     }
 

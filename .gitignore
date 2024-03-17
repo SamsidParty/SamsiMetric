@@ -2,11 +2,3 @@
 .build
 .DS_store
 Build
-UploadedIcons/*.png
-UploadedIcons/*.svg
-UploadedIcons/*.jpg
-UploadedIcons/*.jpeg
-UploadedIcons/*.tif
-UploadedIcons/*.gif
-UploadedIcons/*.jfif
-

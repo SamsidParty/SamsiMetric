@@ -1,5 +1,7 @@
 <?php
 
+require_once("./PHP/sql.php");
+
 if ($virtualAPI["server"]['REQUEST_METHOD'] == 'POST') {
     //Create Or Patch Multiple Icons (Admin Only)
 
@@ -16,14 +18,16 @@ if ($virtualAPI["server"]['REQUEST_METHOD'] == 'POST') {
 
         Sanitize($icon["id"]);
 
-        file_put_contents("./UploadedIcons/" . $icon["id"] . ".png", base64_decode($icon["value"]));
+        DB::insert('icons', [
+            'IconID' => $icon["id"],
+            'IconData' => base64_decode($icon["value"]),
+        ]);
     }
 
     $response = array(
         array(
             "type" => "upload_icon",
-            "method" => "post",
-            "stored_icons" => glob("./UploadedIcons/*.png")
+            "method" => "post"
         )
     );
 }
