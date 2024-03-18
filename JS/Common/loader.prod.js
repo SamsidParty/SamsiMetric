@@ -85,6 +85,26 @@ async function InstallStatic(binary) {
     }
 }
 
+function ParseIndexTree(treeString, accept) {
+    var parsed = JSON.parse(treeString);
+    var fileList = [];
+
+    var traverseTree = (tree, parent) => {
+        tree.forEach((l_file) => {
+            if (l_file.dir) {
+                traverseTree(l_file.dir, parent + l_file.name + "/");
+            }
+            else if (accept(l_file.file.toLowerCase())) {
+                fileList.push(parent + l_file.file);
+            }
+        });
+    }
+
+    traverseTree(parsed, "/");
+
+    return fileList;
+}
+
 function ConvertBlob(blob) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader;

@@ -63,5 +63,24 @@
         "action": "copyfile",
         "from": "../JS/ThirdParty/fflate.js",
         "to": "../Build/JS/ThirdParty/fflate.js"
+    },
+    {
+        "action": "mkdir",
+        "to": "../Build/Plugins"
+    },
+    {
+        "action": "copyfolder",
+        "from": "../Plugins/Standard",
+        "to": "../Build/Plugins/Standard"
+    },
+    {
+        "action": "copyfile",
+        "from": "../Plugins/.htaccess",
+        "to": "../Build/Plugins/.htaccess"
+    },
+    {
+        "action": "copyfile",
+        "from": "../Plugins/build.php",
+        "to": "../Build/Plugins/build.php"
     }
 ]
