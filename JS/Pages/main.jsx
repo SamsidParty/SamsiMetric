@@ -50,7 +50,6 @@ function Topbar()
             setExtRedraw(UUID());
         }
         else if (e == "signout") {
-            
             localStorage.clear();
             location.reload();
         }
