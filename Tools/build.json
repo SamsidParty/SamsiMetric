@@ -32,6 +32,11 @@
         "action": "copyfile",
         "from": "../UploadedIcons/.htaccess",
         "to": "../Build/UploadedIcons/.htaccess"
+    },    
+    {
+        "action": "copyfile",
+        "from": "../UploadedIcons/get_icon.php",
+        "to": "../Build/UploadedIcons/get_icon.php"
     },
     {
         "action": "mkdir",
@@ -80,7 +85,7 @@
     },
     {
         "action": "copyfile",
-        "from": "../Plugins/build.php",
-        "to": "../Build/Plugins/build.php"
+        "from": "../Plugins/index.php",
+        "to": "../Build/Plugins/index.php"
     }
 ]

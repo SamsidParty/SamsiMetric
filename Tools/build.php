@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 function rrmdir($dir) { 
     if (is_dir($dir)) { 
       $objects = scandir($dir);
@@ -77,6 +81,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     mkdir("../Build/");
     mkdir("../Build/Clients/");
 
+    //Send The Client Some JSX From The Plugins Folder To Compile Into JS
+    //It's Hard To Do This On The Server Without NodeJS
+    $pluginFiles = new RecursiveIteratorIterator(new RecursiveDirectoryIterator('../Plugins/Standard'));
+    $jsxData = array();
+    foreach ($pluginFiles as $pluginFile) {
+        if ($pluginFile->isDir()) continue;
+        if (str_ends_with($pluginFile, ".jsx")) {
+            array_push($jsxData, array("name" => $pluginFile->getPathname(), "data" => file_get_contents($pluginFile->getPathname())));
+        }
+    }
+
+    echo json_encode($jsxData);
+
     exit(0);
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
@@ -103,8 +120,17 @@ else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
 
     file_put_contents("../Build/.prod", $clientVersion);
 
-    unlink("../.build");
+    exit(0);
+}
+else if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 
+    $data = json_decode(file_get_contents("php://input"), true);
+    file_put_contents($data["name"], $data["data"]);
+
+    exit(0);
+}
+else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    unlink("../.build");
     exit(0);
 }
 
@@ -165,6 +191,7 @@ else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
     <script>
 
         var lsBackup = {};
+        var pluginData = [];
 
         function Log(text) {
             document.getElementById("log").innerText += text + "\n";
@@ -198,8 +225,22 @@ else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
             Log("Restored LocalStorage");
         }
 
+        async function CompilePluginJSX(filesToCompile) {
+            var babel = await (await fetch("../JS/ThirdParty/babel.js")).text();
+            (1, eval)(babel);
+
+            var compiledFiles = [];
+            filesToCompile.forEach((l_file) => {
+                Log("[PLUGIN COMPILER] Compiling JSX " + l_file.name)
+                compiledFiles.push({ name: l_file.name.replace("../Plugins/Standard", "../Build/Plugins/Standard"), data: Babel.transform(l_file.data, { presets: ["react"] }).code });
+            });
+            pluginData = compiledFiles;
+        }
+
         async function ApplyDebugAPIKey() {
-            await fetch(window.location.href, { method: "POST", body: document.getElementById("version").value }); // Tells The Server To Activate The Build API Key
+            var filesToCompile = await fetch(window.location.href, { method: "POST", body: document.getElementById("version").value }); // Tells The Server To Activate The Build API Key
+
+            await CompilePluginJSX(await filesToCompile.json());
 
             localStorage.clear();
             localStorage.apikey_id = "build";
@@ -245,6 +286,20 @@ else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
             Log("Server Build Complete");
         }
 
+        async function CompleteBuild() {
+            Log("Cleaning Up");
+            await fetch(window.location.href, { method: "DELETE", });
+            Log("Cleaned Up Build Data");
+        }
+
+        async function UploadPlugins() {
+            for (let i = 0; i < pluginData.length; i++) {
+                Log("[PLUGIN COMPILER] Uploading JSX Plugin");
+                await fetch(window.location.href, { method: "PUT", body: JSON.stringify(pluginData[i]) });
+            }
+            Log("[PLUGIN COMPILER] All Plugins Uploaded");
+        }
+
         async function StartBuild() {
             var version = document.getElementById("version").value;
             if (version.length < 1) { Log("Enter A Version Number"); return; }
@@ -254,11 +309,13 @@ else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
             await ApplyDebugAPIKey();
             await LaunchSlave();
             await PublishBuild();
+            await UploadPlugins();
+            await CompleteBuild();
             RestoreStorage();
 
             Log("Build Complete!");
 
-            setTimeout(() => location.reload(), 5000);
+            //setTimeout(() => location.reload(), 5000);
         }
 
         Log("Build Tool Client Ready");
