@@ -72,6 +72,8 @@ function Sidebar()
             <SidebarWorkspaces workspaceTag={workspaceTag} ></SidebarWorkspaces>
 
             <NextUI.Spacer y={1} />
+
+            <PluginSurface mount="sidebar" />
         </div>
     )
 }

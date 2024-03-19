@@ -73,6 +73,8 @@ function Topbar()
     return (
         <div className="topbar">
 
+            <PluginSurface mount="topbar" />
+
             {       
                 localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager" ?
                 <Button auto flat color={workspaceTag} onPress={() => { window.workspaceEditMode = !window.workspaceEditMode; setExtRedraw(UUID()); }} className="iconButtonLarge"><i className={"ti ti-lock" + (window.workspaceEditMode ? "-open" : "")}></i></Button>

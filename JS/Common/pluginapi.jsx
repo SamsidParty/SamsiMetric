@@ -12,7 +12,13 @@ async function LoadAllPlugins() {
             script = Babel.transform(script, { presets: ["react"] }).code;
         }
 
-        eval(script);
+        try {
+            eval(script);
+        }
+        catch {
+            //TODO: GUI Error Handler
+        }
+
         console.log("Plugin Loaded " + l_plugin);
     }
 
@@ -31,7 +37,32 @@ window.PluginAPI = {
         console.log("Plugin Registered " + name);
         PluginAPI.registeredPlugins.push({ name: name, main: main })
     },
-    registeredPlugins: []
+    registeredPlugins: [],
+    surfaceMounts: {},
+    mountToSurface: (surface, component) => {
+        if (PluginAPI.surfaceMounts[surface] == undefined) {
+            PluginAPI.surfaceMounts[surface] = [];
+        }
+        PluginAPI.surfaceMounts[surface].push(component);
+    }
+}
+
+//A Component That Allows Plugins To Mount Themselves Onto It
+function PluginSurface(props) {
+
+    if (PluginAPI.surfaceMounts[props.mount] == undefined) {
+        PluginAPI.surfaceMounts[props.mount] = [];
+    }
+
+    return (
+        <>
+            {
+                PluginAPI.surfaceMounts[props.mount].map((ComponentToMount, l_index) => {
+                    return (<ComponentToMount key={"PluginMountedComponent_" + l_index} />);
+                })
+            }
+        </>
+    )
 }
 
 LoadAllPlugins();
