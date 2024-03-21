@@ -23,6 +23,7 @@ var GraphHeights = {
 //Used In The Graph Creation Screen
 var GraphTypes = [
     {
+        "native": "true",
         "name": "num_0",
         "for": ["average", "total", "country"],
         "size": ["csMedLong", "csShortLong"],
@@ -38,6 +39,7 @@ var GraphTypes = [
         ]
     },
     {
+        "native": "true",
         "name": "line_0",
         "for": ["snapshot", "total", "average", "country", "group"],
         "size": ["csMedLong", "csLongDouble"],
@@ -56,6 +58,7 @@ var GraphTypes = [
         ]
     },
     {
+        "native": "true",
         "name": "table_0",
         "for": ["group", "country"],
         "size": ["csLongDouble"],
@@ -87,6 +90,7 @@ var GraphTypes = [
         ]
     },
     {
+        "native": "true",
         "name": "pie_0",
         "for": ["group"],
         "size": ["csMedLong"],
@@ -111,6 +115,7 @@ var GraphTypes = [
         ]
     },
     {
+        "native": "true",
         "name": "progress_0",
         "for": ["group"],
         "size": ["csMedLong", "csShortLong"],
@@ -119,6 +124,7 @@ var GraphTypes = [
         "settings": []
     },
     {
+        "native": "true",
         "name": "map_0",
         "for": ["country", "group"],
         "size": ["csLongDouble"],

@@ -10,7 +10,9 @@ RunOnLoad("./JS/Viewer/Graphs/common.jsx", async () =>
     //Load All Graphs
     for (let i = 0; i < GraphTypes.length; i++)
     {
-        await LoadDependency(`./JS/Viewer/Graphs/${GraphTypes[i].name}.jsx`);
+        if (GraphTypes[i].native) {
+            await LoadDependency(`./JS/Viewer/Graphs/${GraphTypes[i].name}.jsx`);
+        }
     }
 });
 
@@ -135,7 +137,18 @@ function MetricGraph(props)
     }
     else
     {
-        var GraphToRender = ArrayValue(GraphTypes, "name", props.graph["type"]).render();
+        var GraphToRender = ArrayValue(GraphTypes, "name", props.graph["type"])?.render;
+
+        if (!GraphToRender) {
+            return (
+                <div style={ScaleGraph(props.cardSize)} className={"layoutCard graphError0 " + props.cardSize}>
+                    <GraphCommon {...props} />
+                    <i className="ti ti-question-mark"></i>
+                </div>
+            );
+        }
+
+        GraphToRender = GraphToRender();
         return (
             <MetricErrorBoundary key={nonce} graphNonce={nonce} style={ScaleGraph(props.cardSize)} {...props}>
                 <GraphToRender graphNonce={nonce} style={ScaleGraph(props.cardSize)} {...props} />

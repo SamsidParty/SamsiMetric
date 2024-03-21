@@ -4,6 +4,10 @@ function GraphEditor(props)
     var graphMeta = ArrayValue(window.GraphTypes, "name", props.graph.type);
     var GraphSettings = graphMeta.settingsui;
 
+    if (!GraphSettings) {
+        return (<></>)
+    }
+
     var apply = async (settings) =>
     {
         props.layout.graphs[props.graphIndex] = Object.assign({}, settings);
