@@ -1,5 +1,7 @@
 <?php
 
+chdir("../../../PHP");
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
@@ -104,7 +106,7 @@ else if ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
     file_put_contents($path, file_get_contents("php://input"));
 
     //Create Server Build
-    $buildInstructions = json_decode(file_get_contents("./build.json"), true);
+    $buildInstructions = json_decode(file_get_contents("../Plugins/DevOnly/Build Tool/build.json"), true);
 
     foreach ($buildInstructions as $inst) {
         if ($inst["action"] == "copyfolder") {
@@ -226,7 +228,7 @@ else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         }
 
         async function CompilePluginJSX(filesToCompile) {
-            var babel = await (await fetch("../JS/ThirdParty/babel.js")).text();
+            var babel = await (await fetch("../../../JS/ThirdParty/babel.js")).text();
             (1, eval)(babel);
 
             var compiledFiles = [];
@@ -254,7 +256,7 @@ else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         //Slave Is An IFrame That Runs The Dashboard, Which Dynamically Loads All The Files
         async function LaunchSlave() {
             window.slave = document.getElementById("slave");
-            slave.src = "../Dashboard";
+            slave.src = "../../../Dashboard";
             Log("Launching Build Slave");
 
             await WaitUntil(() => {
@@ -315,7 +317,12 @@ else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
 
             Log("Build Complete!");
 
-            //setTimeout(() => location.reload(), 5000);
+            localStorage.buildFinished = "true";
+        }
+
+        if (localStorage.buildParamName != undefined) {
+            document.getElementById("version").value = localStorage.buildParamName;
+            setTimeout(StartBuild, 10);
         }
 
         Log("Build Tool Client Ready");
