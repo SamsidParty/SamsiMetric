@@ -16,7 +16,9 @@ function ManageGroups(props)
 
     return (
         <>
-            <Button className="onlyShowIfHasMetrics" auto flat onPress={() => { setIsOpen(true); }}><i className="ti ti-package"></i>&nbsp;&nbsp;Groups</Button>
+            <Tooltip ttid="groupmanager" {...TTContent("static", "Group Metrics Together")}>
+                <Button className="onlyShowIfHasMetrics" auto flat onPress={() => { setIsOpen(true); }}><i className="ti ti-package"></i>&nbsp;&nbsp;Groups</Button>
+            </Tooltip>
             <Modal width="880px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>

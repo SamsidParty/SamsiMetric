@@ -28,19 +28,21 @@ function Sidebar()
                 <AutoTextSize mode="oneline" style={{ margin: 0, fontWeight: 500 }} maxFontSizePx={24}>{ProductName}</AutoTextSize>
             </div>
             <div className="flexx gap10">
-                <Dropdown>
-                    <Dropdown.Button css={{width: "160px", display: (DataIsValid() ? "flex" : "none")}} color={workspaceTag} flat>{ArrayValue(DataObject.schema, "id", DataObject["selected_project"]).name}</Dropdown.Button>
-                    <Dropdown.Menu selectionMode="single" onSelectionChange={switchProject} disallowEmptySelection aria-label="Project" items={DataObject["schema"]}>
-                        {(item) => (
-                            <Dropdown.Item
-                                key={item["id"]}
-                                color="default"
-                            >
-                                {item["name"]}
-                            </Dropdown.Item>
-                        )}
-                    </Dropdown.Menu>
-                </Dropdown>
+                <Tooltip ttid="selectproject" {...TTContent("static", "Select Project")}>
+                    <Dropdown>
+                        <Dropdown.Button css={{width: "160px", display: (DataIsValid() ? "flex" : "none")}} color={workspaceTag} flat>{ArrayValue(DataObject.schema, "id", DataObject["selected_project"]).name}</Dropdown.Button>
+                        <Dropdown.Menu selectionMode="single" onSelectionChange={switchProject} disallowEmptySelection aria-label="Project" items={DataObject["schema"]}>
+                            {(item) => (
+                                <Dropdown.Item
+                                    key={item["id"]}
+                                    color="default"
+                                >
+                                    {item["name"]}
+                                </Dropdown.Item>
+                            )}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Tooltip>
                 
                 <Skeleton width="160px" contrast/>
 

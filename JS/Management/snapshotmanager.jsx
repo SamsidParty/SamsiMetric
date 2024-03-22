@@ -19,7 +19,9 @@ function ManageSnapshots(props) {
 
     return (
         <>
-            <Button className="manageSnapshotsButton" flat auto onPress={() => { setIsOpen(true); }}><i className="ti ti-timeline"></i>&nbsp;&nbsp;Snappers</Button>
+            <Tooltip ttid="snapshotmanager" {...TTContent("static", "Capture Metrics Over Time")}>
+                <Button className="manageSnapshotsButton" flat auto onPress={() => { setIsOpen(true); }}><i className="ti ti-timeline"></i>&nbsp;&nbsp;Snappers</Button>
+            </Tooltip>
             <Modal width="900px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>

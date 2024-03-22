@@ -76,11 +76,17 @@ function Topbar()
 
             {       
                 localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager" ?
-                <Button auto flat color={workspaceTag} onPress={() => { window.workspaceEditMode = !window.workspaceEditMode; setExtRedraw(UUID()); }} className="iconButtonLarge"><i className={"ti ti-lock" + (window.workspaceEditMode ? "-open" : "")}></i></Button>
+                (
+                    <Tooltip ttid="lockworkspace" {...TTContent("lockworkspace")}>
+                        <Button auto flat color={workspaceTag} onPress={() => { window.workspaceEditMode = !window.workspaceEditMode; setExtRedraw(UUID()); }} className="iconButtonLarge"><i className={"ti ti-lock" + (window.workspaceEditMode ? "-open" : "")}></i></Button>
+                    </Tooltip>
+                )
                 : <></>
             }
 
-            <Button auto flat color={databaseTag} onPress={() => RefreshData(true)} className="iconButtonLarge"><i className={"ti ti-" + databaseIcon}></i></Button>
+            <Tooltip ttid="databasestatus" {...TTContent("static", "Database Status")}>
+                <Button auto flat color={databaseTag} onPress={() => RefreshData(true)} className="iconButtonLarge"><i className={"ti ti-" + databaseIcon}></i></Button>
+            </Tooltip>
 
             <Dropdown>
                 <Dropdown.Trigger>

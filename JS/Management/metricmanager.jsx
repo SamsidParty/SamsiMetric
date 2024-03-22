@@ -70,7 +70,9 @@ function ManageMetrics()
 
     return (
         <>
-            <Button className="manageMetricsButton" auto onPress={() => { setIsOpen(true); }}><i className="ti ti-ruler-2"></i>&nbsp;&nbsp;Metrics</Button>
+            <Tooltip ttid="metricmanager" {...TTContent("static", "Collect Data")}>
+                <Button className="manageMetricsButton" auto onPress={() => { setIsOpen(true); }}><i className="ti ti-ruler-2"></i>&nbsp;&nbsp;Metrics</Button>
+            </Tooltip>
             <Modal width="900px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>

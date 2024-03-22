@@ -14,6 +14,10 @@ var tooltipTemplates = {
     graphmetric: {
         content: (param) => `${param[0]}: ${param[1].toLocaleString("en-US")}`,
         placement: "bottom"
+    },
+    lockworkspace: {
+        content: () => !!window.workspaceEditMode ? "Lock Workspace" : "Unlock Workspace",
+        placement: "bottom"
     }
 }
 
@@ -101,7 +105,7 @@ function Tooltip(props) {
 
     return (
         <React.Fragment>
-            { React.cloneElement( props.children, { onMouseEnter: mouseEnter, onMouseLeave: mouseLeave } ) }
+            { React.cloneElement( props.children, { onMouseEnter: mouseEnter, onMouseLeave: mouseLeave, "aria-label": props.content } ) }
         </React.Fragment>
     )
 }
