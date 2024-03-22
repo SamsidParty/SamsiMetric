@@ -1,7 +1,8 @@
 var SnappableMetrics = [
     "total",
     "average",
-    "group"
+    "group",
+    "country"
 ]
 
 function MetricEdit_snapshot(props)

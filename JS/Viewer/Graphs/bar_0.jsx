@@ -223,9 +223,9 @@ function Graphbar_0_Bar(props) {
                     defaultChartData.datasets.push({
                         data: values,
                         label: l_name,
-                        backgroundColor: tagColors[metricDatas[l_index].tag],
+                        backgroundColor: colors[l_index],
                         fill: true,
-                        borderColor: tagColors[metricDatas[l_index].tag],
+                        borderColor: colors[l_index],
                         spanGaps: true,
                     });
                 });

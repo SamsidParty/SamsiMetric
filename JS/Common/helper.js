@@ -235,7 +235,7 @@ function FillChart(metric, DataObject, options) {
     var percents = [];
     var metricDatas = [];
 
-    depList.forEach((l_dep) =>
+    depList.forEach((l_dep, l_index) =>
     {
         var dep = ArrayValue(metrics, "id", l_dep);
 
@@ -246,10 +246,8 @@ function FillChart(metric, DataObject, options) {
             values.push(parseFloat(value));
             icons.push(dep.icon);
             metricDatas.push(dep);
-            if (colors.length >= 5 && !options?.rawColor) {
-                //TODO: Make A Better Color Generator
-                var randomByte = () => Math.floor(Math.random() * 254);
-                colors.push(`rgb(${randomByte()}, ${randomByte()}, ${randomByte()})`);
+            if (colors.includes(tagColors[dep["tag"]]) && !options?.rawColor) {
+                colors.push(SaturateColor(tagColors[dep["tag"]], 25 * l_index));
             }
             else {
                 colors.push(tagColors[dep["tag"]]);
@@ -318,4 +316,15 @@ async function WaitUntil(cond) {
     if (cond()) { return; }
     const delayMs = 10;
     while(!cond()) await new Promise(resolve => setTimeout(resolve, delayMs));
+}
+
+function SaturateColor(color, amount){
+    const clamp = (val) => Math.min(Math.max(val, 0), 0xFF)
+    const fill = (str) => ('00' + str).slice(-2)
+
+    const num = parseInt(color.substr(1), 16)
+    const red = clamp((num >> 16) + amount)
+    const green = clamp(((num >> 8) & 0x00FF) + amount)
+    const blue = clamp((num & 0x0000FF) + amount)
+    return '#' + fill(red.toString(16)) + fill(green.toString(16)) + fill(blue.toString(16))
 }
