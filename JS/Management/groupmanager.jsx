@@ -2,6 +2,7 @@ function CreateGroup()
 {
     var metric = Object.assign({}, SampleMetric());
     metric.type = "group";
+    metric.name = "New Group";
     manageProjectsQueue.push({ "method": "POST", "action": "metric_info", "type": metric["type"], "metric_id": metric["id"], "project_id": CurrentProject(window.lastDataObject)["id"] });
     CurrentProject(lastDataObject)["metrics"].push(metric);
     setExtDataObject(Object.assign({}, lastDataObject));

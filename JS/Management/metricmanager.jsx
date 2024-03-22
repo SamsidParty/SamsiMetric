@@ -22,14 +22,12 @@ var SampleMetric = () =>
 var MetricNames = {
     "total": "Total Number",
     "average": "Average Number",
-    "country": "Numbers By Country",
-    "snapshot": "Snapshot"
+    "country": "Numbers By Country"
 }
 var MetricTypeDetails = {
     "total": "The Sum Of Multiple Data Submissions",
     "average": "The Average Of Multiple Data Submissions",
-    "country": "Total Numbers Arranged By Country",
-    "snapshot": "Capture Data Over Time"
+    "country": "Total Numbers Arranged By Country"
 }
 var MetricTypes = Object.fromEntries(
     Object
@@ -39,7 +37,7 @@ var MetricTypes = Object.fromEntries(
 
 function ShouldShowMetric(metricType)
 {
-    if (metricType == "group") { return false; }
+    if (metricType == "group" || metricType == "snapshot") { return false; }
     return true;
 }
 
