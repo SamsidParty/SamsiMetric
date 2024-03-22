@@ -124,6 +124,15 @@ function DashboardLayout(props)
                     return (<LayoutToRender key={`${l_layout.type}_${l_index}_${workspace.id}`} {...props} workspace={workspace} layout={l_layout} layoutIndex={l_index}></LayoutToRender>);
                 })
             }
+            {
+                !!window.workspaceEditMode ? 
+                (
+                    <div className="flexx facenter fjcenter fillx">
+                        <Button flat color={CurrentWorkspace(DataObject)?.tag || "secondary"}><i className="ti ti-plus"/>&nbsp;&nbsp;Add Layout</Button>
+                    </div>
+                )
+                : (<></>)
+            }
         </div>
     );
 }
