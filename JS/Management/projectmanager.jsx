@@ -57,6 +57,7 @@ function ManageProject()
         setTimeout(async () => {
             await LoadDependency("./JS/Management/metricmanager.jsx");
             await LoadDependency("./JS/Management/groupmanager.jsx");
+            await LoadDependency("./JS/Management/snapshotmanager.jsx");
             setExtRedraw(UUID());
         }, 0)
     }
@@ -101,7 +102,7 @@ function ManageProject()
 
                         <div className="metricPreviewContent">
                             <div className="metricStatus onlyShowIfHasMetrics">
-                                <h3 className="boldText">Metrics & Groups</h3>
+                                <h3 className="boldText">Metrics, Groups, & Snappers</h3>
                             </div>
                             <div className="metricPreviewButtons">
                                 {
@@ -112,6 +113,11 @@ function ManageProject()
                                 {
                                     window.ManageGroups ? 
                                     (<ManageGroups/>) : 
+                                    <></>
+                                }                                
+                                {
+                                    window.ManageSnapshots ? 
+                                    (<ManageSnapshots/>) : 
                                     <></>
                                 }
                             </div>

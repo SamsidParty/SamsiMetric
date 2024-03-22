@@ -81,6 +81,7 @@
 
 .hasMetrics .metricPreviewButtons button {
     width: 100%;
+    padding: 5px;
 }
 
 .noMetrics .onlyShowIfHasMetrics {

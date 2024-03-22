@@ -15,7 +15,7 @@ function ManageGroups(props)
 
     return (
         <>
-            <Button className="onlyShowIfHasMetrics" auto flat onPress={() => { setIsOpen(true); }}><i className="ti ti-package"></i>&nbsp;&nbsp;Edit Groups</Button>
+            <Button className="onlyShowIfHasMetrics" auto flat onPress={() => { setIsOpen(true); }}><i className="ti ti-package"></i>&nbsp;&nbsp;Groups</Button>
             <Modal width="880px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>

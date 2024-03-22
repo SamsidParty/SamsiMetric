@@ -72,7 +72,7 @@ function ManageMetrics()
 
     return (
         <>
-            <Button className="manageMetricsButton" auto onPress={() => { setIsOpen(true); }}><i className="ti ti-ruler-2"></i>&nbsp;&nbsp;Edit Metrics</Button>
+            <Button className="manageMetricsButton" auto onPress={() => { setIsOpen(true); }}><i className="ti ti-ruler-2"></i>&nbsp;&nbsp;Metrics</Button>
             <Modal width="900px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>
