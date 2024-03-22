@@ -59,6 +59,19 @@ var GraphTypes = [
     },
     {
         "native": "true",
+        "name": "bar_0",
+        "for": ["snapshot", "total", "average", "country", "group"],
+        "size": ["csMedLong", "csLongDouble"],
+        "render": () => Graphbar_0,
+        "settingsui": (props) => graphsettings_standard(props),
+        "settings": [
+        ],
+        "dependencies": [
+            "./JS/ThirdParty/chart.js"
+        ]
+    },
+    {
+        "native": "true",
         "name": "table_0",
         "for": ["group", "country"],
         "size": ["csLongDouble"],

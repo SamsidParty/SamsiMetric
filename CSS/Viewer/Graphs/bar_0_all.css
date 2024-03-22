@@ -1,0 +1,15 @@
+.graphBar0 .metricName {
+    font-family: InterVariable !important;
+    font-weight: 500;
+    text-transform: uppercase;
+ 
+    margin: 0;
+    font-size: 14px;
+    color: var(--col-text-secondary);
+    letter-spacing: normal;
+    line-height: normal;
+ 
+    position: absolute;
+    top: 15px;
+    left: 15px;
+ }
