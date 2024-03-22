@@ -62,7 +62,7 @@ function Graphmap_0_GroupHeader(props)
     return (
         <div className="mapHeader mapGroupHeader">
             <div className="metricIcon" style={{ backgroundColor: tagColors[props.selectedMetric.tag] }}>
-                <CachedIcon src={props.selectedMetric.icon} />
+                <CachedIcon key={UUID()} src={props.selectedMetric.icon} />
             </div>
             <Dropdown color={props.metric.tag}>
                 <Dropdown.Button auto light css={{ tt: "capitalize" }}>
