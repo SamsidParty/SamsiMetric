@@ -72,31 +72,53 @@ function Graphbar_0_Bar(props) {
             name: "1H",
             fullName: "Past Hour",
             unix: [unixSeconds - 3600, unixSeconds],
-            detail: 6
+            detail: 6,
+            label: (t, i) => i == 5 ? "Now" : (5 - i) + "0M Ago"
         },
         {
             name: "24H",
             fullName: "Past 24 Hours",
             unix: [unixSeconds - 86400, unixSeconds],
-            detail: 24
+            detail: 12,
+            label: (t, i) => {
+                var d = (new Date());
+                d.setHours(d.getHours() - ((11 - i) * 2));
+                d.setMinutes(0, 0, 0);
+                return Intl.DateTimeFormat('default',{ hour12: true, hour: 'numeric', minute: 'numeric' }).format(d);
+            }
         },
         {
             name: "7D",
             fullName: "Past Week",
             unix: [unixSeconds - 604800, unixSeconds],
-            detail: 7
+            detail: 7,
+            label: (t, i) => {
+                var d = (new Date());
+                d.setDate(d.getDate() - (6 - i));
+                return Intl.DateTimeFormat('default',{ weekday: 'short' }).format(d);
+            }
         },
         {
             name: "30D",
             fullName: "Past Month",
             unix: [unixSeconds - 2592000, unixSeconds],
-            detail: 15
+            detail: 15,
+            label: (t, i) => {
+                var d = (new Date());
+                d.setDate(d.getDate() - ((14 - i) * 2));
+                return d.getDate();
+            }
         },
         {
             name: "1Y",
             fullName: "Past Year",
             unix: [unixSeconds - 31536000, unixSeconds],
-            detail: 12
+            detail: 12,
+            label: (t, i) => {
+                var d = (new Date());
+                d.setMonth(d.getMonth() - (11 - i));
+                return Intl.DateTimeFormat('default',{ month: 'short' }).format(d);
+            }
         },
     ]
 
@@ -131,14 +153,39 @@ function Graphbar_0_Bar(props) {
         labels: [],
         datasets: [],
         options: {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: false,
+                    intersect: false,
+                    position: "nearest",
+                    external: window.ChartJSTooltipInterop,
+                },
+                dashedline: {
+                    color: 'transparent',
+                }
+            },
             scales: {
                 x: {
-                  stacked: true,
+                    stacked: true,
+                    display: props.cardSize == "csLongDouble" // Only Show Axis On Large Graph
                 },
                 y: {
-                  stacked: true
+                    stacked: true,
+                    display: props.cardSize == "csLongDouble"
                 }
-            }
+            },
+            layout: {
+                padding: {
+                    top: 10,
+                    left: props.cardSize == "csLongDouble" ? 10 : 0, // Only Add Padding If The Graph Is Large Enough
+                    right: props.cardSize == "csLongDouble" ? 10 : 0,
+                    bottom: props.cardSize == "csLongDouble" ? 10 : 0,
+                }
+            },
+            maintainAspectRatio: false,
         },
         shouldRefresh: true,
         key: "default"
@@ -152,27 +199,27 @@ function Graphbar_0_Bar(props) {
                 //Add Series Data To The Chart
                 names.forEach((l_name, l_index) => {
                     var values = [];
-    
+
                     for (let i = 0; i < timeRange.detail; i++) {
                         var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
                         var snap = SnapshotAt(metricDatas[l_index].id, timeOfSnap);
                         var stubDataObject = { data: {} };
-    
+
                         if (snap && snap.SnapData) {
                             stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
                             var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
-    
+
                             values.push(value);
-    
+
                             dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
                         }
-    
+
                         if (l_index == 0) {
                             var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
-                            defaultChartData.labels.push(timeOfAxis);
+                            defaultChartData.labels.push(timeRange.label(timeOfAxis, i));
                         }
                     }
-    
+
                     defaultChartData.datasets.push({
                         data: values,
                         label: l_name,
