@@ -133,6 +133,7 @@ function DashboardLayout(props)
                 )
                 : (<></>)
             }
+            <NextUI.Spacer y={1}/>
         </div>
     );
 }

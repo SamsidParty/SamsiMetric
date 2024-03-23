@@ -4,19 +4,19 @@ var DummyLayout = () => {};
 var LayoutTypes = [
     {
         "name": "layout_1",
-        "render": () => layout_1,
+        "render": () => Layout_1,
         "height": 140,
         "graphcount": 4
     },
     {
         "name": "layout_2",
-        "render": () => layout_2,
+        "render": () => Layout_2,
         "height": 70,
         "graphcount": 4
     },
     {
         "name": "layout_3",
-        "render": () => layout_3,
+        "render": () => Layout_3,
         "height": 310,
         "graphcount": 2
     }

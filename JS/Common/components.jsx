@@ -26,7 +26,12 @@ function DeleteButton(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <p style={{ textAlign: "center" }}>
-                        This Change Can Be Reverted By Pressing The 'Discard' Button.
+                        {
+                            !!props.noRevert ? 
+                            "This Change Cannot Be Undone" :
+                            "This Change Can Be Reverted By Pressing The 'Discard' Button."
+                        }
+                        
                     </p>
                     <div className="flexx fillx facenter fjcenter gap10">
                         <Button flat color="error" onPress={() => { setIsOpen(false); }}>Cancel</Button>
