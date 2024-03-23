@@ -12,7 +12,7 @@ function LayoutCommon(props) {
     return (
         <>
             {
-                window.workspaceEditMode ? 
+                (window.workspaceEditMode && !props.preview) ? 
                 (
                     <Tooltip ttid={"deletelayout_" + UUID()} {...TTContent("static", "Delete Layout")}>
                         <DeleteButton noRevert={true} onDelete={deleteLayout}></DeleteButton>
