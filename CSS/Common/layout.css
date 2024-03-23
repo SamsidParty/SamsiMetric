@@ -16,6 +16,12 @@
     padding-left: 15px;
     padding-right: 15px;
     gap: 20px;
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+}
+
+.dashboardLayout::-webkit-scrollbar { 
+    display: none;
 }
 
 .layout1 {

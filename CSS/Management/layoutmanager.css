@@ -1,12 +1,28 @@
 .layoutPreview {
     background-color: var(--col-bg);
-    border-radius: 10px;
     overflow: hidden;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
+    margin-bottom: 0;
+    position: relative;
+}
+
+.layoutPreview:first-child {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.layoutPreview:last-child {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 .layoutPreview .workspaceLayout {
     transform: scale(0.5);
+}
+
+.layoutPreview button {
+    position: absolute;
+    right: 15px;
 }
