@@ -128,7 +128,7 @@ function DashboardLayout(props)
                 !!window.workspaceEditMode ? 
                 (
                     <div className="flexx facenter fjcenter fillx">
-                        <Button flat color={CurrentWorkspace(DataObject)?.tag || "secondary"}><i className="ti ti-plus"/>&nbsp;&nbsp;Add Layout</Button>
+                        <AddLayout/>
                     </div>
                 )
                 : (<></>)

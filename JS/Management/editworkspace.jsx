@@ -4,6 +4,7 @@ var workspaceEditMode = false;
 RunOnLoad("./JS/Management/editworkspace.jsx", async () => {
     await LoadDependency("./JS/Management/graphselect.jsx");
     await LoadDependency("./JS/Management/graphsettings.jsx");
+    await LoadDependency("./JS/Management/layoutmanager.jsx");
 });
 
 async function SyncWorkspaceChanges(DataObject) {
