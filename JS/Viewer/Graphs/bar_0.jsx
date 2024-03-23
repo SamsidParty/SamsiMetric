@@ -174,7 +174,7 @@ function Graphbar_0_Bar(props) {
                 },
                 y: {
                     stacked: true,
-                    display: props.cardSize == "csLongDouble"
+                    display: false
                 }
             },
             layout: {
