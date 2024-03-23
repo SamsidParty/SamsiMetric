@@ -1,11 +1,20 @@
 //Full Layout Functions Are Not Loaded On Mobile
 var DummyLayout = () => {};
 
-var WorkspaceLayouts = {
-    "layout_1": window.isDesktop ? layout_1 : DummyLayout,
-    "layout_2": window.isDesktop ? layout_2 : DummyLayout,
-    "layout_3": window.isDesktop ? layout_3 : DummyLayout,
-};
+var LayoutTypes = [
+    {
+        "name": "layout_1",
+        "render": () => layout_1
+    },
+    {
+        "name": "layout_2",
+        "render": () => layout_2
+    }    ,
+    {
+        "name": "layout_3",
+        "render": () => layout_3
+    }
+]
 
 //Used In Scaling Calculations On Mobile
 var GraphWidths = {
@@ -154,4 +163,8 @@ var GraphTypes = [
 
 function GetMetadataFromGraph(graph) {
     return ArrayValue(GraphTypes, "name", graph.type);
+}
+
+function GetMetadataFromLayout(layout) {
+    return ArrayValue(LayoutTypes, "name", layout.type);
 }

@@ -120,7 +120,7 @@ function DashboardLayout(props)
         <div className="dashboardLayout">
             {
                 CurrentWorkspace(DataObject)?.layouts?.map((l_layout, l_index) => {
-                    var LayoutToRender = window.WorkspaceLayouts[l_layout.type];
+                    var LayoutToRender = GetMetadataFromLayout(l_layout).render();
                     return (<LayoutToRender key={`${l_layout.type}_${l_index}_${workspace.id}`} {...props} workspace={workspace} layout={l_layout} layoutIndex={l_index}></LayoutToRender>);
                 })
             }
