@@ -1,11 +1,12 @@
 function AddLayout() {
 
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
+    var [isOpen, setIsOpen] = React.useState(false);
 
     return (
         <>
             <Tooltip ttid="layoutmanager" {...TTContent("static", "Collect Data")}>
-                <Button flat color={CurrentWorkspace(DataObject)?.tag || "secondary"}><i className="ti ti-plus"/>&nbsp;&nbsp;Add Layout</Button>
+                <Button onPress={() => setIsOpen(true)} flat color={CurrentWorkspace(DataObject)?.tag || "secondary"}><i className="ti ti-plus"/>&nbsp;&nbsp;Add Layout</Button>
             </Tooltip>
             <Modal width="900px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
