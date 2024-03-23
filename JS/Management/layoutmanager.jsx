@@ -15,7 +15,16 @@ function AddLayout() {
                     </Text>
                 </Modal.Header>
                 <Modal.Body css={{ padding: "25px" }}>
-
+                    {
+                        LayoutTypes.map((l_layout) => {
+                            var LayoutToRender = l_layout.render();
+                            return (
+                                <div className="layoutPreview" style={{ height: (l_layout.height * 0.5 + 30) + "px" }}>
+                                    <LayoutToRender key={UUID()} preview={true}/>
+                                </div>
+                            )
+                        })
+                    }
                 </Modal.Body>
             </Modal>
         </>

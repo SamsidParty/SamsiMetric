@@ -4,15 +4,18 @@ var DummyLayout = () => {};
 var LayoutTypes = [
     {
         "name": "layout_1",
-        "render": () => layout_1
+        "render": () => layout_1,
+        "height": 140
     },
     {
         "name": "layout_2",
-        "render": () => layout_2
-    }    ,
+        "render": () => layout_2,
+        "height": 70
+    },
     {
         "name": "layout_3",
-        "render": () => layout_3
+        "render": () => layout_3,
+        "height": 310
     }
 ]
 

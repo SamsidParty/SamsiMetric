@@ -22,7 +22,7 @@ function DummyGraph(props)
     return (
         <div className={"flexx facenter fjcenter layoutCard " + props.cardSize}>
             {
-                (window.workspaceEditMode) ?
+                (window.workspaceEditMode && !props.preview) ?
                     <>
                         <GraphSelect {...props}></GraphSelect>
                     </>
@@ -129,32 +129,30 @@ async function LoadGraphDependencies(workspace)
 
 function MetricGraph(props)
 {
-    var nonce = `N_Graph_${props.graphIndex}_Layout_${props.layoutIndex}_Workspace_${props.workspace.id}`; // Used To Identify Graph Across Rerenders
-
     if (props.graph == undefined || Object.keys(props.graph).length == 0)
     {
         return DummyGraph(props);
     }
-    else
-    {
-        var GraphToRender = ArrayValue(GraphTypes, "name", props.graph["type"])?.render;
 
-        if (!GraphToRender) {
-            return (
-                <div style={ScaleGraph(props.cardSize)} className={"layoutCard graphError0 " + props.cardSize}>
-                    <GraphCommon {...props} />
-                    <i className="ti ti-question-mark"></i>
-                </div>
-            );
-        }
+    var nonce = `N_Graph_${props.graphIndex}_Layout_${props.layoutIndex}_Workspace_${props.workspace.id}`; // Used To Identify Graph Across Rerenders
+    var GraphToRender = ArrayValue(GraphTypes, "name", props.graph["type"])?.render;
 
-        GraphToRender = GraphToRender();
+    if (!GraphToRender) {
         return (
-            <MetricErrorBoundary key={nonce} graphNonce={nonce} style={ScaleGraph(props.cardSize)} {...props}>
-                <GraphToRender graphNonce={nonce} style={ScaleGraph(props.cardSize)} {...props} />
-            </MetricErrorBoundary>
-        )
+            <div style={ScaleGraph(props.cardSize)} className={"layoutCard graphError0 " + props.cardSize}>
+                <GraphCommon {...props} />
+                <i className="ti ti-question-mark"></i>
+            </div>
+        );
     }
+
+    GraphToRender = GraphToRender();
+    return (
+        <MetricErrorBoundary key={nonce} graphNonce={nonce} style={ScaleGraph(props.cardSize)} {...props}>
+            <GraphToRender graphNonce={nonce} style={ScaleGraph(props.cardSize)} {...props} />
+        </MetricErrorBoundary>
+    )
+    
 }
 
 //Scale The Graph On Mobile

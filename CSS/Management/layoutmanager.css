@@ -1,0 +1,12 @@
+.layoutPreview {
+    background-color: var(--col-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.layoutPreview .workspaceLayout {
+    transform: scale(0.5);
+}
