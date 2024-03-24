@@ -5,6 +5,8 @@ RewriteRule ^Login$ ./Pages/login.php  [L]
 RewriteRule ^MobileClient$ ./Pages/mobile.php  [L]
 RewriteRule ^API/(.*)$ ./PHP/API/api.php [L]
 
+DirectoryIndex index.php
+
 RewriteEngine On
 <FilesMatch "\.(html|htm|js|jsx|css)$">
   FileETag None

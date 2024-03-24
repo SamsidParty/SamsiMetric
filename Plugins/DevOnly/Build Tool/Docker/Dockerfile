@@ -8,6 +8,6 @@ RUN apt-get update && apt-get install -y cron
 COPY Build/ html
 
 WORKDIR /var/www/html
-COPY .env ./
+COPY .en[v] ./
 
 EXPOSE 80

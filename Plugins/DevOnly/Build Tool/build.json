@@ -25,6 +25,11 @@
         "to": "../Build/backend.php"
     },
     {
+        "action": "copyfile",
+        "from": "../index.php",
+        "to": "../Build/index.php"
+    },
+    {
         "action": "mkdir",
         "to": "../Build/UploadedIcons"
     },
