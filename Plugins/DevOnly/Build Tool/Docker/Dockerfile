@@ -10,4 +10,9 @@ COPY Build/ html
 WORKDIR /var/www/html
 COPY .en[v] ./
 
+ENV DB_USERNAME=
+ENV DB_HOST=
+ENV DB_PASSWORD=
+ENV DB_ANALYTICS=
+
 EXPOSE 80
