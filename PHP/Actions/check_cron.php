@@ -14,7 +14,7 @@ $hasJob = false;
 
 //Check If Cron Job Already Exists
 foreach ($crontab as $line) {
-    if (str_contains($line, "PHP/MetricWriters/snadshot.php")) {
+    if (str_contains($line, "PHP/MetricWriters/snapshot.php")) {
         $hasJob = true;
     }
 }
