@@ -1,4 +1,4 @@
-.loginPage {
+.setupPage {
     width: 100vw;
     height: 100vh;
     background-position: center;
@@ -6,7 +6,7 @@
     background-size: cover;
 }
 
-.loginContainer {
+.setupContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +18,7 @@
     padding-bottom: 150px;
 }
 
-.loginModal {
+.setupModal {
     display: flex;
     flex-direction: column;
     background-color: var(--col-contrast);

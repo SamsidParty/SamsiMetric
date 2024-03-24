@@ -64,9 +64,9 @@ function LoginModal()
 
 
     return (
-        <ClientImage background="true" className="loginPage" src="./Images/BackgroundDecoration.jpg">
-            <div className="loginContainer">
-                <div className="loginModal">
+        <ClientImage background="true" className="setupPage" src="./Images/BackgroundDecoration.jpg">
+            <div className="setupContainer">
+                <div className="setupModal loginModal">
                     <h1>Sign In To SamsiMetric</h1>
                     <Input size="xl" label={error} status={status} autoFocus={true} bordered placeholder="Enter API Key" onChange={onKeyChanged} onKeyDown={onEnter} initialValue={preloadKey} />
                     <ClientImage className="loginIcon" src="./Images/LoginIcon.png"></ClientImage>
