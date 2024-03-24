@@ -107,6 +107,9 @@ async function RefreshData(ignoreSchema)
         if (response.status == 401 || response.status == 424) {
             window.location.href = "./Login"
         }
+        else if (response.status == 500) {
+            window.location.href = "./Setup?reason=database"
+        }
         dataStatus = "error";
         return;
     }
