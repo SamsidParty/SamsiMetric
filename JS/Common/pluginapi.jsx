@@ -1,7 +1,7 @@
 AutoLoadThisFile();
 
 async function LoadAllPlugins() {
-    var pluginList = ParseIndexTree(await (await fetch("./Plugins/index.php")).text(), (e) => e.endsWith(".js") || e.endsWith(".jsx"));
+    var pluginList = ParseIndexTree(await (await fetch("./Plugins/index.php")).text(), (e) => e.endsWith(".plugin.js") || e.endsWith(".plugin.jsx"));
     
     for (let i = 0; i < pluginList.length; i++) {
         var l_plugin = pluginList[i];

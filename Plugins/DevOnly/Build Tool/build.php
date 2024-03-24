@@ -133,6 +133,11 @@ else if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     unlink("../.build");
+
+    //Copy Build To Docker Folder
+    rmdir("../Plugins/DevOnly/Build Tool/Docker/Build");
+    xcopy("../Build", "../Plugins/DevOnly/Build Tool/Docker/Build");
+
     exit(0);
 }
 
