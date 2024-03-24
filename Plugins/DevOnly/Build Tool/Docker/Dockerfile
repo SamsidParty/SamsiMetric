@@ -15,4 +15,6 @@ ENV DB_HOST=
 ENV DB_PASSWORD=
 ENV DB_ANALYTICS=
 
+VOLUME /var/www/html/Plugins/Standard
+
 EXPOSE 80
