@@ -34,6 +34,10 @@ if (!function_exists("mysqli_connect")) {
     http_response_code(500);
     die('[{"type":"error","error":"MYSQL Is Not Available"}]');
 }
+if (count(DB::query("SHOW TABLES LIKE 'config'")) != 1) {
+    http_response_code(503);
+    die('[{"type":"error","error":"Database Is Not Configured For SamsiMetric"}]');
+}
 
 //MeekroDB Code
 /*
