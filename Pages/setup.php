@@ -1,4 +1,22 @@
-<?php require("./common.php") ?>
+<?php
+
+//Enable Error Reporting
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+require("./common.php");
+
+if (isset($_GET['reason']) && $_GET['reason'] == "formatcomplete") {
+    //Actually Do The Format
+    chdir("../");
+    $data = file_get_contents("./Templates/SQL/initial.sql");
+    $setupMode = true;
+    require_once("./PHP/sql.php");
+    DB::getMDB()->get()->multi_query($data);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

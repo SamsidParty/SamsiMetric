@@ -110,6 +110,9 @@ async function RefreshData(ignoreSchema)
         else if (response.status == 500) {
             window.location.href = "./Setup?reason=database"
         }
+        else if (response.status == 503) {
+            window.location.href = "./Setup?reason=format"
+        }
         dataStatus = "error";
         return;
     }
