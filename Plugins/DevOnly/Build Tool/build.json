@@ -3,6 +3,11 @@
         "action": "copyfolder",
         "from": "../Images",
         "to": "../Build/Images"
+    },    
+    {
+        "action": "copyfolder",
+        "from": "../Templates",
+        "to": "../Build/Templates"
     },
     {
         "action": "copyfolder",
