@@ -143,9 +143,7 @@ function SidebarWorkspaces(props)
                                     <Tooltip ttid={"reorderworkspaces"} {...TTContent("static", "Reorder Workspaces")}>
                                         <Button onPress={reorderWorkspaces} style={(hasNoWorkspaces) ? { display: "none" } : {}} color={props.workspaceTag} flat auto className="iconButton"><i className={reorderMode ? "ti ti-check" : "ti ti-menu-order"}></i></Button>
                                     </Tooltip>
-                                    <Tooltip ttid={"addworkspace"} {...TTContent("static", "Create Workspace")}>
-                                        <Button style={(hasNoWorkspaces) ? { display: "flex" } : {}} color={props.workspaceTag} flat auto className="iconButton"><i className="ti ti-plus"></i></Button>
-                                    </Tooltip>
+                                    <CreateWorkspace style={(hasNoWorkspaces) ? { display: "flex" } : {}} {...props} />
                                 </>
                             )
                         }
