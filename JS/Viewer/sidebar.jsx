@@ -155,7 +155,15 @@ function SidebarWorkspaces(props)
             </div>
 
             <div className={reorderMode ? "workspaceList reorderWorkspaceList" : "workspaceList"}>
+                {
+                    //Show Image If There Are No Workspaces
+                    ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid() && CurrentProject(DataObject).workspaces.length < 1) ? 
+                    (<ClientImage style={{ borderRadius: "10px" }} src="./Images/TooltipNoWorkspaces.png" />)
+                    : (<></>)
+                }
+
                 <SidebarWorkspaceSkeletons/>
+
                 {
                     //Render A List Of Buttons If Not In Reorder Mode
                     //Render A Sortable List In Reorder Mode
