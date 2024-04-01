@@ -66,3 +66,48 @@ function Layout_3(props) {
         </div>
     )
 }
+
+
+function Layout_4(props) {
+
+    var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
+
+    return (
+        <div style={props.style || {}} className="workspaceLayout layout3">
+            <MetricGraph cardSize="csLongDouble" {...props} graphIndex={0} graph={props.layout?.graphs?.[0]} />
+            <div className="flexy gap20">
+                <div className="flexx gap20">
+                    <MetricGraph cardSize="csMedLong" {...props} graphIndex={1} graph={props.layout?.graphs?.[1]} />
+                    <MetricGraph cardSize="csMedLong" {...props} graphIndex={2} graph={props.layout?.graphs?.[2]} />
+                </div>
+                <div className="flexx gap20">
+                    <MetricGraph cardSize="csMedLong" {...props} graphIndex={3} graph={props.layout?.graphs?.[3]} />
+                    <MetricGraph cardSize="csMedLong" {...props} graphIndex={4} graph={props.layout?.graphs?.[4]} />
+                </div>
+            </div>
+            <LayoutCommon {...props} />
+        </div>
+    )
+}
+
+function Layout_5(props) {
+
+    var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
+
+    return (
+        <div style={props.style || {}} className="workspaceLayout layout3">
+            <div className="flexy gap20">
+                <div className="flexx gap20">
+                    <MetricGraph cardSize="csMedLong" {...props} graphIndex={1} graph={props.layout?.graphs?.[1]} />
+                    <MetricGraph cardSize="csMedLong" {...props} graphIndex={2} graph={props.layout?.graphs?.[2]} />
+                </div>
+                <div className="flexx gap20">
+                    <MetricGraph cardSize="csMedLong" {...props} graphIndex={3} graph={props.layout?.graphs?.[3]} />
+                    <MetricGraph cardSize="csMedLong" {...props} graphIndex={4} graph={props.layout?.graphs?.[4]} />
+                </div>
+            </div>
+            <MetricGraph cardSize="csLongDouble" {...props} graphIndex={0} graph={props.layout?.graphs?.[0]} />
+            <LayoutCommon {...props} />
+        </div>
+    )
+}

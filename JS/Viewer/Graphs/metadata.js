@@ -17,8 +17,20 @@ var LayoutTypes = [
     {
         "name": "layout_3",
         "render": () => Layout_3,
-        "height": 310,
+        "height": 300,
         "graphcount": 2
+    },
+    {
+        "name": "layout_4",
+        "render": () => Layout_4,
+        "height": 300,
+        "graphcount": 5
+    },    
+    {
+        "name": "layout_5",
+        "render": () => Layout_5,
+        "height": 300,
+        "graphcount": 5
     }
 ]
 

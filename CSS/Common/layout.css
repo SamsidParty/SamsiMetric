@@ -99,8 +99,8 @@
 .csLongDouble {
     width: 640px;
     min-width: 640px;
-    height: 310px;
-    min-height: 310px;
+    height: 300px;
+    min-height: 300px;
     background-color: var(--col-contrast);
     border-radius: 10px;
     overflow: hidden;

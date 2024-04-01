@@ -85,6 +85,10 @@ body {
     align-items: flex-start !important;
 }
 
+.gap20 {
+    gap: 20px;
+}
+
 .gap15 {
     gap: 15px;
 }
