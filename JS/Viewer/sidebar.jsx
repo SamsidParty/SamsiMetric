@@ -225,6 +225,9 @@ function SidebarWorkspaceList(props)
                                 <CachedIcon src={workspace.icon} ></CachedIcon>
                             </div>
                             <h3>{workspace.name}</h3>
+                            <Button css={{ display: (localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") ? "flex": "none !important" }} color={workspace.tag} flat auto className="iconButton iconButtonLarge">
+                                <i className="ti ti-edit"></i>
+                            </Button>
 
                         </Button>);
                 })

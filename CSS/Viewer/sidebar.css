@@ -43,6 +43,17 @@
     width: 23px;
 }
 
+.workspaceButton .iconButton {
+    transition: opacity 0s;
+    position: absolute;
+    right: 0;
+    opacity: 0;
+}
+
+.sidebarWorkspaces:hover .workspaceButton .iconButton {
+    opacity: 1;
+}
+
 .sidebarWorkspaces {
     width: 100%;
 
