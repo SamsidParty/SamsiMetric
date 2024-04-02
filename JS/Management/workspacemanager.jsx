@@ -62,3 +62,26 @@ function CreateWorkspace(props) {
         </>
     )
 }
+
+function WorkspaceEditor(props)
+{
+    var [isOpen, setIsOpen] = React.useState(false);
+
+    return (
+        <>
+            <Button onPress={() => setIsOpen(true)} color={props.workspace.tag} flat auto className="iconButton iconButtonLarge">
+                <i className="ti ti-edit"></i>
+            </Button>
+            <Modal width="900px" closeButton open={isOpen} onClose={() => setIsOpen(false)}>
+                <Modal.Header>
+                    <Text b id="modal-title" size={20}>
+                        Edit Workspace
+                    </Text>
+                </Modal.Header>
+                <Modal.Body>
+                    
+                </Modal.Body>
+            </Modal>
+        </>
+    )
+}
