@@ -24,9 +24,7 @@ async function PageInit() {
     }
 
     if (localStorage.apikey_perms == "manager" || localStorage.apikey_perms == "admin") {
-        await LoadDependency("./JS/Management/iconmanager.jsx");
-        await LoadDependency("./JS/Management/projectmanager.jsx");
-        await LoadDependency("./JS/Management/workspacemanager.jsx");
+        await LoadDependency("./JS/Management/common.jsx");
     }
 }
 
