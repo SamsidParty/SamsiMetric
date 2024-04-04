@@ -74,6 +74,12 @@ function WorkspaceEditor(props)
         ws.tag = e.target.value;
         setDataObject(Object.assign({}, DataObject));
     }
+
+    var changeName = (e) => {
+        var ws = ArrayValue(CurrentProject(DataObject).workspaces, "id", props.workspace.id);
+        ws.name = e.target.value;
+        setDataObject(Object.assign({}, DataObject));
+    }
     
     var startEditing = () => {
         //Create A Backup Of The Current Data
@@ -109,6 +115,7 @@ function WorkspaceEditor(props)
                     </Text>
                 </Modal.Header>
                 <Modal.Body>
+                <Input bordered label="Name" onChange={changeName} placeholder={"Workspace Name"} initialValue={props.workspace.name} />
                     <p style={{ fontSize: "0.875rem", marginBottom: "6px", marginLeft: "4px", letterSpacing: "initial" }} className="nextui-input-block-label">Color</p>
                     <ColorBar onChange={changeColor} value={props.workspace.tag} data-key={props.workspace.tag} />
                     <div className="flexx fillx fjend">
