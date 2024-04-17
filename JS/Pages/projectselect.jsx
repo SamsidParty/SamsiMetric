@@ -30,7 +30,7 @@ function ProjectSelectModal()
     return (
         <ClientImage background="true" className="setupPage" src="./Images/BackgroundDecoration.jpg">
             <div className="setupContainer">
-                <div className="setupModal">
+                <div className="setupModal selectProjectModal">
                     <h1>Select Project</h1>
                     <div className="projectList">
                         {
@@ -44,6 +44,7 @@ function ProjectSelectModal()
                             })
                         }
                     </div>
+                    <Button size="lg" auto color="primary" onPress={() => CreateProjectFromTemplate("Empty")}>Create Project</Button>
                 </div>
             </div>
         </ClientImage>
@@ -52,6 +53,23 @@ function ProjectSelectModal()
 
 async function CreateProjectFromTemplate(template) {
     var templateURL = `./Templates/Project/${template}/template.json`;
+    var templateData = await (await fetch(templateURL)).text();
+
+    for (var i = 0; templateData.includes("%UUID" + i + "%"); i++) {
+        templateData = templateData.replaceAll("%UUID" + i + "%", UUID());
+    }
+
+    window.lastDataObject.schema.push(JSON.parse(templateData));
+
+    var paramHeader = { "method": "PATCH", "action": "project_info", "body": "" };
+
+    await fetch(Backend, {
+        headers: DefaultHeaders({ "X-Params": JSON.stringify(paramHeader) }),
+        method: paramHeader.method,
+        body: JSON.stringify(window.lastDataObject["schema"], null, 2)
+    });
+
+    await RefreshData();
 }
 
 function ProjectSelect()
