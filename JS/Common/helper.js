@@ -225,16 +225,16 @@ function ValueFromNumberMetric(metric, DataObject, extraParam) {
     if (metric.type == "average") {
         var row = ArrayValue(DataObject["data"]["data_average"], "MetricID", metric.id);
         var average = parseFloat(row["Average"]).toFixed(metric["rounding"]);
-        return parseFloat(average);
+        return parseFloat(average) || 0;
     }
     else if (metric.type == "total") {
         var row = ArrayValue(DataObject["data"]["data_total"], "MetricID", metric.id);
         var total = parseFloat(row["Total"]).toFixed(metric["rounding"]);
-        return parseFloat(total);
+        return parseFloat(total) || 0;
     }
     else if (metric.type == "country") {
         var row = ArrayValue(DataObject["data"]["data_country"], "MetricID", metric.id);
-        return parseFloat(row[extraParam || "Total"]);
+        return parseFloat(row[extraParam || "Total"]) || 0;
     }
 
     return -1;
