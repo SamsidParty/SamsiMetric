@@ -1,0 +1,26 @@
+.projectList {
+    width: 600px;
+    min-height: 100px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.projectListItem {
+    background-color: var(--col-bg);
+    border-radius: 15px;
+    height: 75px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.projectListItem button {
+    margin-left: auto;
+}
+
+.projectListItem h2 {
+    font-size: 22px;
+    margin: 0;
+}
