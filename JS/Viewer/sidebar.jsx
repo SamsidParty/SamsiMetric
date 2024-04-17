@@ -1,16 +1,13 @@
-function Sidebar()
-{
+function Sidebar() {
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
 
-    var switchProject = (e) =>
-    {
+    var switchProject = (e) => {
         var proj = Array.from(e)[0];
         DataObject["selected_project"] = proj;
         setDataObject(Object.assign({}, DataObject));
     }
 
-    var editProject = () =>
-    {
+    var editProject = () => {
         manageProjectsBackup = JSON.parse(JSON.stringify(DataObject));
         manageProjectsQueue = [];
         DataObject["page"] = "ManageProject";
@@ -30,29 +27,22 @@ function Sidebar()
             <div className="flexx gap10">
                 <Tooltip ttid="selectproject" {...TTContent("static", "Select Project")}>
                     <Dropdown>
-                        <Dropdown.Button css={{width: "160px", display: (DataIsValid() ? "flex" : "none")}} color={workspaceTag} flat>{ArrayValue(DataObject.schema, "id", DataObject["selected_project"]).name}</Dropdown.Button>
-                        <Dropdown.Menu selectionMode="single" onSelectionChange={switchProject} disallowEmptySelection aria-label="Project" items={DataObject["schema"]}>
-                            {(item) => (
-                                <Dropdown.Item
-                                    key={item["id"]}
-                                    color="default"
-                                >
-                                    {item["name"]}
-                                </Dropdown.Item>
-                            )}
+                        <Dropdown.Button css={{ width: "160px", display: (DataIsValid() ? "flex" : "none") }} color={workspaceTag} flat>{ArrayValue(DataObject.schema, "id", DataObject["selected_project"]).name}</Dropdown.Button>
+                        <Dropdown.Menu onAction={() => window.location.href = "./ProjectSelect"} selectionMode="single" disallowEmptySelection aria-label="Project">
+                            <Dropdown.Item color="default">
+                                <i className="ti ti-color-swatch"></i>Open Project Selector
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Tooltip>
-                
-                <Skeleton width="160px" contrast/>
 
-                { /* Manage Project Icon, Only Shows When We Have Permissions To Do It */ }
+                <Skeleton width="160px" contrast />
+
+                { /* Manage Project Icon, Only Shows When We Have Permissions To Do It */}
                 {
-                    (() =>
-                    {
+                    (() => {
 
-                        if ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager")) 
-                        {
+                        if ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager")) {
                             if (DataIsValid()) {
                                 return (
                                     <Tooltip ttid="editproject" {...TTContent("static", "Edit Project")}>
@@ -63,7 +53,7 @@ function Sidebar()
                                 )
                             }
                             else {
-                                return (<Skeleton width="40px" contrast/>);
+                                return (<Skeleton width="40px" contrast />);
                             }
                         }
                     })()
@@ -80,20 +70,17 @@ function Sidebar()
     )
 }
 
-function SidebarWorkspaces(props)
-{
+function SidebarWorkspaces(props) {
 
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
     var [workspaceAnimation, setWorkspaceAnimation] = React.useState("none");
     var [reorderMode, setReorderMode] = React.useState(false);
-    var [callbackMethod, setCallbackMethod] = React.useState([() => {}]);
+    var [callbackMethod, setCallbackMethod] = React.useState([() => { }]);
 
     var workspaces = ArrayValue(DataObject["schema"], "id", DataObject["selected_project"])["workspaces"] || [];
 
-    var reorderWorkspaces = async () =>
-    {
-        if (reorderMode)
-        {
+    var reorderWorkspaces = async () => {
+        if (reorderMode) {
             //Apply New Order
             var newState = callbackMethod[0]();
             var newOrder = [];
@@ -110,8 +97,7 @@ function SidebarWorkspaces(props)
                 await ApplyProjectChanges();
             }
         }
-        else
-        {
+        else {
             //Load React SortableJS If Not Loaded
             if (!window.ReactSortableJS) {
                 await LoadDependency("./JS/ThirdParty/sort.js");
@@ -129,11 +115,9 @@ function SidebarWorkspaces(props)
 
                 { /* //Reorder And Add Workspace Buttons, Only Shown When We Have Permissions To Do It  */}
                 {
-                    (() =>
-                    {
+                    (() => {
 
-                        if ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid())
-                        {
+                        if ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid()) {
                             //Always Show Plus Button If There Are No Workspaces
                             //Never Show Reorder Button If There Are No Workspaces
                             var hasNoWorkspaces = CurrentProject(DataObject).workspaces.length < 1;
@@ -155,19 +139,19 @@ function SidebarWorkspaces(props)
             <div className={reorderMode ? "workspaceList reorderWorkspaceList" : "workspaceList"}>
                 {
                     //Show Image If There Are No Workspaces
-                    ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid() && CurrentProject(DataObject).workspaces.length < 1) ? 
-                    (<ClientImage style={{ borderRadius: "10px" }} src="./Images/TooltipNoWorkspaces.png" />)
-                    : (<></>)
+                    ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid() && CurrentProject(DataObject).workspaces.length < 1) ?
+                        (<ClientImage style={{ borderRadius: "10px" }} src="./Images/TooltipNoWorkspaces.png" />)
+                        : (<></>)
                 }
 
-                <SidebarWorkspaceSkeletons/>
+                <SidebarWorkspaceSkeletons />
 
                 {
                     //Render A List Of Buttons If Not In Reorder Mode
                     //Render A Sortable List In Reorder Mode
                     (reorderMode && window.ReactSortableJS) ?
-                    (<SidebarWorkspaceListReorderable setCallbackMethod={setCallbackMethod} workspaces={workspaces} workspaceorder={CurrentProject(DataObject).workspaceorder || []}/>) :
-                    (<SidebarWorkspaceList workspaces={workspaces} workspaceorder={CurrentProject(DataObject).workspaceorder || []} />)
+                        (<SidebarWorkspaceListReorderable setCallbackMethod={setCallbackMethod} workspaces={workspaces} workspaceorder={CurrentProject(DataObject).workspaceorder || []} />) :
+                        (<SidebarWorkspaceList workspaces={workspaces} workspaceorder={CurrentProject(DataObject).workspaceorder || []} />)
                 }
             </div>
 
@@ -184,13 +168,12 @@ function SidebarWorkspaceSkeletons() {
                     return (<Skeleton key={l_index.toString()} contrast></Skeleton>);
                 })
             }
-            
+
         </>
     )
 }
 
-function SidebarWorkspaceList(props)
-{
+function SidebarWorkspaceList(props) {
 
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
 
@@ -201,8 +184,7 @@ function SidebarWorkspaceList(props)
     return (
         <>
             {
-                props.workspaceorder.map((l_wsid) =>
-                {
+                props.workspaceorder.map((l_wsid) => {
                     var workspace = ArrayValue(props.workspaces, "id", l_wsid);
                     return (
                         <Button
@@ -212,8 +194,7 @@ function SidebarWorkspaceList(props)
                             key={l_wsid}
 
                             onPress={
-                                () =>
-                                {
+                                () => {
                                     localStorage.lastWorkspace = l_wsid;
                                     DataObject["selected_workspace"] = l_wsid;
                                     setDataObject(Object.assign({}, DataObject));
@@ -226,9 +207,9 @@ function SidebarWorkspaceList(props)
                             </div>
                             <h3>{workspace.name}</h3>
                             {
-                                (localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") ? 
-                                (<WorkspaceEditor {...props} workspace={workspace} />) :
-                                (<></>)
+                                (localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") ?
+                                    (<WorkspaceEditor {...props} workspace={workspace} />) :
+                                    (<></>)
                             }
 
                         </Button>);
@@ -238,8 +219,7 @@ function SidebarWorkspaceList(props)
     )
 }
 
-function SidebarWorkspaceListReorderable(props)
-{
+function SidebarWorkspaceListReorderable(props) {
     var listState = [];
     props.workspaceorder.forEach((l_wsid) => {
         var workspace = ArrayValue(props.workspaces, "id", l_wsid);
@@ -262,27 +242,26 @@ function SidebarWorkspaceListReorderable(props)
 
     return (
         <ReactSortableJS.ReactSortable
-        list={state} setList={setState}
-        className = "workspaceSortable"
+            list={state} setList={setState}
+            className="workspaceSortable"
         >
             {
-                state.map((l_state) =>
-                {
+                state.map((l_state) => {
                     var l_wsid = l_state.id;
                     var workspace = ArrayValue(props.workspaces, "id", l_wsid);
                     return (
 
-                            <Button
-                                flat
-                                className="workspaceButton"
-                                color={workspace.tag}
-                                key={l_wsid}
-                            >
-                                <div style={{ backgroundColor: tagColors[workspace.tag] }} className="workspaceButtonIcon">
-                                    <CachedIcon src={workspace.icon} ></CachedIcon>
-                                </div>
-                                <h3>{workspace.name}</h3>
-                            </Button>
+                        <Button
+                            flat
+                            className="workspaceButton"
+                            color={workspace.tag}
+                            key={l_wsid}
+                        >
+                            <div style={{ backgroundColor: tagColors[workspace.tag] }} className="workspaceButtonIcon">
+                                <CachedIcon src={workspace.icon} ></CachedIcon>
+                            </div>
+                            <h3>{workspace.name}</h3>
+                        </Button>
 
                     );
                 })

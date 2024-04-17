@@ -3,6 +3,7 @@ RewriteRule .* - [e=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteRule ^Dashboard$ ./Pages/index.php  [L]
 RewriteRule ^Login$ ./Pages/login.php  [L]
 RewriteRule ^Setup$ ./Pages/setup.php  [L]
+RewriteRule ^ProjectSelect$ ./Pages/projectselect.php  [L]
 RewriteRule ^MobileClient$ ./Pages/mobile.php  [L]
 RewriteRule ^API/(.*)$ ./PHP/API/api.php [L]
 
