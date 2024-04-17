@@ -5,40 +5,12 @@ async function ApplyProjectChanges()
 {
     StripInvalidDependencies();
 
-    //Upload Icons To Server
-    var iconQueue = [];
-    CurrentProject(window.lastDataObject).metrics.forEach((l_metric) =>
-    {
-        if (l_metric.icon.startsWith("data:image/png"))
-        {
-            var iconData = {
-                id: UUID().replaceAll("-", "_"),
-                value: l_metric.icon.replace(/^data:image\/?[A-z]*;base64,/, "")
-            }
-            iconQueue.push(iconData);
-
-            l_metric.icon = iconData.id + ".png";
-        }
-    });
-    if (iconQueue.length > 0)
-    {
-        manageProjectsQueue.push({ "method": "POST", "action": "upload_icon", "body": JSON.stringify(iconQueue, null, 2) })
-    }
+    var iconQueue = await BuildIconQueue(CurrentProject(window.lastDataObject).metrics);
+    manageProjectsQueue = iconQueue.concat(manageProjectsQueue);
 
     manageProjectsQueue.push({ "method": "PATCH", "action": "project_info", "body": JSON.stringify(window.lastDataObject["schema"], null, 2) })
 
-    for (var i = 0; i < manageProjectsQueue.length; i++)
-    {
-
-        var paramHeader = Object.assign({}, manageProjectsQueue[i]);
-        paramHeader.body = "";
-
-        await fetch(Backend, {
-            headers: DefaultHeaders({ "X-Params": JSON.stringify(paramHeader) }),
-            method: manageProjectsQueue[i]["method"],
-            body: manageProjectsQueue[i]["body"] || ""
-        });
-    }
+    await ApplyQueue(manageProjectsQueue);
 
     manageProjectsQueue = [];
     

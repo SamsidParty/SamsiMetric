@@ -176,6 +176,21 @@ function tfetch(url, options) {
     });
 }
 
+//Does An Array Of Fetch Requests In The Queue Format
+async function ApplyQueue(queue) {
+    for (var i = 0; i < queue.length; i++)
+    {
+        var paramHeader = Object.assign({}, queue[i]);
+        paramHeader.body = "";
+
+        await fetch(Backend, {
+            headers: DefaultHeaders({ "X-Params": JSON.stringify(paramHeader) }),
+            method: queue[i]["method"],
+            body: queue[i]["body"] || ""
+        });
+    }
+}
+
 function DefaultHeaders(addedHeaders)
 {
     var headers = {

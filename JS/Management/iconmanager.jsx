@@ -103,6 +103,30 @@ async function UploadIconFile() {
     return IconUploadResult;
 }
 
+//Find Icons That Need To Be Uploaded To The Server
+async function BuildIconQueue(objectsWithIcons) {
+    var iconQueue = [];
+    objectsWithIcons.forEach((l_obj) =>
+    {
+        if (l_obj.icon.startsWith("data:image/png"))
+        {
+            var iconData = {
+                id: UUID().replaceAll("-", "_"),
+                value: l_obj.icon.replace(/^data:image\/?[A-z]*;base64,/, "")
+            }
+            iconQueue.push(iconData);
+
+            l_obj.icon = iconData.id + ".png";
+        }
+    });
+
+    if (iconQueue.length > 0) {
+        return [{ "method": "POST", "action": "upload_icon", "body": JSON.stringify(iconQueue, null, 2) }];
+    }
+
+    return [];
+}
+
 async function OnIconUploaded() {
     if (IconUploader.files && IconUploader.files.length > 0)
     {

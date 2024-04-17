@@ -64,8 +64,7 @@ function CreateWorkspace(props) {
     )
 }
 
-function WorkspaceEditor(props)
-{
+function WorkspaceEditor(props) {
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
     var [isOpen, setIsOpen] = React.useState(false);
 
@@ -80,7 +79,7 @@ function WorkspaceEditor(props)
         ws.name = e.target.value;
         setDataObject(Object.assign({}, DataObject));
     }
-    
+
     var startEditing = () => {
         //Create A Backup Of The Current Data
         //Used To Discard Changes
@@ -103,6 +102,12 @@ function WorkspaceEditor(props)
         setIsOpen(false);
     }
 
+    var uploadImage = async () =>
+    {
+        props.workspace.icon = await UploadIconFile();
+        setDataObject(Object.assign({}, DataObject));
+    }
+
     return (
         <>
             <Button onPress={startEditing} color={props.workspace.tag} flat auto className="iconButton iconButtonLarge">
@@ -115,9 +120,31 @@ function WorkspaceEditor(props)
                     </Text>
                 </Modal.Header>
                 <Modal.Body>
-                <Input bordered label="Name" onChange={changeName} placeholder={"Workspace Name"} initialValue={props.workspace.name} />
+                    <Input bordered label="Name" onChange={changeName} placeholder={"Workspace Name"} initialValue={props.workspace.name} />
                     <p style={{ fontSize: "0.875rem", marginBottom: "6px", marginLeft: "4px", letterSpacing: "initial" }} className="nextui-input-block-label">Color</p>
                     <ColorBar onChange={changeColor} value={props.workspace.tag} data-key={props.workspace.tag} />
+
+                    <p style={{ fontSize: "0.875rem", marginBottom: "6px", marginLeft: "4px", letterSpacing: "initial" }} className="nextui-input-block-label">Icon</p>
+                    <div className="flexx gap10 faend">
+                        <div className="metricIcon" style={{ backgroundColor: tagColors["success"] }}>
+                            <CachedIcon src={props.workspace.icon}></CachedIcon>
+                        </div>
+                        <div className="metricIcon" style={{ backgroundColor: tagColors["primary"] }}>
+                            <CachedIcon src={props.workspace.icon}></CachedIcon>
+                        </div>
+                        <div className="metricIcon" style={{ backgroundColor: tagColors["secondary"] }}>
+                            <CachedIcon src={props.workspace.icon}></CachedIcon>
+                        </div>
+                        <div className="metricIcon" style={{ backgroundColor: tagColors["warning"] }}>
+                            <CachedIcon src={props.workspace.icon}></CachedIcon>
+                        </div>
+                        <div className="metricIcon" style={{ backgroundColor: tagColors["error"] }}>
+                            <CachedIcon src={props.workspace.icon}></CachedIcon>
+                        </div>
+                        <IconSelect onSelected={(e) => props.workspace.icon = e}></IconSelect>
+                        <Button flat auto className="iconButtonLarge" onPress={uploadImage}><i className="ti ti-upload"></i></Button>
+                    </div>
+
                     <div className="flexx fillx fjend">
                         <Button auto flat onPress={discard}>Discard</Button>
                         <NextUI.Spacer x={0.5} />
