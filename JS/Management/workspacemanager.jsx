@@ -88,10 +88,18 @@ function WorkspaceEditor(props) {
     }
 
     var apply = async () => {
+        //Allow External Functions To Have The Latest Data
+        window.lastDataObject = DataObject;
+
+        //Send Icon Queue To The Server
+        var iconQueue = await BuildIconQueue(CurrentProject(window.lastDataObject).workspaces);
+        await ApplyQueue(iconQueue);
+
         //Send Changes To Server
         await SyncWorkspaceChanges();
-        setDataObject(Object.assign({}, DataObject));
+        setDataObject(Object.assign({}, window.lastDataObject));
         setIsOpen(false);
+        await RefreshData(false);
     }
 
     var discard = () => {
