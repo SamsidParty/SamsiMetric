@@ -221,7 +221,7 @@ function SidebarWorkspaceList(props)
                             }
 
                         >
-                            <div style={{ backgroundColor: tagColors[workspace.tag] }} className="workspaceButtonIcon">
+                            <div key={UUID()} style={{ backgroundColor: tagColors[workspace.tag] }} className="workspaceButtonIcon">
                                 <CachedIcon src={workspace.icon} ></CachedIcon>
                             </div>
                             <h3>{workspace.name}</h3>
