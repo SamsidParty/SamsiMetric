@@ -16,8 +16,9 @@
     align-items: center;
 }
 
-.projectListItem button {
+.projectListItem button:first-of-type {
     margin-left: auto;
+    margin-right: 10px;
 }
 
 .projectListItem h2 {

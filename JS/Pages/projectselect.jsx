@@ -38,6 +38,12 @@ function ProjectSelectModal()
                                 return (
                                     <div className="projectListItem" key={l_project.id}>
                                         <h2>{l_project.name}</h2>
+                                        {
+                                            (localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") ? 
+                                            (<DeleteButton noRevert="true" onDelete={() => DeleteProject(l_project.id)}> </DeleteButton>) :
+                                            (<></>)
+                                        }
+                                        
                                         <Button onPress={() => onSelect(l_project.id)} flat auto className="iconButton iconButtonLarge"><i className="ti ti-external-link"></i></Button>
                                     </div>
                                 )
@@ -49,6 +55,23 @@ function ProjectSelectModal()
             </div>
         </ClientImage>
     );
+}
+
+async function DeleteProject(id) {
+    var proj = ArrayValue(extDataObject.schema, "id", id);
+    var projIndex = ArrayIndex(extDataObject.schema, "id", id);
+    var queue = [];
+
+    //Delete All Metrics
+    for (var i = 0; i < proj.metrics.length; i++) {
+        queue.push({ "method": "DELETE", "action": "metric_info", "type": proj.metrics.type, "metric_id": proj.metrics.id, "project_id": id });
+    }
+
+    extDataObject.schema.splice(projIndex, 1);
+    queue.push({ "method": "PATCH", "action": "project_info", "body": JSON.stringify(extDataObject.schema, null, 2) })
+
+    setExtDataObject(Object.assign({}, extDataObject));
+    await ApplyQueue(queue);
 }
 
 async function CreateProjectFromTemplate(template) {
