@@ -1,6 +1,6 @@
 <?php 
 
-$cronvalid = file_exists("/etc/crontab");
+$cronvalid = file_exists("/etc/crontab") || (getenv("CONFIG_DISABLECRONCHECK") == "TRUE");
 
 if (!$cronvalid) {
     http_response_code(500);
