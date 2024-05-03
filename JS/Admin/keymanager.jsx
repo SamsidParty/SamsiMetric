@@ -119,7 +119,6 @@ function ManageAPIKeys()
 
     return (
         <Modal
-            aria-labelledby="modal-title"
             width="900px"
             closeButton
             open={true}
@@ -138,10 +137,10 @@ function ManageAPIKeys()
                     </Table.Header>
                     <Table.Body>
                         {
-                            APIKeyData?.map((l_key) =>
+                            APIKeyData?.map((l_key, l_index) =>
                             {
                                 return !l_key.name.includes("Revoked Key") ? (
-                                    <Table.Row key={l_key.value}>
+                                    <Table.Row key={l_index}>
                                         <Table.Cell>
                                             <div className="keyTableItem">
                                                 <div className="keyIcon">
@@ -173,7 +172,7 @@ function ManageAPIKeys()
                             })
                         }
                     </Table.Body>
-                    <Table.Pagination noMargin align="center" rowsPerPage={Math.min(6, CurrentProject(DataObject).metrics?.length)} />
+                    <Table.Pagination noMargin align="center" rowsPerPage={Math.min(6, APIKeyData?.length)} />
                 </Table>
             </Modal.Body>
             <Modal.Footer>
