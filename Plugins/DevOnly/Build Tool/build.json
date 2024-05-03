@@ -11,6 +11,11 @@
     },
     {
         "action": "copyfolder",
+        "from": "../Docs",
+        "to": "../Build/Docs"
+    },
+    {
+        "action": "copyfolder",
         "from": "../PHP",
         "to": "../Build/PHP"
     },

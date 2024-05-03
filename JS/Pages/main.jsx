@@ -137,7 +137,7 @@ function DashboardLayout(props)
                 //Show "Nothing Here Yet"
                 !(CurrentWorkspace(DataObject)?.layouts?.length > 0) ? 
                 (
-                    <NothingHere text="Add A Layout To This Workspace, It'll Show Up Hear"></NothingHere>
+                    <NothingHere text="Add A Layout To This Workspace, It'll Show Up Here"></NothingHere>
                 )
                 : null
             }
