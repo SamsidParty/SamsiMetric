@@ -6,36 +6,58 @@ function DocumentationExtensionSideBar() {
 
     var [dataProvider, setDataProvider] = React.useState(null);
 
-    if (!window.ReactComplexTree) {
-        setTimeout(() => {
+    if (!window.Docplugin_rct) {
+        setTimeout(async () => {
             LoadComplexTree();
+
+            //Find DocMap And Load It Into The Tree Provider
+            var docMapURL = "./Plugins/Standard/Integrated%20Documentation%20Plugin/Docs/docmap.json";
+            var req = await fetch(docMapURL);
+            var docMap = await req.json();
+            
+            //Scope To Doc Files
+            docMap = docMap;
+            docMap = ArrayValue(docMap, "name", "software").dir;
+            docMap = ArrayValue(docMap, "name", "samsimetric").dir;
 
             var items = {
                 root: {
                     index: 'root',
                     isFolder: true,
-                    children: ['child1', 'child2'],
-                    data: 'Root item',
-                },
-                child1: {
-                    index: 'child1',
                     children: [],
-                    data: 'Child item 1',
-                },
-                child2: {
-                    index: 'child2',
-                    isFolder: true,
-                    children: ['child3'],
-                    data: 'Child item 2',
-                },
-                child3: {
-                    index: 'child3',
-                    children: [],
-                    data: 'Child item 3',
-                },
+                    data: 'Root Item',
+                }
             };
 
-            var dp = new ReactComplexTree.StaticTreeDataProvider(items, (item, newName) => ({ ...item, data: newName }));
+            items.root.children = docMap.map((l_item) => l_item.id);
+
+            var recurseDocMap = (scope) => {
+                return scope.map((l_item) => {
+                    if (l_item.dir) {
+                        items[l_item.id] = {
+                            index: l_item.id,
+                            isFolder: true,
+                            children: recurseDocMap(l_item.dir),
+                            data: l_item.name
+                        }
+                    }
+                    else {
+                        items[l_item.id] = {
+                            index: l_item.id,
+                            isFolder: false,
+                            data: l_item.file.replace(".md", "")
+                        }
+                    }
+
+                    return l_item.id;
+                });
+            }
+
+            recurseDocMap(docMap);
+
+            console.log(items);
+
+            var dp = new Docplugin_rct.StaticTreeDataProvider(items, (item, newName) => ({ ...item, data: newName }));
             setDataProvider(dp);
         }, 0);
     }
@@ -48,32 +70,22 @@ function DocumentationExtensionSideBar() {
                 <h3 className="boldText taleft">DOCUMENTATION</h3>
             </div>
             <div className="docList">
-                <Button
-                    flat
-                    className="openDocsButton"
-                    color={"success"}
-                >
-                    <div key={UUID()} style={{ backgroundColor: tagColors["success"] }} className="openDocsButtonIcon">
-                        <i style={{ color: "white" }} className="ti ti-chevron-right"></i>
-                    </div>
-                    <h3>Open Documentation</h3>
-                </Button>
                 {
                     !!dataProvider ?
                         (
                             <>
-                                <ReactComplexTree.UncontrolledTreeEnvironment
+                                <Docplugin_rct.UncontrolledTreeEnvironment
 
                                     dataProvider={dataProvider}
                                     getItemTitle={item => item.data}
                                     viewState={{}}
-                                    canDragAndDrop={true}
-                                    canDropOnFolder={true}
-                                    canReorderItems={true}
+                                    canDragAndDrop={false}
+                                    canDropOnFolder={false}
+                                    canReorderItems={false}
 
                                 >
-                                    <ReactComplexTree.Tree treeId="docs-tree" rootItem="root" treeLabel="Documentation" />
-                                </ReactComplexTree.UncontrolledTreeEnvironment>
+                                    <Docplugin_rct.Tree className="docTree" treeId="docs-tree" rootItem="root" treeLabel="Documentation" />
+                                </Docplugin_rct.UncontrolledTreeEnvironment>
                             </>
                         )
                         : null

@@ -19,7 +19,6 @@
 }
 
 .sidebarDocumentation .docList {
-    transition: transform 0.3s, background-color 0.3s, border-radius 0.3s, padding 0.3s;
     display: flex;
     justify-content: center;
     align-items: center;
