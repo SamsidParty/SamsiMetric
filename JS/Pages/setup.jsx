@@ -3,6 +3,7 @@ var SetupReasons = {
     "database": SetupDatabase,
     "format": SetupFormatDatabase,
     "formatcomplete": SetupFormatComplete,
+    "formatfailed": SetupFormatFailed,
 }
 
 function SetupDatabase() {
@@ -37,6 +38,16 @@ function SetupFormatComplete() {
             <h1>Database Format Completed</h1>
             <h4>You're Good To Go</h4>
             <Button size="lg" auto color="primary" onClick={() => window.location.href = "./Dashboard"}>Continue</Button>
+        </>
+    )
+}
+
+function SetupFormatFailed() {
+    return (
+        <>
+            <h1>Database Format Failed</h1>
+            <h4>Something Went Wrong, No Further Information Is Available</h4>
+            <Button size="lg" auto color="primary" onClick={() => window.location.href = "./Dashboard"}>Try Again</Button>
         </>
     )
 }

@@ -9,11 +9,25 @@ require("./common.php");
 
 if (isset($_GET['reason']) && $_GET['reason'] == "formatcomplete") {
     //Actually Do The Format
-    chdir("../");
-    $data = file_get_contents("./Templates/SQL/initial.sql");
-    $setupMode = true;
-    require_once("./PHP/sql.php");
-    DB::getMDB()->get()->multi_query($data);
+    try {
+        chdir("../");
+        $data = file_get_contents("./Templates/SQL/initial.sql");
+        $setupMode = true;
+        require_once("./PHP/sql.php");
+        DB::getMDB()->get()->multi_query($data);
+
+        if (count(DB::query("SHOW TABLES LIKE 'config'")) != 1) {
+            http_response_code(500);
+            header("Location: ?reason=formatfailed");
+            die();
+        }
+
+        http_response_code(201);
+    }
+    catch (Exception $ex) {
+        http_response_code(500);
+    }
+
 }
 
 ?>

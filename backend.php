@@ -8,8 +8,8 @@ if (!isset($virtualAPI)) {
 }
 
 header("Content-Type: application/json");
-require_once("./PHP/sql.php");
 require_once("./PHP/ThirdParty/vendor/autoload.php");
+require_once("./PHP/sql.php");
 require_once("./PHP/Actions/check_cron.php");
 require_once("./PHP/config.php");
 require_once("./PHP/auth.php");
