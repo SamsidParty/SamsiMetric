@@ -18,7 +18,7 @@ function LayoutCommon(props) {
                         <DeleteButton noRevert={true} onDelete={deleteLayout}></DeleteButton>
                     </Tooltip>
                 )
-                : (<></>)
+                : null
             }
         </>
     )

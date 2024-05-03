@@ -117,19 +117,29 @@ function DashboardLayout(props)
     return (
         <div className="dashboardLayout">
             {
+                //Render Layouts
                 CurrentWorkspace(DataObject)?.layouts?.map((l_layout, l_index) => {
                     var LayoutToRender = GetMetadataFromLayout(l_layout).render();
                     return (<LayoutToRender key={`${l_layout.type}_${l_index}_${workspace.id}`} {...props} workspace={workspace} layout={l_layout} layoutIndex={l_index}></LayoutToRender>);
                 })
             }
             {
+                //Show "Add Layout" Button
                 !!window.workspaceEditMode ? 
                 (
                     <div className="flexx facenter fjcenter fillx">
                         <AddLayout/>
                     </div>
                 )
-                : (<></>)
+                : null
+            }
+            {
+                //Show "Nothing Here Yet"
+                !(CurrentWorkspace(DataObject)?.layouts?.length > 0) ? 
+                (
+                    <NothingHere text="Add A Layout To This Workspace, It'll Show Up Hear"></NothingHere>
+                )
+                : null
             }
             <NextUI.Spacer y={1}/>
         </div>

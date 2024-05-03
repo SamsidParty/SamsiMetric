@@ -41,7 +41,7 @@ function ProjectSelectModal()
                                         {
                                             (localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") ? 
                                             (<DeleteButton noRevert="true" onDelete={() => DeleteProject(l_project.id)}> </DeleteButton>) :
-                                            (<></>)
+                                            null
                                         }
                                         
                                         <Button onPress={() => onSelect(l_project.id)} flat auto className="iconButton iconButtonLarge"><i className="ti ti-external-link"></i></Button>

@@ -5,7 +5,7 @@ function GraphEditor(props)
     var GraphSettings = graphMeta.settingsui;
 
     if (!GraphSettings) {
-        return (<></>)
+        return null
     }
 
     var apply = async (settings) =>

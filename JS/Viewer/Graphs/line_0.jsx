@@ -31,7 +31,7 @@ function Graphline_0(props) {
                 }
                 else if (window.ChartJS == undefined) {
                     //Still Loading
-                    return (<></>);
+                    return null;
                 }
                 else {
                     //Render The Graph

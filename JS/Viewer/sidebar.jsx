@@ -141,7 +141,7 @@ function SidebarWorkspaces(props) {
                     //Show Image If There Are No Workspaces
                     ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid() && CurrentProject(DataObject).workspaces.length < 1) ?
                         (<ClientImage style={{ borderRadius: "10px" }} src="./Images/TooltipNoWorkspaces.png" />)
-                        : (<></>)
+                        : null
                 }
 
                 <SidebarWorkspaceSkeletons />
@@ -209,7 +209,7 @@ function SidebarWorkspaceList(props) {
                             {
                                 (localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") ?
                                     (<WorkspaceEditor {...props} workspace={workspace} />) :
-                                    (<></>)
+                                    null
                             }
 
                         </Button>);

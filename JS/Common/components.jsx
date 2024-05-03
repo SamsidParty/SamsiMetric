@@ -1,5 +1,15 @@
 AutoLoadThisFile();
 
+//Displayed When There Are No Items To Display
+function NothingHere(props) {
+    return (
+        <div className="nothingHere">
+            {props.text || "Nothing Here Yet"}
+        </div>
+    )
+}
+
+//Delete Button That Shows A Prompt To Delete Something
 function DeleteButton(props) {
 
     var [isOpen, setIsOpen] = React.useState(false);
@@ -46,6 +56,7 @@ function DeleteButton(props) {
 //1x1 PNG Transparent
 var LoadingStub = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 
+//Loads An Image From The Client Bundle
 function ClientImage(props) {
 
     var image = React.useRef(0);
@@ -90,6 +101,7 @@ function ClientImage(props) {
 
 var IconCache = {};
 
+//Loads A Cached Icon
 function CachedIcon(props) {
 
     var [iconURL, setIconURL] = React.useState((IconCache[props.src] != undefined) ? IconCache[props.src] : LoadingStub);
@@ -121,6 +133,7 @@ function CachedIcon(props) {
     )
 }
 
+//Skeleton Loader
 function Skeleton(props) {
     return !DataIsValid() ? (
         <div className="skeleton" style={{ 
@@ -129,5 +142,5 @@ function Skeleton(props) {
             backgroundColor: props.contrast ? "var(--col-bg)" : "var(--col-contrast)", 
             borderRadius: props.borderRadius || "12px"
         }}/>
-    ) : (<></>)
+    ) : null
 }

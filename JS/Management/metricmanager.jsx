@@ -6,8 +6,7 @@ RunOnLoad("./JS/Management/metricmanager.jsx", async () => {
     await LoadDependency("./JS/Management/requestgenerator.jsx");
 });
 
-var SampleMetric = () =>
-{
+var SampleMetric = () => {
     return {
         "id": GenerateMetricID(),
         "name": "New Metric",
@@ -35,19 +34,16 @@ var MetricTypes = Object.fromEntries(
         .map(([key, value]) => [value, key])
 );
 
-function ShouldShowMetric(metricType)
-{
+function ShouldShowMetric(metricType) {
     if (metricType == "group" || metricType == "snapshot") { return false; }
     return true;
 }
 
-function DeleteMetric(id)
-{
+function DeleteMetric(id) {
     var metricIndex = ArrayIndex(CurrentProject(window.lastDataObject).metrics, "id", id);
     var metric = Object.assign({}, CurrentProject(window.lastDataObject).metrics[metricIndex]); // We Need To Access The Metric Info Later So Copy It
 
-    CurrentProject(window.lastDataObject).metrics = CurrentProject(window.lastDataObject).metrics.filter((l_metric) =>
-    {
+    CurrentProject(window.lastDataObject).metrics = CurrentProject(window.lastDataObject).metrics.filter((l_metric) => {
         return l_metric.id != id;
     });
 
@@ -56,15 +52,13 @@ function DeleteMetric(id)
     setExtDataObject(Object.assign({}, window.lastDataObject));
 }
 
-function ManageMetrics()
-{
+function ManageMetrics() {
 
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
     var [isOpen, setIsOpen] = React.useState(false);
     var [Creator, setCreator] = React.useState(null);
 
-    var createMetric = () =>
-    {
+    var createMetric = () => {
         setCreator(<MetricCreator onClose={setCreator} ></MetricCreator>);
     }
 
@@ -80,34 +74,13 @@ function ManageMetrics()
                     </Text>
                 </Modal.Header>
                 <Modal.Body css={{ padding: "25px" }}>
-                    <Table className="metricTable" css={{ width: "100%", height: "300px", padding: "0px" }} lined shadow={false}>
-                        <Table.Header>
-                            <Table.Column hideHeader={true}></Table.Column>
-                        </Table.Header>
-                        <Table.Body>
-                            {
-                                CurrentProject(DataObject).metrics?.map((l_metric) =>
-                                {
-                                    return ShouldShowMetric(l_metric.type) ? (
-                                        <Table.Row key={l_metric.id}>
-                                            <Table.Cell>
-                                                <div className="metricTableItem">
-                                                    <div className="metricIcon" style={{ backgroundColor: tagColors[l_metric.tag] }}>
-                                                        <CachedIcon src={l_metric.icon}></CachedIcon>
-                                                    </div>
-                                                    <h1>{l_metric.name}</h1>
-                                                    <GenerateRequestButton metric={l_metric}/>
-                                                    <ManageMetricButton key={l_metric.id} metric={l_metric}></ManageMetricButton>
-                                                    <DeleteButton onDelete={() => DeleteMetric(l_metric.id)}></DeleteButton>
-                                                </div>
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    ) : null;
-                                })
-                            }
-                        </Table.Body>
-                        <Table.Pagination noMargin align="center" rowsPerPage={Math.min(6, CurrentProject(DataObject).metrics?.length)} />
-                    </Table>
+
+                    {
+                        //Display Metric Table Or Nothing Here Depending On The Amount Of Metrics
+                        CurrentProject(DataObject).metrics?.length > 0 ?
+                        (<MetricTable></MetricTable>) :
+                        (<NothingHere text="Create A Metric In This Project, It'll Show Up Here"></NothingHere>)
+                    }
 
                     <Button flat auto className="iconButtonLarge" onPress={createMetric} css={{ marginLeft: "auto" }}><i className="ti ti-plus"></i></Button>
                 </Modal.Body>
@@ -119,13 +92,46 @@ function ManageMetrics()
 
 }
 
-function ManageMetricButton(props)
-{
+function MetricTable() {
+
+    var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
+
+    return (
+        <Table className="metricTable" css={{ width: "100%", height: "300px", padding: "0px" }} lined shadow={false}>
+            <Table.Header>
+                <Table.Column hideHeader={true}></Table.Column>
+            </Table.Header>
+            <Table.Body>
+                {
+                    CurrentProject(DataObject).metrics?.map((l_metric) => {
+                        return ShouldShowMetric(l_metric.type) ? (
+                            <Table.Row key={l_metric.id}>
+                                <Table.Cell>
+                                    <div className="metricTableItem">
+                                        <div className="metricIcon" style={{ backgroundColor: tagColors[l_metric.tag] }}>
+                                            <CachedIcon src={l_metric.icon}></CachedIcon>
+                                        </div>
+                                        <h1>{l_metric.name}</h1>
+                                        <GenerateRequestButton metric={l_metric} />
+                                        <ManageMetricButton key={l_metric.id} metric={l_metric}></ManageMetricButton>
+                                        <DeleteButton onDelete={() => DeleteMetric(l_metric.id)}></DeleteButton>
+                                    </div>
+                                </Table.Cell>
+                            </Table.Row>
+                        ) : (null);
+                    })
+                }
+            </Table.Body>
+            <Table.Pagination noMargin align="center" rowsPerPage={Math.min(6, CurrentProject(DataObject).metrics?.length)} />
+        </Table>
+    )
+}
+
+function ManageMetricButton(props) {
 
     var [isOpen, setIsOpen] = React.useState(false);
 
-    var openEditor = () =>
-    {
+    var openEditor = () => {
         setIsOpen(true);
     }
 
@@ -139,8 +145,8 @@ function ManageMetricButton(props)
                     <Text b id="modal-title" size={20}>
                         {
                             props.metric.type == "group" ?
-                            "Edit Group" :
-                            "Edit Metric"
+                                "Edit Group" :
+                                "Edit Metric"
                         }
                     </Text>
                 </Modal.Header>
@@ -154,21 +160,18 @@ function ManageMetricButton(props)
     )
 }
 
-function MetricCreator(props)
-{
+function MetricCreator(props) {
 
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
 
     var [metric, setMetric] = React.useState(SampleMetric());
 
-    var editValue = (e, k) =>
-    {
+    var editValue = (e, k) => {
         metric[k] = e.target.value;
         setMetric(Object.assign({}, metric));
     }
 
-    var commit = () =>
-    {
+    var commit = () => {
         manageProjectsQueue.push({ "method": "POST", "action": "metric_info", "type": metric["type"], "metric_id": metric["id"], "project_id": CurrentProject(window.lastDataObject)["id"] });
         CurrentProject(DataObject)["metrics"].push(metric);
         setDataObject(Object.assign({}, DataObject));
@@ -191,8 +194,7 @@ function MetricCreator(props)
                     </Dropdown.Button>
                     <Dropdown.Menu css={{ $$dropdownMenuWidth: "340px" }} onAction={(e) => { editValue({ "target": { "value": e } }, "type") }}>
                         {
-                            Object.entries(MetricTypes).map((e) =>
-                            {
+                            Object.entries(MetricTypes).map((e) => {
                                 return (
                                     <Dropdown.Item description={MetricTypeDetails[e[1]]} key={e[1]} >{e[0]}</Dropdown.Item>
                                 );
@@ -208,18 +210,15 @@ function MetricCreator(props)
     )
 }
 
-function GenerateMetricID()
-{
+function GenerateMetricID() {
     var baseID = Array.from(
         window.crypto.getRandomValues(new Uint8Array(Math.ceil(16 / 2))),
         (b) => ("0" + (b & 0xFF).toString(16)).slice(-2)
     ).join("").toUpperCase();
 
     var ID = "";
-    for (let i = 0; i < baseID.length; i++)
-    {
-        if (i % 6 == 0 && i != 0)
-        {
+    for (let i = 0; i < baseID.length; i++) {
+        if (i % 6 == 0 && i != 0) {
             ID += "-";
         }
         ID += baseID[i];
@@ -237,8 +236,7 @@ function GenerateMetricID()
     return ID;
 }
 
-function MetricDataChanged_input(event)
-{
+function MetricDataChanged_input(event) {
 
     var dataKey = event.target.getAttribute("data-key");
     var metricID = dataKey.split("/")[0];

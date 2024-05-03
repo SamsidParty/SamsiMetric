@@ -67,7 +67,7 @@ function ManageProject()
                                         <MetricPreviewTrack index={2} />
                                     </>
                                 ) : 
-                                (<></>)
+                                null
                             }
                         </div>
                         <ClientImage className="tooltipNoMetrics" src="./Images/TooltipNoMetrics.png" />
