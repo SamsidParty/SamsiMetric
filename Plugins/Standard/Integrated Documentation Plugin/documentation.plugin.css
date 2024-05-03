@@ -1,0 +1,28 @@
+.sidebarDocumentation {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebarDocumentation .sidebarDocumentationHeader {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 40px;
+    gap: 5px;
+}
+
+.sidebarDocumentation .sidebarDocumentationHeader h3 {
+    margin: 0
+}
+
+.sidebarDocumentation .sidebarDocumentationHeader button {
+    display: none;
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+    font-size: 12px;
+    border-radius: 6px;
+}

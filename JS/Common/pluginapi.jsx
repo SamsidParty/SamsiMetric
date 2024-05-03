@@ -1,7 +1,7 @@
 AutoLoadThisFile();
 
 async function LoadAllPlugins() {
-    var pluginList = ParseIndexTree(await (await fetch("./Plugins/index.php")).text(), (e) => e.endsWith(".plugin.js") || e.endsWith(".plugin.jsx"));
+    var pluginList = ParseIndexTree(await (await fetch("./Plugins/index.php")).text(), (e) => e.endsWith(".plugin.js") || e.endsWith(".plugin.jsx") || e.endsWith(".plugin.css"));
     
     for (let i = 0; i < pluginList.length; i++) {
         var l_plugin = pluginList[i];
@@ -10,6 +10,11 @@ async function LoadAllPlugins() {
         //Transform Babel
         if (window.Babel && l_plugin.endsWith(".jsx")) {
             script = Babel.transform(script, { presets: ["react"] }).code;
+        }
+
+        //Load CSS
+        if (l_plugin.endsWith(".css")) {
+            await LoadCSSDependency(script);
         }
 
         try {
