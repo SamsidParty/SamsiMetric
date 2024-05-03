@@ -73,7 +73,7 @@ function Topbar()
             <PluginSurface mount="topbar" />
 
             {       
-                localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager" ?
+                (localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && CurrentWorkspace(DataObject) != null ?
                 (
                     <Tooltip ttid="lockworkspace" {...TTContent("lockworkspace")}>
                         <Button auto flat color={workspaceTag} onPress={() => { window.workspaceEditMode = !window.workspaceEditMode; setExtRedraw(UUID()); }} className="iconButtonLarge"><i className={"ti ti-lock" + (window.workspaceEditMode ? "-open" : "")}></i></Button>
@@ -82,7 +82,7 @@ function Topbar()
                 : <></>
             }
 
-            <Tooltip ttid="databasestatus" {...TTContent("static", "Database Status")}>
+            <Tooltip ttid="databasestatus" {...TTContent("static", "Refresh Data")}>
                 <Button auto flat color={databaseTag} onPress={() => RefreshData(true)} className="iconButtonLarge"><i className={"ti ti-" + databaseIcon}></i></Button>
             </Tooltip>
 
