@@ -16,13 +16,24 @@ async function LoadAllPlugins() {
         if (l_plugin.endsWith(".css")) {
             await LoadCSSDependency(script);
         }
+        else {
+            try {
+                var scriptURL = URL.createObjectURL(new Blob([script], { type: "text/javascript" }));
 
-        try {
-            eval(script);
+                var tag = document.createElement('script');
+                tag.type = "text/javascript";
+                tag.src = scriptURL;
+            
+                document.head.appendChild(tag);
+
+                await new Promise((resolve) => { tag.onload = () => resolve()});
+            }
+            catch (ex) {
+                console.error(ex);
+                //TODO: GUI Error Handler
+            }
         }
-        catch {
-            //TODO: GUI Error Handler
-        }
+
 
         console.log("Plugin Loaded " + l_plugin);
     }
