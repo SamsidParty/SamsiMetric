@@ -4,10 +4,15 @@ PluginAPI.registerPlugin("Integrated Documentation Plugin", () => {
 
 function DocumentationExtensionSideBar() {
 
+    var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
     var [dataProvider, setDataProvider] = React.useState(null);
 
-    if (!window.Docplugin_rct) {
+    if (!window.Docplugin_rct && !window.loadingRCT) {
         setTimeout(async () => {
+
+            window.loadingRCT = true;
+            window.validDocs = [];
+
             LoadComplexTree();
 
             //Find DocMap And Load It Into The Tree Provider
@@ -47,6 +52,8 @@ function DocumentationExtensionSideBar() {
                             isFolder: false,
                             data: l_item.file.replace(".md", "")
                         }
+
+                        window.validDocs.push(l_item.id);
                     }
 
                     return l_item.id;
@@ -63,6 +70,13 @@ function DocumentationExtensionSideBar() {
     }
 
 
+    var navigateToDocument = (id) => {
+        if (window.validDocs.includes(id)) {
+            window.lastDocumentationID = id;
+            DataObject["page"] = "DocumentationFramePage";
+            setExtRedraw(UUID());
+        }
+    }
 
     return (
         <div className="sidebarDocumentation">
@@ -82,6 +96,10 @@ function DocumentationExtensionSideBar() {
                                     canDragAndDrop={false}
                                     canDropOnFolder={false}
                                     canReorderItems={false}
+                                    canRename={false}
+                                    canSearch={false}
+                                    disableMultiSelect={true}
+                                    onSelectItems={(docs) => navigateToDocument(docs[0])}
 
                                 >
                                     <Docplugin_rct.Tree className="docTree" treeId="docs-tree" rootItem="root" treeLabel="Documentation" />
@@ -93,5 +111,19 @@ function DocumentationExtensionSideBar() {
             </div>
 
         </div>
+    )
+}
+
+function DocumentationFramePage() {
+    //The Documentation Iframe Is Served From SamsidParty's Proprietary Documentation System
+    //This Is Because SamsidParty's Markdown Variation Supports Additional Features (Like Accordions)
+    //You Can Replace This URL With Whatever You Want By Setting localStorage.exp_docURL
+    //The ID Of The Doc Will Be Appended To It (Like #12345678)
+    var docURL = localStorage.exp_docURL || "https://www.samsidparty.com/docs/software/samsimetric";
+
+    return (
+        <iframe allowtransparency="true" className="documentationFrame" key={window.lastDocumentationID} src={docURL + window.lastDocumentationID}>
+
+        </iframe>
     )
 }
