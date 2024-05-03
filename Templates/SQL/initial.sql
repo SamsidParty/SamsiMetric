@@ -1,59 +1,23 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 192.168.100.100
--- Generation Time: Mar 25, 2024 at 04:53 AM
--- Server version: 8.3.0
--- PHP Version: 8.2.15
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `config`
---
-
 CREATE TABLE `config` (
   `File` varchar(64) NOT NULL,
   `Content` text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `config`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `config` (`File`, `Content`) VALUES
 ('keys.json', '[\r\n  {\r\n    \"value\": \"$2y$10$cEnZKAJasuGoD/wC6rsMqu5eYYVCffrywHhQ4.CM2Lq3aBkNHUPOG\",\r\n    \"id\": \"1680410510.insecure\",\r\n    \"name\": \"Default\",\r\n    \"icon\": \"default.png\",\r\n    \"perms\": \"admin\"\r\n  }\r\n]'),
 ('projects.json', '[]');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `data_average`
---
 
 CREATE TABLE `data_average` (
   `MetricID` varchar(100) NOT NULL,
   `ProjectID` varchar(100) NOT NULL,
   `Average` double NOT NULL DEFAULT '0',
   `ReportCount` bigint UNSIGNED NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `data_country`
---
 
 CREATE TABLE `data_country` (
   `MetricID` varchar(100) NOT NULL,
@@ -253,115 +217,59 @@ CREATE TABLE `data_country` (
   `CountryYE` bigint UNSIGNED NOT NULL,
   `CountryZM` bigint UNSIGNED NOT NULL,
   `CountryZW` bigint UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `data_snapshot`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `data_snapshot` (
   `MetricID` varchar(64) NOT NULL,
   `SnapTime` bigint NOT NULL,
   `SnapData` varbinary(5000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `data_total`
---
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `data_total` (
   `Total` double NOT NULL DEFAULT '0',
   `MetricID` varchar(100) NOT NULL DEFAULT '',
   `ProjectID` varchar(100) NOT NULL DEFAULT '',
   `ReportCount` bigint UNSIGNED NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `icons`
---
 
 CREATE TABLE `icons` (
   `IconID` varchar(100) NOT NULL,
   `IconData` mediumblob NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `sessions`
---
 
 CREATE TABLE `sessions` (
   `Token` varchar(128) NOT NULL,
   `KeyID` varchar(128) NOT NULL,
   `Identity` varchar(128) NOT NULL,
   `Permanent` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `snapshot_history`
---
 
 CREATE TABLE `snapshot_history` (
   `MetricID` varchar(64) NOT NULL,
   `LastSnap` bigint UNSIGNED NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `config`
---
 ALTER TABLE `config`
   ADD PRIMARY KEY (`File`);
 
---
--- Indexes for table `data_average`
---
 ALTER TABLE `data_average`
   ADD PRIMARY KEY (`MetricID`);
 
---
--- Indexes for table `data_country`
---
 ALTER TABLE `data_country`
   ADD PRIMARY KEY (`MetricID`);
 
---
--- Indexes for table `data_total`
---
 ALTER TABLE `data_total`
   ADD PRIMARY KEY (`MetricID`);
 
---
--- Indexes for table `icons`
---
 ALTER TABLE `icons`
   ADD PRIMARY KEY (`IconID`);
 
---
--- Indexes for table `sessions`
---
 ALTER TABLE `sessions`
   ADD PRIMARY KEY (`Token`);
 
---
--- Indexes for table `snapshot_history`
---
 ALTER TABLE `snapshot_history`
   ADD PRIMARY KEY (`MetricID`);
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
