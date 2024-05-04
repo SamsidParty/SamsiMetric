@@ -5,6 +5,7 @@ require_once("./PHP/sql.php");
 if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["server"]["HTTP_X_MODE"] == "Submit") 
 {
     //Check API Key
+    $originalClientKey = $virtualAPI["server"]["HTTP_X_API_KEY"];
     $clientKey = $virtualAPI["server"]["HTTP_X_API_KEY"];
     $serverKeys = json_decode(GetConfigFile("keys.json"), true);
     $sessionBased = str_starts_with($clientKey, "Bearer ");
@@ -18,7 +19,7 @@ if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["serve
 
     if ($sessionBased) {
         //Check Against Session Tokens
-        $query = DB::query("SELECT * FROM sessions WHERE Token = %s;", $clientKey);
+        $query = DB::query("SELECT * FROM sessions WHERE Token = %s LIMIT 1;", $clientKey);
         if ($query[0]["Token"] == $clientKey) {
             $clientKey = $query[0]["KeyID"];
         }
@@ -48,8 +49,12 @@ if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["serve
     if ($currentKey == null) 
     {
         http_response_code(401);
-        die('[{"type":"error","error":"The API Key Is Invalid Or Was Revoked"}]');
+        die('[{"type":"error","error":"Session Has Expired Or Incorrect Credentials"}]');
     }
+
+    DB::query("UPDATE sessions SET LastAccess = UNIX_TIMESTAMP() WHERE Token = %s LIMIT 1;", $originalClientKey);
+
+    ScrubUnusedSessions();
 }
 
 function CollectorOnly() 
@@ -94,5 +99,10 @@ function Sanitize(string $input) {
         http_response_code(400);
         die('[{"type":"error","error":"Malformed Input"}]');
     }
+}
+
+function ScrubUnusedSessions() {
+    $threshold = time() - 604800; // 1 Week Ago
+    DB::query("DELETE FROM sessions WHERE LastAccess < %i AND Permanent = 0;", $threshold);
 }
 ?>

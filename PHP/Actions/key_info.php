@@ -21,7 +21,7 @@ if ($virtualAPI["server"]['REQUEST_METHOD'] == 'PATCH') {
 else if ($virtualAPI["server"]['REQUEST_METHOD'] == 'POST') {
     //Create New Session
     $token = "Bearer " . bin2hex(random_bytes(16));
-    DB::query("INSERT INTO sessions (Token, KeyID, Identity) VALUES (%s, %s, %s)", $token, $currentKey["id"], $virtualAPI["server"]["REMOTE_ADDR"]);
+    DB::query("INSERT INTO sessions (Token, KeyID, Identity, LastAccess) VALUES (%s, %s, %s, UNIX_TIMESTAMP())", $token, $currentKey["id"], $virtualAPI["server"]["REMOTE_ADDR"]);
 
     $responseCurrentKey["value"] = $token;
 

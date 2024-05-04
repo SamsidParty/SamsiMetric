@@ -1,5 +1,12 @@
 <?php
 
+if (!file_exists("./.prod")) {
+    //Enable Error Reporting
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+}
+
 if (!isset($virtualAPI)) {
     $virtualAPI = array(
         "server" => $_SERVER,
@@ -19,13 +26,6 @@ try {
 catch (Exception $ex) {
     http_response_code(401);
     die('[{"type":"error","error":"The API Key Is Invalid Or Was Revoked"}]');
-}
-
-if (!file_exists("./.prod")) {
-    //Enable Error Reporting
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-    error_reporting(E_ALL);
 }
 
 if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel")

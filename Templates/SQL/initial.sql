@@ -243,7 +243,8 @@ CREATE TABLE `sessions` (
   `Token` varchar(128) NOT NULL,
   `KeyID` varchar(128) NOT NULL,
   `Identity` varchar(128) NOT NULL,
-  `Permanent` tinyint(1) NOT NULL DEFAULT '0'
+  `Permanent` tinyint(1) NOT NULL DEFAULT '0',
+  `LastAccess` bigint UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
