@@ -209,6 +209,7 @@ function App()
     return (
 
         <DataContext.Provider value={{ DataObject: DataObject, setDataObject: setDataObject }}>
+            <BasicPageChecks></BasicPageChecks>
             <NextUI.NextUIProvider theme={theme}>
                 <Sidebar></Sidebar>
                 <Topbar></Topbar>
