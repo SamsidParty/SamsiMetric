@@ -12,7 +12,14 @@ require_once("./PHP/ThirdParty/vendor/autoload.php");
 require_once("./PHP/sql.php");
 require_once("./PHP/Actions/check_cron.php");
 require_once("./PHP/config.php");
-require_once("./PHP/auth.php");
+
+try {
+    require_once("./PHP/auth.php");
+}
+catch (Exception $ex) {
+    http_response_code(401);
+    die('[{"type":"error","error":"The API Key Is Invalid Or Was Revoked"}]');
+}
 
 if (!file_exists("./.prod")) {
     //Enable Error Reporting
