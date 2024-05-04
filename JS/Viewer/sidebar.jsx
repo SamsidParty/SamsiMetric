@@ -11,6 +11,7 @@ function Sidebar() {
         manageProjectsBackup = JSON.parse(JSON.stringify(DataObject));
         manageProjectsQueue = [];
         DataObject["page"] = "ManageProject";
+        DataObject["pageOverridable"] = "false"; // Prevent Selecting A Workspace From Closing It
         setExtRedraw(UUID());
     }
 
@@ -195,6 +196,11 @@ function SidebarWorkspaceList(props) {
 
                             onPress={
                                 () => {
+
+                                    if (DataObject["pageOverridable"] && DataObject["pageOverridable"] == "true") {
+                                        DataObject["page"] = null;
+                                    }
+
                                     localStorage.lastWorkspace = l_wsid;
                                     DataObject["selected_workspace"] = l_wsid;
                                     setDataObject(Object.assign({}, DataObject));

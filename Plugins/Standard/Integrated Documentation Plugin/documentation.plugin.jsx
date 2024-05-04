@@ -73,6 +73,7 @@ function DocumentationExtensionSideBar() {
     var navigateToDocument = (id) => {
         if (window.validDocs.includes(id)) {
             window.lastDocumentationID = id;
+            DataObject["pageOverridable"] = "true";
             DataObject["page"] = "DocumentationFramePage";
             setExtRedraw(UUID());
         }

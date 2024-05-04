@@ -45,6 +45,7 @@ function Topbar()
         {
             await RefreshKeys();
             DataObject["page"] = "ManageAPIKeys";
+            DataObject["pageOverridable"] = "false"; // Prevent Selecting A Workspace From Closing It
             setExtRedraw(UUID());
         }
         else if (e == "signout") {

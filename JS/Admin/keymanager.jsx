@@ -95,6 +95,7 @@ function ManageAPIKeys()
         }
         
         DataObject["page"] = "APIKeyCreator";
+        DataObject["pageOverridable"] = "false"; // Prevent Selecting A Workspace From Closing It
         setExtRedraw(UUID());
     }
 
