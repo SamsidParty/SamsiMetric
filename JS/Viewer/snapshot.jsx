@@ -29,7 +29,7 @@ async function LoadSnapshotRange(from, to) {
         }
 
         MessagePack.decode((await response.arrayBuffer())).data_snapshot.forEach((l_snap) => {
-            l_snap.SnapData = new TextDecoder().decode(fflate.decompressSync(l_snap.SnapData));
+            l_snap.SnapData = MessagePack.decode(fflate.decompressSync(l_snap.SnapData));
             var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
             if (LoadedSnapshots[identity] == undefined) {
                 LoadedSnapshots[identity] = l_snap;
@@ -48,8 +48,13 @@ async function LoadSnapshotRange(from, to) {
 }
 
 function SnapshotAt(metric, time) {
+
     if (SnapshotsFor[metric] == undefined) {
         return null;
+    }
+
+    if (time == Infinity) {
+        return SnapshotsFor[metric].length > 0;
     }
 
     var closestSnapshot = {

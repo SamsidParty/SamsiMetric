@@ -18,6 +18,7 @@ chdir(realpath("../../"));
 require_once("./PHP/sql.php");
 require_once("./PHP/metrics.php");
 require_once("./PHP/config.php");
+require_once("./PHP/ThirdParty/vendor/autoload.php");
 
 $projects = json_decode(GetConfigFile("projects.json"), true);
 $history = DB::query("SELECT * FROM snapshot_history");
@@ -33,8 +34,6 @@ $time_day = 86400;
 foreach ($history as $metric) {
     $parsedHistory[$metric["MetricID"]] = intval($metric["LastSnap"]);
 }
-
-$log = json_encode($parsedHistory);
 
 foreach ($projects as $project) {
     foreach ($project["metrics"] as $metric) {
@@ -63,8 +62,6 @@ foreach ($projects as $project) {
                 //Add To Snapshot History
                 DB::query("UPDATE snapshot_history SET LastSnap = %d WHERE MetricID = %s", time(), $metric["id"]);
             }
-
-            $log .= $timeDiff . "\n";
         }
     }
 }

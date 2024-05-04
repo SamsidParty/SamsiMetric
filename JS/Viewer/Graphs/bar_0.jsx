@@ -206,7 +206,7 @@ function Graphbar_0_Bar(props) {
                         var stubDataObject = { data: {} };
 
                         if (snap && snap.SnapData) {
-                            stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = JSON.parse(snap.SnapData);
+                            stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = snap.SnapData;
                             var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
 
                             values.push(value);

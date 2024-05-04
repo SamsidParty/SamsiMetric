@@ -24,8 +24,9 @@ function DumpMetric($metric) {
         $query = DB::query("SELECT * FROM data_country WHERE MetricID = %s", $metric["id"]);
     }
 
-    $json = json_encode($query);
-    $gz = gzcompress($json, 4);
+    $packer = new MessagePack\Packer();
+    $packed = $packer->pack($query);
+    $gz = gzcompress($packed, 4);
 
     return $gz;
 }
