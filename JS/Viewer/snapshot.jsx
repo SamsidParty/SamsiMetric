@@ -55,15 +55,29 @@ function SnapshotAt(metric, time) {
     var closestSnapshot = {
         SnapTime: -Infinity
     };
-    Object.keys(SnapshotsFor[metric]).forEach((l_key) => {
-        var l_snap = SnapshotsFor[metric][l_key];
-        if (Math.abs(l_snap.SnapTime - time) < Math.abs(closestSnapshot.SnapTime - time)) {
-            closestSnapshot = l_snap;
-        }
-    });
+    closestSnapshot = BinarySearchSnapshots(Object.values(SnapshotsFor[metric]), time);
 
     return closestSnapshot;
 }
+
+//https://stackoverflow.com/a/48875938/18071273
+function BinarySearchSnapshots(arr, target) {
+    var midpoint = Math.floor(arr.length/2);
+
+    if (arr[midpoint].SnapTime === target){
+        return arr[midpoint];
+    }
+    if (arr.length === 1){
+        return arr[0];
+    }
+  
+    if (arr[midpoint].SnapTime > target){
+        return BinarySearchSnapshots(arr.slice(0, midpoint), target);
+    }
+    else if (arr[midpoint].SnapTime < target){
+        return BinarySearchSnapshots(arr.slice(midpoint), target);
+    }
+ }
 
 function ClearLoadedSnapshots() {
     LoadedSnapshotRanges = [];
