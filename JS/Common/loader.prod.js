@@ -207,7 +207,7 @@ function LoadingScreen() {
         <style class="loaderPage">
     
             body {
-                background-color: #F0F0F0;
+                background-color: white;
                 display: flex;
                 justify-content: center;
                 align-items: center;
