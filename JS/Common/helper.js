@@ -2,7 +2,7 @@ AutoLoadThisFile();
 
 window.Backend = "./backend.php"
 window.ProductName = document.querySelector('meta[name="product-name"]').content;
-window.isMobile = document.body.classList.contains("mobile");
+window.isMobile = window.matchMedia("(max-aspect-ratio: 10/9)").matches;
 window.isDesktop = !isMobile;
 
 //These Are The Colors NextUI Uses
@@ -36,6 +36,12 @@ function UUID() {
 
 function LoginWithKeyInfo(keyInfo, key)
 {
+
+    //Disable Management And Administration On Mobile
+    if (isMobile) {
+        keyInfo.perms = "viewer";
+    }
+
     for (var [info, value] of Object.entries(keyInfo))
     {
         localStorage.setItem("apikey_" + info, value);

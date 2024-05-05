@@ -23,5 +23,23 @@
 
 .projectListItem h2 {
     font-size: 22px;
+    font-weight: 400;
     margin: 0;
+}
+
+
+@media (max-aspect-ratio: 10/9) {
+    .projectList {
+        width: 80vw;
+        margin-bottom: 150px;
+        gap: 10px;
+    }
+
+    .projectListItem {
+        padding-left: 25px;
+    }
+
+    .selectProjectModal {
+        margin-top: 120px;
+    }
 }

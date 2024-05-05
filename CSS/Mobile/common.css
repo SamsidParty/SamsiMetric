@@ -8,4 +8,12 @@
         display: unset !important;
     }
 
+    ::-webkit-scrollbar {
+        width: 0px !important;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
 }

@@ -31,6 +31,7 @@ function ProjectSelectModal()
         <ClientImage background="true" className="setupPage" src="./Images/BackgroundDecoration.jpg">
             <div className="setupContainer">
                 <div className="setupModal selectProjectModal">
+                    <i className="mobileOnly mobileIcon ti ti-color-swatch"></i>
                     <h1>Select Project</h1>
                     <div className="projectList">
                         {
@@ -52,7 +53,12 @@ function ProjectSelectModal()
                             (<p>No Projects Yet, Create One To Get Started</p>)
                         }
                     </div>
-                    <Button size="lg" auto color="primary" onPress={() => CreateProjectFromTemplate("Empty")}><i className="ti ti-plus"></i> &nbsp; Create Project</Button>
+                    {
+                        (localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") ? 
+                        <Button size="lg" auto color="primary" onPress={() => CreateProjectFromTemplate("Empty")}><i className="ti ti-plus"></i> &nbsp; Create Project</Button>
+                        : null
+                    }
+                    
                 </div>
             </div>
         </ClientImage>

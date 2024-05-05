@@ -67,7 +67,7 @@ function LoginModal()
         <ClientImage background="true" className="setupPage" src="./Images/BackgroundDecoration.jpg">
             <div className="setupContainer">
                 <div className="setupModal loginModal">
-                    <i className="mobileOnly ti ti-shield-lock"></i>
+                    <i className="mobileOnly mobileIcon ti ti-shield-lock"></i>
                     <h1>Sign In To {ProductName}</h1>
                     <Input width="100%" className="keyInput" size="xl" label={error} status={status} autoFocus={true} bordered placeholder="Enter API Key" onChange={onKeyChanged} onKeyDown={onEnter} initialValue={preloadKey} />
                     <ClientImage className="loginIcon" src="./Images/LoginIcon.png"></ClientImage>

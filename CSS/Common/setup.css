@@ -36,7 +36,7 @@
     right: 50px;
 }
 
-.loginModal h1 {
+.loginModal h1, .selectProjectModal h1 {
     font-size: 40px;
     font-weight: 600;
     color: var(--col-text);
@@ -95,8 +95,12 @@
         margin-right: auto;
     }
 
-    .loginModal .ti-shield-lock {
+    .setupModal .mobileIcon {
         font-size: 5rem;
         color: var(--nextui-colors-primary);
+    }
+
+    .setupPage {
+        background: var(--col-contrast) !important;
     }
 }
