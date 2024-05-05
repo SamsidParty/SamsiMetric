@@ -29,7 +29,7 @@
 }
 
 .csMedLong.graphNum0 .subCard .numValue {
-    font-family: InterVariable !important;
+    font-family: var(--standard-font) !important;
     font-weight: 500;
     margin: 0;
     color: var(--col-text);
@@ -41,7 +41,7 @@
 }
 
 .csMedLong.graphNum0 .subCard h3 {
-    font-family: InterVariable !important;
+    font-family: var(--standard-font) !important;
     font-weight: 500;
     text-transform: uppercase;
 

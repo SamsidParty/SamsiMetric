@@ -25,7 +25,7 @@
 }
 
 .csShortLong.graphNum0 .subCard .numValue {
-    font-family: InterVariable !important;
+    font-family: var(--standard-font) !important;
     font-weight: 700;
     color: var(--col-text);
     letter-spacing: normal;
@@ -36,7 +36,7 @@
 }
 
 .csShortLong.graphNum0 .subCard h3 {
-    font-family: InterVariable !important;
+    font-family: var(--standard-font) !important;
     font-weight: 500;
     text-transform: uppercase;
 

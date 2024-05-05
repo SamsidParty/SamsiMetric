@@ -4,6 +4,7 @@ window.Backend = "./backend.php"
 window.ProductName = document.querySelector('meta[name="product-name"]').content;
 window.isMobile = window.matchMedia("(max-aspect-ratio: 10/9)").matches;
 window.isDesktop = !isMobile;
+window.isApple = /(iPad|iPhone|iPod)/g.test(navigator.userAgent);
 
 //These Are The Colors NextUI Uses
 const tagColors = {

@@ -1,5 +1,5 @@
 .graphLine0 .metricName {
-   font-family: InterVariable !important;
+   font-family: var(--standard-font) !important;
    font-weight: 500;
    text-transform: uppercase;
 

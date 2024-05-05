@@ -28,14 +28,6 @@ The LOADER LOAD BIN stuff is replaced with a data url at runtime
     src: url("./LOADER_LOAD_BIN/./Fonts/Jetbrains.woff2/FINISH") format("woff2");
 }
 
-/* Should Only Be Used On iOS Client Otherwise We Can Run Into Legal Issues */
-@font-face {
-    font-family: SFPro;
-    font-style: normal;
-    font-weight: 300 900;
-    src: url("./LOADER_LOAD_BIN/./Fonts/SFPro.ttf/FINISH");
-}
-
 /*!
  * Tabler Icons 2.42.0 by tabler - https://tabler.io
  * License - https://github.com/tabler/tabler-icons/blob/master/LICENSE

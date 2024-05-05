@@ -50,7 +50,7 @@
 }
 
 .csLongDouble.graphMap0 .mapGroupHeader .nextui-button-text-right {
-    font-family: InterVariable !important;
+    font-family: var(--standard-font) !important;
     font-weight: 500 !important;
     text-transform: uppercase !important;
 

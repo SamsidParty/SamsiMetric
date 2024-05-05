@@ -1,7 +1,8 @@
 
 * {
     box-sizing: border-box;
-    font-family:  InterVariable, tabler-icons !important;
+    --standard-font: InterVariable;
+    font-family: var(--standard-font), tabler-icons !important;
     letter-spacing: normal !important;
     -webkit-font-smoothing: subpixel-antialiased;
 }
@@ -110,7 +111,7 @@ body {
 }
 
 .boldText, .nextui-input-block-label {
-    font-family: InterVariable !important;
+    font-family: var(--standard-font) !important;
     font-weight: 500 !important;
     text-transform: uppercase !important;
 
