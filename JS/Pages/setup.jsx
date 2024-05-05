@@ -9,13 +9,13 @@ var SetupReasons = {
 function SetupDatabase() {
     return (
         <>
-            <h1>Couldn't Connect To The Database</h1>
-            <h4>Please ensure that the proper environment variables are valid on the server:</h4>
-            <h4>- DB_HOST: The Address Of The MySQL Database</h4>
-            <h4>- DB_USERNAME: The Username Used To Connect To The Database</h4>
-            <h4>- DB_PASSWORD: The Password For The Databse, In Plain Text</h4>
-            <h4>- DB_ANALYTICS: The Name Of The Database Used For {ProductName}</h4>
-            <Button size="lg" auto color="primary" onClick={() => window.location.href = "./Dashboard"}>Try Again</Button>
+            <h2>Couldn't Connect To The Database</h2>
+            <h4>Please ensure that the proper environment variables are valid on the server:<br></br>
+            - DB_HOST: The Address Of The MySQL Database<br></br>
+            - DB_USERNAME: The Username Used To Connect To The Database<br></br>
+            - DB_PASSWORD: The Password For The Databse, In Plain Text<br></br>
+            - DB_ANALYTICS: The Name Of The Database Used For {ProductName}</h4>
+            <Button size="lg" auto color="error" onClick={() => window.location.href = "./Dashboard"}><i className="ti ti-reload"></i> &nbsp; Try Again</Button>
         </>
     )
 }
@@ -24,10 +24,10 @@ function SetupFormatDatabase() {
     return (
         <>
             <h1>Database Format Required</h1>
-            <h4>The MySQL Database Needs To Be Setup To Work With SamsiMetric</h4>
-            <h4>It Is Highly Recommended That This Action Is Performed On An Empty Database</h4>
-            <h4>This CANNOT BE UNDONE</h4>
-            <Button size="lg" auto color="primary" onClick={() => window.location.href = "./Setup?reason=formatcomplete"}>Format Database</Button>
+            <h4>The MySQL Database Needs To Be Setup To Work With {ProductName}<br></br>
+            It Is Highly Recommended That This Action Is Performed On An Empty Database<br></br>
+            This CANNOT BE UNDONE</h4>
+            <Button size="lg" auto color="error" onClick={() => window.location.href = "./Setup?reason=formatcomplete"}><i className="ti ti-eraser"></i> &nbsp; Format Database</Button>
         </>
     )
 }
@@ -35,9 +35,9 @@ function SetupFormatDatabase() {
 function SetupFormatComplete() {
     return (
         <>
-            <h1>Database Format Completed</h1>
+            <h1>Database Format Complete</h1>
             <h4>You're Good To Go</h4>
-            <Button size="lg" auto color="primary" onClick={() => window.location.href = "./Dashboard"}>Continue</Button>
+            <Button size="lg" auto color="primary" onClick={() => window.location.href = "./Dashboard"}>Continue&nbsp;<i className="ti ti-arrow-right"></i></Button>
         </>
     )
 }
@@ -47,7 +47,7 @@ function SetupFormatFailed() {
         <>
             <h1>Database Format Failed</h1>
             <h4>Something Went Wrong, No Further Information Is Available</h4>
-            <Button size="lg" auto color="primary" onClick={() => window.location.href = "./Dashboard"}>Try Again</Button>
+            <Button size="lg" auto color="primary" onClick={() => window.location.href = "./Dashboard"}><i className="ti ti-reload"></i> &nbsp; Try Again</Button>
         </>
     )
 }
