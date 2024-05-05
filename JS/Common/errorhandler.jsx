@@ -35,7 +35,8 @@ function BasicPageChecks() {
     return (
         <>
             {
-                !window.isSecureContext ?
+                //Ignore Secure Context On LAN
+                (!window.isSecureContext && !window.location.host.startsWith("192.168")) ?
                 <UnskippableError error="SamsiMetric Requires A Secure Context To Operate. Some Browser Features Are Unavailable When Using HTTP And Analytics Are Sensitive Information."></UnskippableError> : null
             }
         </>
