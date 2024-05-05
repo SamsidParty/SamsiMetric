@@ -49,7 +49,14 @@ if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["serve
     if ($currentKey == null) 
     {
         http_response_code(401);
-        die('[{"type":"error","error":"Session Has Expired Or Incorrect Credentials"}]');
+
+        if ($sessionBased) {
+            die('[{"type":"error","error":"Session Has Expired, Please Sign In Again"}]');
+        }
+        else {
+            die('[{"type":"error","error":"Incorrect Credentials"}]');
+        }
+
     }
 
     DB::query("UPDATE sessions SET LastAccess = UNIX_TIMESTAMP() WHERE Token = %s LIMIT 1;", $originalClientKey);
