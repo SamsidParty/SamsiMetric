@@ -1,0 +1,11 @@
+.mobileOnly {
+    display: none !important;
+}
+
+@media (max-aspect-ratio: 10/9) {
+
+    .mobileOnly {
+        display: unset !important;
+    }
+
+}

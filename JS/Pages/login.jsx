@@ -67,7 +67,8 @@ function LoginModal()
         <ClientImage background="true" className="setupPage" src="./Images/BackgroundDecoration.jpg">
             <div className="setupContainer">
                 <div className="setupModal loginModal">
-                    <h1>Sign In To SamsiMetric</h1>
+                    <i className="mobileOnly ti ti-shield-lock"></i>
+                    <h1>Sign In To {ProductName}</h1>
                     <Input width="100%" className="keyInput" size="xl" label={error} status={status} autoFocus={true} bordered placeholder="Enter API Key" onChange={onKeyChanged} onKeyDown={onEnter} initialValue={preloadKey} />
                     <ClientImage className="loginIcon" src="./Images/LoginIcon.png"></ClientImage>
                     <Button size="lg" auto color="primary" onPress={onContinue}>Continue&nbsp;<i className="ti ti-arrow-right"></i></Button>
