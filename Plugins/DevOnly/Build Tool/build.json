@@ -23,6 +23,11 @@
         "action": "copyfile",
         "from": "../.htaccess",
         "to": "../Build/.htaccess"
+    },    
+    {
+        "action": "copyfile",
+        "from": "../pwa.php",
+        "to": "../Build/pwa.php"
     },
     {
         "action": "copyfile",

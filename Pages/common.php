@@ -1,18 +1,9 @@
 <?php
 
-$clientVersion = "dev00";
-$favicon = "<link rel='icon' type='image/png' href='./Images/SmallFavicon.png'>";
-$productName = "SamsiMetric";
-$loader = "./JS/Common/loader.prod.js";
+    require_once("../PHP/metadata.php");
 
-if (file_exists("../.prod")) {
-    $clientVersion = file_get_contents("../.prod");
-}
-if (str_contains($clientVersion, "dev")) {
-    $loader = "./JS/Common/loader.dev.js";
-}
-if (file_exists("../.build")) {
-    $clientVersion = file_get_contents("../.build");
-}
+    echo '<meta content="yes" name="apple-mobile-web-app-capable"/>';
+    echo '<meta content="yes" name="mobile-web-app-capable"/>';
+    echo '<link rel="manifest" href="./manifest.json">';
 
 ?>

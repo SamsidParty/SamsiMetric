@@ -6,6 +6,7 @@ RewriteRule ^Setup$ ./Pages/setup.php  [L]
 RewriteRule ^ProjectSelect$ ./Pages/projectselect.php  [L]
 RewriteRule ^MobileClient$ ./Pages/mobile.php  [L]
 RewriteRule ^API/(.*)$ ./PHP/API/api.php [L]
+RewriteRule ^manifest.json$ ./pwa.php [L]
 
 DirectoryIndex index.php
 

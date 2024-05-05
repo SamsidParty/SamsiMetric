@@ -8,10 +8,10 @@
 
 -->
 
-<?php require("./common.php") ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php require("./common.php") ?>
     <script> 
         var url = new URL(window.location.href);
         if (!url.searchParams.get("key")) {
