@@ -34,7 +34,8 @@ function ProjectSelectModal()
                     <h1>Select Project</h1>
                     <div className="projectList">
                         {
-                            DataObject.schema.map((l_project) => {
+                            DataObject.schema.length > 0 ?
+                            (DataObject.schema.map((l_project) => {
                                 return (
                                     <div className="projectListItem" key={l_project.id}>
                                         <h2>{l_project.name}</h2>
@@ -47,10 +48,11 @@ function ProjectSelectModal()
                                         <Button onPress={() => onSelect(l_project.id)} flat auto className="iconButton iconButtonLarge"><i className="ti ti-external-link"></i></Button>
                                     </div>
                                 )
-                            })
+                            })) : 
+                            (<p>No Projects Yet, Create One To Get Started</p>)
                         }
                     </div>
-                    <Button size="lg" auto color="primary" onPress={() => CreateProjectFromTemplate("Empty")}>Create Project</Button>
+                    <Button size="lg" auto color="primary" onPress={() => CreateProjectFromTemplate("Empty")}><i className="ti ti-plus"></i> &nbsp; Create Project</Button>
                 </div>
             </div>
         </ClientImage>
