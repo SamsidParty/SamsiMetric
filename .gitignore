@@ -1,4 +1,8 @@
 .env
 .build
 .DS_store
+.vs
+.vscode
+bin/
+obj/
 Build

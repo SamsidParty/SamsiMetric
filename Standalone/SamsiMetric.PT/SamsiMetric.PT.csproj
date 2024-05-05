@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SamsiMetric\SamsiMetric.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="WebFramework">
+      <HintPath>C:\Users\SamarthCat\Documents\Programming Stuff\WebFramework\WebFramework\bin\x64\Release\netstandard2.0\WebFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="WebFramework.PT">
+      <HintPath>C:\Users\SamarthCat\Documents\Programming Stuff\WebFramework\WebFramework.PT\bin\Release\net8.0\WebFramework.PT.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
