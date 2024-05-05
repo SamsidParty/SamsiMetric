@@ -10,7 +10,7 @@ if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["serve
     $serverKeys = json_decode(GetConfigFile("keys.json"), true);
     $sessionBased = str_starts_with($clientKey, "Bearer ");
 
-    //Enabled Admin Perms Temporarily For All Keys (Only Works In Source)
+    //Enable "debug" Key When Building, The Build Tool Creates The .build File And Deletes It Later
     if (file_exists("./.build")) {
         $serverKeys = array(0 => (array("value" => '$2y$10$jnpqFE05BxYeB9h93ht97unngllyGOsELwH8X.J73EK01Hwlrf.OS', "id" => "build", "name" => "build", "perms" => "admin")));
     }
@@ -20,7 +20,7 @@ if ($virtualAPI["server"]["HTTP_X_MODE"] == "ControlPanel" || $virtualAPI["serve
     if ($sessionBased) {
         //Check Against Session Tokens
         $query = DB::query("SELECT * FROM sessions WHERE Token = %s LIMIT 1;", $clientKey);
-        if ($query[0]["Token"] == $clientKey) {
+        if (count($query) > 0 && $query[0]["Token"] == $clientKey) {
             $clientKey = $query[0]["KeyID"];
         }
     }
