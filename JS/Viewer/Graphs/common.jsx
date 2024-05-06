@@ -21,7 +21,7 @@ function DummyGraph(props)
 {
 
     return (
-        <div className={"flexx facenter fjcenter layoutCard " + props.cardSize}>
+        <div className={"flexx facenter fjcenter layoutCard " + props.cardSize} style={ScaleGraph(props.cardSize)}>
             {
                 (window.workspaceEditMode && !props.preview) ?
                     <>
@@ -157,19 +157,10 @@ function MetricGraph(props)
     var nonce = `N_Graph_${props.graphIndex}_Layout_${props.layoutIndex}_Workspace_${props.workspace.id}`; // Used To Identify Graph Across Rerenders
     var GraphToRender = ArrayValue(GraphTypes, "name", props.graph["type"])?.render;
 
-    if (!GraphToRender) {
-        return (
-            <div style={ScaleGraph(props.cardSize)} className={"layoutCard graphError0 " + props.cardSize}>
-                <GraphCommon {...props} />
-                <i className="ti ti-question-mark"></i>
-            </div>
-        );
-    }
-
     GraphToRender = GraphToRender();
     return (
         <MetricErrorBoundary key={nonce} graphNonce={nonce} style={ScaleGraph(props.cardSize)} {...props}>
-            <GraphToRender graphNonce={nonce} style={ScaleGraph(props.cardSize)} {...props} />
+            <GraphToRender graphNonce={nonce} style={ScaleGraph(props.cardSize)} cardScale={ScaleGraph(props.cardSize, true)} {...props} />
         </MetricErrorBoundary>
     )
     
@@ -202,7 +193,8 @@ function ScaleGraph(type, raw)
     return {
         "--card-scale": scale,
         width: graphWidth * scale,
+        minWidth: graphWidth * scale,
         height: GraphHeights[type] * scale,
-        marginBottom: (20 * scale) + "px"
+        minHeight: GraphHeights[type] * scale
     };
 }

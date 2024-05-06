@@ -168,16 +168,17 @@ function Graphmap_0_Map(props)
         }
     }
 
+
     return (
         <>
             <ReactSimpleMaps.ComposableMap
-                width={640}
-                height={310}
+                width={640 * props.cardScale}
+                height={310 * props.cardScale}
                 projection="geoMercator"
                 outline="none"
                 projectionConfig={{
                     center: [5, 20],
-                    scale: 95,
+                    scale: 95 * props.cardScale,
                 }}
             >
                 <ReactSimpleMaps.Geographies geography={window.WorldGeoJSON}>
