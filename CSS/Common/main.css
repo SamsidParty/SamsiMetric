@@ -5,6 +5,8 @@
     font-family: var(--standard-font), tabler-icons !important;
     letter-spacing: normal !important;
     -webkit-font-smoothing: subpixel-antialiased;
+    
+    --nextui-transitions-button: background 0s ease 0s, color 0.25s ease 0s, border-color 0.25s ease 0s, box-shadow 0.25s ease 0s, transform 0.25s ease 0s, opacity 0.25s ease 0s !important;
 }
 
 * {

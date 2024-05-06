@@ -55,17 +55,23 @@ function Topbar()
     }
 
 
-    var workspaceTag = CurrentWorkspace(DataObject)?.tag || "secondary";
-    var databaseTag = "error";
-    var databaseIcon = "database-exclamation";
+    var workspaceTag = CurrentWorkspace(DataObject)?.tag || localStorage.lastWorkspaceTag || "secondary";
+    var databaseTag = workspaceTag;
+    var databaseIcon = "database-cog";
 
-    if (dataStatus == "syncing") {
+    //Only Make Icons Purple On Subsequent Refreshes
+    //Prevents Flashing On First Load
+    if (dataStatus == "syncing" && DataIsValid()) {
         var databaseTag = "secondary";
         var databaseIcon = "database-cog";
     }
     else if (dataStatus == "success") {
         var databaseTag = workspaceTag;
         var databaseIcon = "database";
+    }
+    else if (dataStatus == "error") {
+        var databaseTag = "error";
+        var databaseIcon = "database-exclamation";
     }
 
     return (
@@ -123,15 +129,15 @@ function DashboardLayout(props)
                 (<h2 className="mobileWorkspaceHeader">{workspace?.name || localStorage.lastWorkspaceName || ""}</h2>) : null
             }
             {
-                //Render Layouts
-                workspace?.layouts?.map((l_layout, l_index) => {
+                //Render Layouts (Or Saved Skeleton Layouts If There Are None)
+                (workspace?.layouts || JSON.parse(localStorage.lastWorkspaceLayouts || "[]")).map((l_layout, l_index) => {
                     var LayoutToRender = GetMetadataFromLayout(l_layout).render();
 
                     if (isMobile) {
                         LayoutToRender = MobileLayout;
                     }
 
-                    return (<LayoutToRender key={`${l_layout.type}_${l_index}_${workspace.id}`} {...props} workspace={workspace} layout={l_layout} layoutIndex={l_index}></LayoutToRender>);
+                    return (<LayoutToRender key={`${l_layout.type}_${l_index}_${workspace?.id}`} {...props} workspace={workspace} layout={l_layout} layoutIndex={l_index}></LayoutToRender>);
                 })
             }
             {

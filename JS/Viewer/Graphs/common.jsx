@@ -34,6 +34,17 @@ function DummyGraph(props)
     );
 }
 
+function SkeletonGraph(props)
+{
+
+    return (
+        <Skeleton className={"flexx facenter fjcenter layoutCard " + props.cardSize} style={ScaleGraph(props.cardSize)}>
+            
+
+        </Skeleton>
+    );
+}
+
 function GraphCommon(props)
 {
 
@@ -149,9 +160,15 @@ async function LoadGraphDependencies(graphs)
 
 function MetricGraph(props)
 {
+    //Empty Graph
     if (props.graph == undefined || Object.keys(props.graph).length == 0)
     {
         return DummyGraph(props);
+    }
+
+    //Skeleton Graph
+    if (props.graph.type == "skeleton") {
+        return SkeletonGraph(props);
     }
 
     var nonce = `N_Graph_${props.graphIndex}_Layout_${props.layoutIndex}_Workspace_${props.workspace.id}`; // Used To Identify Graph Across Rerenders

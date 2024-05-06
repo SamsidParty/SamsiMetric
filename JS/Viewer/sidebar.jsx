@@ -201,8 +201,17 @@ function SidebarWorkspaceList(props) {
                                         DataObject["page"] = null;
                                     }
 
+                                    //Cache Workspace Information
                                     localStorage.lastWorkspace = l_wsid;
                                     localStorage.lastWorkspaceName = workspace.name;
+                                    localStorage.lastWorkspaceTag = workspace.tag;
+                                    localStorage.lastWorkspaceLayouts = JSON.stringify(workspace.layouts.map((l_layout) => {
+                                        //Replace All Graphs With Skeleton Graphs
+                                        l_layout = Object.assign({}, l_layout);
+                                        l_layout.graphs = l_layout.graphs.map(() => { return { type: "skeleton" }; });
+                                        return l_layout;
+                                    }));
+
                                     DataObject["selected_workspace"] = l_wsid;
                                     setDataObject(Object.assign({}, DataObject));
                                 }
