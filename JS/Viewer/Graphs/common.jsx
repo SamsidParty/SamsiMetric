@@ -71,7 +71,7 @@ function GraphLoading(props) {
 
     return (
         <div className="graphLoading">
-            <Loading type="points-opacity" color={metric.tag} size="lg" />
+            <LoadingWheel/>
         </div>
     )
 }
@@ -83,7 +83,7 @@ function GraphLoadingOverlay(props) {
 
     return (
         <div className="graphLoadingOverlay" style={{ display: !!props.hide ? "none" : "flex" }}>
-            <Loading type="points-opacity" color={metric.tag} size="lg" />
+            <LoadingWheel/>
         </div>
     )
 }

@@ -144,3 +144,12 @@ function Skeleton(props) {
         }}/>
     ) : null
 }
+
+//Loading Wheel
+function LoadingWheel() {
+    return (
+        <>
+            <ClientImage style={{ width: "50px", height: "50px" }} src="./Images/Loading.svg" />
+        </>
+    )
+}

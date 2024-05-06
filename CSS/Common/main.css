@@ -38,10 +38,22 @@
     --col-text-secondary: #979797;
 }
 
+:root {
+    view-transition-name: root;
+}
+
 body {
     margin: 0;
     height: 100vh;
     background-color: var(--col-bg);
+}
+
+::view-transition-old(root) {
+    animation: fadePageTransition 1s linear forwards;
+}
+
+::view-transition-new(root) {
+    animation: fadePageTransition 1s linear reverse;
 }
 
 .flexx {
@@ -248,5 +260,14 @@ body {
     }
     100% {
         opacity: 100%;
+    }
+}
+
+@keyframes fadePageTransition {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
     }
 }
