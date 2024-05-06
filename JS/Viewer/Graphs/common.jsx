@@ -5,6 +5,7 @@ RunOnLoad("./JS/Viewer/Graphs/common.jsx", async () =>
 {
     await LoadDependency("./JS/Viewer/snapshot.jsx");
     await LoadDependency("./JS/Viewer/Graphs/layouts.jsx");
+    await LoadDependency("./JS/Mobile/layout.jsx");
     await LoadDependency("./JS/Viewer/Graphs/metadata.js");
 
     //Load All Graphs
@@ -191,7 +192,7 @@ function ScaleGraph(type, raw)
     }
 
     var graphWidth = GraphWidths[type] || 120;
-    var scale = window.innerWidth / (graphWidth * (1 / 0.9)); // Make The Graph Take Up 90% Of The Screen Width
+    var scale = (window.innerWidth / graphWidth) * 0.9; // Make The Graph Take Up 90% Of The Screen Width
 
     if (raw)
     {
@@ -202,5 +203,6 @@ function ScaleGraph(type, raw)
         "--card-scale": scale,
         width: graphWidth * scale,
         height: GraphHeights[type] * scale,
+        marginBottom: (20 * scale) + "px"
     };
 }

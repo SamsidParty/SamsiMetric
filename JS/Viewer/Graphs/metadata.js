@@ -6,31 +6,36 @@ var LayoutTypes = [
         "name": "layout_1",
         "render": () => Layout_1,
         "height": 140,
-        "graphcount": 4
+        "graphcount": 4,
+        "graphorder": ["csMedLong", "csMedLong", "csMedLong", "csMedLong"]
     },
     {
         "name": "layout_2",
         "render": () => Layout_2,
         "height": 70,
-        "graphcount": 4
+        "graphcount": 4,
+        "graphorder": ["csShortLong", "csShortLong", "csShortLong", "csShortLong"]
     },
     {
         "name": "layout_3",
         "render": () => Layout_3,
         "height": 300,
-        "graphcount": 2
+        "graphcount": 2,
+        "graphorder": ["csLongDouble", "csLongDouble"]
     },
     {
         "name": "layout_4",
         "render": () => Layout_4,
         "height": 300,
-        "graphcount": 5
+        "graphcount": 5,
+        "graphorder": ["csLongDouble", "csMedLong", "csMedLong", "csMedLong", "csMedLong"]
     },    
     {
         "name": "layout_5",
         "render": () => Layout_5,
         "height": 300,
-        "graphcount": 5
+        "graphcount": 5,
+        "graphorder": ["csMedLong", "csMedLong", "csMedLong", "csMedLong", "csLongDouble"]
     }
 ]
 

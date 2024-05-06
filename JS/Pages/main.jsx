@@ -121,6 +121,11 @@ function DashboardLayout(props)
                 //Render Layouts
                 CurrentWorkspace(DataObject)?.layouts?.map((l_layout, l_index) => {
                     var LayoutToRender = GetMetadataFromLayout(l_layout).render();
+
+                    if (isMobile) {
+                        LayoutToRender = MobileLayout;
+                    }
+
                     return (<LayoutToRender key={`${l_layout.type}_${l_index}_${workspace.id}`} {...props} workspace={workspace} layout={l_layout} layoutIndex={l_index}></LayoutToRender>);
                 })
             }

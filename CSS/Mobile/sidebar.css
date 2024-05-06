@@ -1,0 +1,17 @@
+
+@media (max-aspect-ratio: 10/9) {
+    .sidebar {
+        display: none !important;
+    }
+    
+    .dashboard {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        width: 100vw !important;
+    }
+
+    .dashboardLayout {
+        width: 100vw !important;
+        gap: 0 !important;
+    }
+}
