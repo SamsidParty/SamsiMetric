@@ -118,8 +118,13 @@ function DashboardLayout(props)
     return (
         <div className="dashboardLayout">
             {
+                //Show Workspace Name On Mobile
+                isMobile ? 
+                (<h2 className="mobileWorkspaceHeader">{workspace?.name}</h2>) : null
+            }
+            {
                 //Render Layouts
-                CurrentWorkspace(DataObject)?.layouts?.map((l_layout, l_index) => {
+                workspace?.layouts?.map((l_layout, l_index) => {
                     var LayoutToRender = GetMetadataFromLayout(l_layout).render();
 
                     if (isMobile) {
@@ -141,7 +146,7 @@ function DashboardLayout(props)
             }
             {
                 //Show "Nothing Here Yet"
-                !(CurrentWorkspace(DataObject)?.layouts?.length > 0) ? 
+                !(workspace?.layouts?.length > 0) ? 
                 (
                     <NothingHere text="Add A Layout To This Workspace, It'll Show Up Here"></NothingHere>
                 )

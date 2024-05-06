@@ -29,7 +29,7 @@
     width: 35px;
     height: 35px;
     position: absolute;
-    right: 45px;
+    right: calc(45px * var(--card-scale));
     border-radius: 360px;
     border: 2px solid var(--col-contrast);
     display: flex;

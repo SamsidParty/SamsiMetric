@@ -2,6 +2,10 @@
     display: none !important;
 }
 
+.mobileWorkspaceHeader {
+    margin-left: 7px;
+}
+
 @media (max-aspect-ratio: 10/9) {
 
     .mobileOnly {
