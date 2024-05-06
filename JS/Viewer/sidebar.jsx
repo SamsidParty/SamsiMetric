@@ -202,6 +202,7 @@ function SidebarWorkspaceList(props) {
                                     }
 
                                     localStorage.lastWorkspace = l_wsid;
+                                    localStorage.lastWorkspaceName = workspace.name;
                                     DataObject["selected_workspace"] = l_wsid;
                                     setDataObject(Object.assign({}, DataObject));
                                 }

@@ -120,7 +120,7 @@ function DashboardLayout(props)
             {
                 //Show Workspace Name On Mobile
                 isMobile ? 
-                (<h2 className="mobileWorkspaceHeader">{workspace?.name}</h2>) : null
+                (<h2 className="mobileWorkspaceHeader">{workspace?.name || localStorage.lastWorkspaceName || ""}</h2>) : null
             }
             {
                 //Render Layouts
@@ -203,13 +203,7 @@ function App()
                 localStorage.lastProject = extDataObject["schema"][0]["id"];
             }
 
-            //Check If Last Workspace Is Valid
-            var project = ArrayValue(extDataObject["schema"], "id", localStorage.lastProject);
-            if (DataIsValid() && ArrayValue(project["workspaces"], "id", localStorage.lastWorkspace).length == 0){
-                localStorage.lastWorkspace = project["workspaces"][0];
-            }
-
-            //Make Some Changes
+            //Restore Previous Pages
             extDataObject["selected_project"] = localStorage.lastProject;
             extDataObject["selected_workspace"] = localStorage.lastWorkspace;
             setDataObject(Object.assign({}, extDataObject));
