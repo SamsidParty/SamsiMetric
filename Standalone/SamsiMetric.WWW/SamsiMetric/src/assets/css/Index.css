@@ -1,0 +1,178 @@
+@font-face {
+    font-family: Tabler;
+    src: url("/Tabler.ttf");
+}
+
+* {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, Tabler;
+
+    --col-bg: #F0F0F0;
+    --col-contrast: white;
+    --col-text: #242424;
+    --col-text-secondary: #818181;
+}
+
+@media (prefers-color-scheme: dark) {
+    * {
+        --col-bg: #161616;
+        --col-contrast: #222222;
+        --col-text: white;
+        --col-text-secondary: #979797;
+    }
+}
+
+body {
+    background-color: var(--col-contrast) !important;
+}
+
+.serverList {
+    width: 600px;
+    min-height: 100px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.serverListItem {
+    background-color: var(--col-bg) !important;
+    border-radius: 15px !important;
+    height: 50px !important;
+    padding: 15px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: left !important;
+}
+
+.serverListItem h2 {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0;
+}
+
+
+.setupPage {
+    width: 100vw;
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.setupContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 100px;
+}
+
+.setupModal {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--col-contrast);
+    border-radius: 10px;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 10;
+    width: 1000px;
+    height: 600px;
+    padding: 100px;
+    gap: 30px;
+    position: relative;
+}
+
+.enterURLModal button, .selectServerModal > button {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+}
+
+.enterURLModal h1, .selectServerModal h1 {
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--col-text);
+}
+
+.enterURLModal .keyInput {
+    width: 50%;
+}
+
+.enterURLModal .keyInput input {
+    width: 100%;
+}
+
+.enterURLIcon {
+    position: absolute;
+    right: 100px;
+    width: 300px;
+    height: 300px;
+}
+
+@media (max-aspect-ratio: 10/9) {
+
+    .serverList {
+        width: 80vw;
+        margin-bottom: 150px;
+        gap: 10px;
+    }
+
+    .serverListItem {
+        padding-left: 25px;
+    }
+
+    .selectServerModal {
+        margin-top: 120px;
+    }
+
+    .setupContainer {
+        padding: 0;
+    }
+
+    .setupModal {
+        border-radius: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .enterURLIcon {
+        display: none;
+    }
+
+    .enterURLModal .keyInput {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .enterURLModal .keyInput input {
+        width: 100%;
+    }
+
+    .enterURLModal button, .selectServerModal > button {
+        width: 80%;
+        right: 0;
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .setupModal .mobileIcon {
+        font-size: 7rem;
+        color: #0072f5;
+        line-height: 7rem;
+    }
+
+    .setupPage {
+        background: var(--col-contrast) !important;
+    }
+
+    body {
+        overflow: hidden;
+    }
+}
