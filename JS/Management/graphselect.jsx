@@ -8,7 +8,11 @@ function GraphSelect(props) {
     //Page 1 - User Selects Metric
     //Page 2 - User Selects Graph
 
-    var openPage2 = (metric) => {
+    var openPage2 = async (metric) => {
+        //Load All Dependencies Needed Before Opening The Graph Selector
+        var graphs = GetGraphsFor(metric, props.cardSize);
+        await LoadGraphDependencies(graphs);
+
         setp1IsOpen(false);
         setp2IsOpen(true);
         setSelectedMetric(metric);

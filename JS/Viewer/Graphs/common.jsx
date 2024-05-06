@@ -88,34 +88,50 @@ function GraphLoadingOverlay(props) {
     )
 }
 
-//Some Graphs Need Dependencies Like React Simple Maps
+//Some Graphs Need Dependencies Like Chart.JS
 //Collect The Needed Dependencies And Load Them
-async function LoadGraphDependencies(workspace)
+//graphs Can Be An Array Of Graph Metadata Or A Workspace Object
+async function LoadGraphDependencies(graphs)
 {
 
     //Make Sure Workspace Is Valid And That We Actually Need To Load Dependencies
-    if (!workspace) { return; }
+    if (!graphs) { return; }
     if (!window.fullfilledDependenciesFor) { window.fullfilledDependenciesFor = []; }
-    if (window.fullfilledDependenciesFor[workspace.id] == true) { return; }
+    if (window.fullfilledDependenciesFor[graphs.id] == true) { return; }
+
+    var graphsMode = "graphs";
+    if (!!graphs.id) {
+        //graphs Is A Workspace Object
+        graphsMode = "workspace";
+    }
 
     var neededDependencies = [];
 
-    //Find Needed Dependencies
-    for (let i = 0; i < workspace.layouts.length; i++)
-    {
-        for (let j = 0; j < workspace.layouts[i].graphs.length; j++)
+    var addToDependencyChain = (graph) => {
+        if (!graph.dependencies) { return; }
+        for (let k = 0; k < graph.dependencies.length; k++)
         {
-            var graph = GetMetadataFromGraph(workspace.layouts[i].graphs[j]);
-            if (!graph.dependencies) { continue; }
-            for (let k = 0; k < graph.dependencies.length; k++)
+            if (!neededDependencies.includes(graph.dependencies[k]))
             {
-                if (!neededDependencies.includes(graph.dependencies[k]))
-                {
-                    neededDependencies.push(graph.dependencies[k]);
-                }
+                neededDependencies.push(graph.dependencies[k]);
             }
         }
     }
+
+    //Find Needed Dependencies
+    if (graphsMode == "graphs") {
+        graphs.forEach(addToDependencyChain)
+    }
+    else {
+        for (let i = 0; i < graphs.layouts.length; i++)
+        {
+            for (let j = 0; j < graphs.layouts[i].graphs.length; j++)
+            {
+                addToDependencyChain(GetMetadataFromGraph(graphs.layouts[i].graphs[j]));
+            }
+        }
+    }
+
 
     //Load The Dependency
     for (let i = 0; i < neededDependencies.length; i++)
@@ -123,7 +139,10 @@ async function LoadGraphDependencies(workspace)
         await LoadDependency(neededDependencies[i]);
     }
 
-    window.fullfilledDependenciesFor[workspace.id] = true;
+    if (graphsMode == "workspace") { 
+        window.fullfilledDependenciesFor[graphs.id] = true;
+    }
+
     setTimeout(() => setExtRedraw(UUID()), 0);
 }
 

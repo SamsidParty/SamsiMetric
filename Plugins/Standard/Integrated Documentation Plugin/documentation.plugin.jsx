@@ -62,8 +62,6 @@ function DocumentationExtensionSideBar() {
 
             recurseDocMap(docMap);
 
-            console.log(items);
-
             var dp = new Docplugin_rct.StaticTreeDataProvider(items, (item, newName) => ({ ...item, data: newName }));
             setDataProvider(dp);
         }, 0);
