@@ -10,6 +10,8 @@
     --col-contrast: white;
     --col-text: #242424;
     --col-text-secondary: #818181;
+
+    --drawer-bg: var(--col-contrast) !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,6 +44,10 @@ body {
     display: flex !important;
     align-items: center !important;
     justify-content: left !important;
+}
+
+.serverListItem:active {
+    opacity: 0.2 !important;
 }
 
 .serverListItem h2 {
@@ -175,4 +181,14 @@ body {
     body {
         overflow: hidden;
     }
+}
+
+.serverLoadingDrawer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.serverLoadingDrawer img {
+    width: 50px;
 }

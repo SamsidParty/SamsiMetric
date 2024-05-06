@@ -22,8 +22,8 @@ public class IVApplication
     {
         
         DevTools.Enable();
-        DevTools.ForcePort(25631);
-        DevTools.HotReload("http://192.168.100.100:25631/");
+        //DevTools.ForcePort(25631);
+        //DevTools.HotReload("http://192.168.100.100:25631/");
 
 
         //Change Color Based On Theme (light, dark)
