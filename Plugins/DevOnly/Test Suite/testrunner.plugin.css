@@ -1,0 +1,19 @@
+.testRunnerResult {
+    display: flex;
+    align-items: center;
+}
+
+.testRunnerResult p {
+    font-family: Jetbrains !important;
+    margin: 0;
+}
+
+.testRunnerResult .ti-check {
+    color: var(--nextui-colors-success);
+    margin-right: 10px;
+}
+
+.testRunnerResult .ti-x {
+    color: var(--nextui-colors-error);
+    margin-right: 10px;
+}

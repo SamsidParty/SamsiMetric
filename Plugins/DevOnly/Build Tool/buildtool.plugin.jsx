@@ -29,7 +29,7 @@ function BuildToolTopbarExtension() {
     return (
         <>
             <Tooltip ttid="DevModeBuildTools_TopbarIcon" {...TTContent("static", "Developer Mode Build Tools")}>
-                <Button onPress={() => setIsOpen(true)} className="iconButton iconButtonLarge" flat auto color={CurrentWorkspace(window.lastDataObject)?.tag || "secondary"}><i className="ti ti-code-dots" /></Button>
+                <Button onPress={() => setIsOpen(true)} className="iconButton iconButtonLarge" flat auto color={CurrentWorkspace(window.lastDataObject)?.tag || "secondary"}><i className="ti ti-hammer" /></Button>
             </Tooltip>
             <Modal width="420px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
