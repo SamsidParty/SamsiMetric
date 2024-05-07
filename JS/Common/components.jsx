@@ -136,7 +136,7 @@ function CachedIcon(props) {
 //Skeleton Loader
 function Skeleton(props) {
     return !DataIsValid() ? (
-        <div className="skeleton" style={{...{ 
+        <div className={"skeleton " + props.className || ""} style={{...{ 
             width: props.width || "100%",
             height: props.height || "40px",
             backgroundColor: props.contrast ? "var(--col-bg)" : "var(--col-contrast)", 
