@@ -72,7 +72,7 @@ function Graphline_0_Line(props) {
             name: "1H",
             fullName: "Past Hour",
             unix: [unixSeconds - 3600, unixSeconds],
-            detail: 240
+            detail: 60
         },
         {
             name: "24H",
@@ -179,7 +179,7 @@ function Graphline_0_Line(props) {
 
     var [chartData, setChartData] = React.useState(defaultChartData);
 
-    React.useEffect(() => {
+    setTimeout(() => {
         async function _() {
             if (chartData.shouldRefresh && isDataLoaded) {
                 //Add Series Data To The Chart
@@ -235,7 +235,7 @@ function Graphline_0_Line(props) {
             }
         }
         _();
-    });
+    }, 0);
 
     return (
         <>
