@@ -38,11 +38,6 @@ async function MainLoader() {
     }
 
     console.log(`Launching (Version ${latestVersion})`);
-    
-    //Remove Loading Screen
-    document.querySelectorAll(".loaderPage").forEach((l_el) => {
-        l_el.remove();
-    });
 
     var installedContext = JSON.parse(await localforage.getItem("installer-context"));
     for (var l_dep of installedContext.autoload) {
@@ -56,6 +51,12 @@ async function MainLoader() {
     await LoadDependency("./bundle.css");
 
     window.finishedLoadingDependencies = true; // For Injected Build Scripts
+
+    //Remove Loading Screen
+    document.querySelectorAll(".loaderPage").forEach((l_el) => {
+        l_el.remove();
+    });
+
     StartReact();
 }
 
@@ -315,11 +316,21 @@ function LoadingScreen() {
                 display: flex;
                 flex-direction: column;
                 text-align: center;
-                font-family: "Tahoma";
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
                 justify-content: center;
                 align-items: center;
             }
     
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background-color: #222222;
+                }
+
+                .loaderPage {
+                    color: white;
+                }
+            }
+
             * {
                 font-weight: 500;
             }
