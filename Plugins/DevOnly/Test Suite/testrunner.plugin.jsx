@@ -30,7 +30,7 @@ function TestSuiteTopBar() {
                     {
                         testResults?.map((l_result) => {
                             return (
-                            <div className="testRunnerResult">
+                            <div key={UUID()} className="testRunnerResult">
                                 {
                                     //Green Checkmark
                                     l_result.startsWith("[PASS]") ? (<i className="ti ti-check"></i>) : null
@@ -39,7 +39,7 @@ function TestSuiteTopBar() {
                                     //Red X
                                     l_result.startsWith("[FAIL]") ? (<i className="ti ti-x"></i>) : null
                                 }
-                                <p key={UUID()}>{l_result}</p>
+                                <p>{l_result}</p>
                             </div>
                             )
                         })
@@ -69,7 +69,7 @@ async function RunTest(test, onTestFinished) {
 
         //Check Result
         if (test.assert && !await test.assert()) {
-            throw new Error(`Assertion Failed (${test.assert.toString()} returned false)`)
+            throw new Error(`Assertion Failed {${test.assert.toString()} returned false}`)
         }
 
         onTestFinished("[PASS] " + test.name);

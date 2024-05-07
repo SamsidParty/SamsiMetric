@@ -121,7 +121,7 @@ function SidebarWorkspaces(props) {
                         if ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid()) {
                             //Always Show Plus Button If There Are No Workspaces
                             //Never Show Reorder Button If There Are No Workspaces
-                            var hasNoWorkspaces = CurrentProject(DataObject).workspaces.length < 1;
+                            var hasNoWorkspaces = CurrentProject(DataObject)?.workspaces?.length < 1;
 
                             return (
                                 <>
@@ -140,7 +140,7 @@ function SidebarWorkspaces(props) {
             <div className={reorderMode ? "workspaceList reorderWorkspaceList" : "workspaceList"}>
                 {
                     //Show Image If There Are No Workspaces
-                    ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid() && CurrentProject(DataObject).workspaces.length < 1) ?
+                    ((localStorage.apikey_perms == "admin" || localStorage.apikey_perms == "manager") && DataIsValid() && CurrentProject(DataObject)?.workspaces?.length < 1) ?
                         (<ClientImage style={{ borderRadius: "10px" }} src="./Images/TooltipNoWorkspaces.png" />)
                         : null
                 }
