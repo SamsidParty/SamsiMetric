@@ -1,3 +1,5 @@
+RunOnLoad("./JS/Mobile/layout.jsx", async () => LoadDependency("./JS/ThirdParty/reactmoderndrawer.js"));
+
 //Show All Graphs In A Vertical Format, For Use On Mobile
 function MobileLayout(props) {
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
@@ -14,4 +16,10 @@ function MobileLayout(props) {
             <LayoutCommon {...props} />
         </div>
     )
+}
+
+function MobileWorkspaceHeader(props) {
+    return (
+        <h2 className="mobileWorkspaceHeader">{props.workspace?.name || localStorage.lastWorkspaceName || ""}</h2>
+    );
 }

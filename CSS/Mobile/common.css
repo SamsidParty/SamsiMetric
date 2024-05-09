@@ -3,7 +3,8 @@
 }
 
 .mobileWorkspaceHeader {
-    margin-left: 7px;
+    padding-left: 7px;
+    padding-top: 30px;
 }
 
 @media (max-aspect-ratio: 10/9) {
@@ -23,6 +24,7 @@
         
     .dashboard {
         margin-left: 0 !important;
+        margin-top: 0 !important;
         padding: 0 !important;
         width: 100vw !important;
     }
