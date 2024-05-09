@@ -9,7 +9,7 @@ function MobileLayout(props) {
             {
                 props.layout?.graphs.map((l_graph, l_index) => { // Ignore Empty Graphs
                     if (Object.keys(l_graph).length > 0) {
-                        return (<MetricGraph cardSize={GetMetadataFromLayout(props.layout).graphorder[l_index]} {...props} graphIndex={0} graph={l_graph} />)
+                        return (<MetricGraph key={l_index} cardSize={GetMetadataFromLayout(props.layout).graphorder[l_index]} {...props} graphIndex={l_index} graph={l_graph} />)
                     }
                 })
             }
