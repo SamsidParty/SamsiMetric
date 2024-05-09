@@ -1,10 +1,11 @@
 AutoLoadThisFile();
 
-RunOnLoad("./JS/Common/theming.js", LoadServiceWorker);
+RunOnLoad("./JS/ServiceWorker/swloader.js", LoadServiceWorker);
 
   
 var swDependencies = [
-    "./JS/ThirdParty/msgpack.js"
+    "./JS/ThirdParty/msgpack.js",
+    "./JS/ThirdParty/fflate.js"
 ]
 
 async function LoadServiceWorker() {
