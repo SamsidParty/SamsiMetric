@@ -49,6 +49,25 @@ async function LoadSnapshotRange(from, to) {
 
 function SnapshotAt(metric, time) {
 
+    //https://stackoverflow.com/a/48875938/18071273
+    var BinarySearchSnapshots = (arr, target) => {
+        var midpoint = Math.floor(arr.length/2);
+
+        if (arr[midpoint].SnapTime === target){
+            return arr[midpoint];
+        }
+        if (arr.length === 1){
+            return arr[0];
+        }
+    
+        if (arr[midpoint].SnapTime > target){
+            return BinarySearchSnapshots(arr.slice(0, midpoint), target);
+        }
+        else if (arr[midpoint].SnapTime < target){
+            return BinarySearchSnapshots(arr.slice(midpoint), target);
+        }
+    }
+
     if (SnapshotsFor[metric] == undefined) {
         return null;
     }
@@ -64,25 +83,6 @@ function SnapshotAt(metric, time) {
 
     return closestSnapshot;
 }
-
-//https://stackoverflow.com/a/48875938/18071273
-function BinarySearchSnapshots(arr, target) {
-    var midpoint = Math.floor(arr.length/2);
-
-    if (arr[midpoint].SnapTime === target){
-        return arr[midpoint];
-    }
-    if (arr.length === 1){
-        return arr[0];
-    }
-  
-    if (arr[midpoint].SnapTime > target){
-        return BinarySearchSnapshots(arr.slice(0, midpoint), target);
-    }
-    else if (arr[midpoint].SnapTime < target){
-        return BinarySearchSnapshots(arr.slice(midpoint), target);
-    }
- }
 
 function ClearLoadedSnapshots() {
     LoadedSnapshotRanges = [];

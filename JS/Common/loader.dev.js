@@ -145,7 +145,7 @@ async function CollectDependencies(installerContext) {
 
 async function LoadDependency(dependency) {
 
-    if (loadedDependencies.includes(dependency)) { return; } // Already Loaded
+    if (loadedDependencies.includes(dependency)) { return await localforage.getItem(dependency); } // Already Loaded
 
     var script = await localforage.getItem(dependency);
 
@@ -172,6 +172,7 @@ async function LoadDependency(dependency) {
 
     loadedDependencies.push(dependency);
     console.log(`Loaded ${dependency} (${script.length} Bytes)`);
+    return script;
 }
 
 async function CreateStaticBundle(version) {
