@@ -18,76 +18,92 @@ chdir(realpath("../../"));
 require_once("./PHP/sql.php");
 require_once("./PHP/metrics.php");
 require_once("./PHP/config.php");
+require_once("./PHP/pluginapi.php");
 require_once("./PHP/ThirdParty/vendor/autoload.php");
 
-$projects = json_decode(GetConfigFile("projects.json"), true);
-$history = DB::query("SELECT * FROM snapshot_history");
-$parsedHistory = array();
-$metricsToSnapshot = array();
+class SnapshotWriter {
 
-$time_minute = 60;
-$time_10minute = 600;
-$time_hour = 3600;
-$time_day = 86400;
+    public $projects;
+    public $history;
+    public $parsedHistory;
+    public $metricsToSnapshot;
+    
+    const TIME_MINUTE = 60;
+    const TIME_10MINUTE = 600;
+    const TIME_HOUR = 3600;
+    const TIME_DAY = 86400;
 
-//Parse Snapshot History
-foreach ($history as $metric) {
-    $parsedHistory[$metric["MetricID"]] = intval($metric["LastSnap"]);
-}
+    function __construct() {
+        $this->projects = json_decode(GetConfigFile("projects.json"), true);
+        $this->history = DB::query("SELECT * FROM snapshot_history");
+        $this->parsedHistory = array();
+        $this->metricsToSnapshot = array();
+    }
 
-foreach ($projects as $project) {
-    foreach ($project["metrics"] as $metric) {
-        if ($metric["type"] == "snapshot") {
-            $lastSnapshot = $parsedHistory[$metric["id"]];
-            $timeDiff = time() - $lastSnapshot;
-
-            
-            if ($metric["rounding"] == 0) { //Every Minute
-                $timeDiff -= $time_minute;
+    function AddSubmetrics($projects, $metric, &$pushto) {
+        foreach ($metric["dependencies"] as $l_dep) {
+            $dep = GetMetricFromID($projects, $l_dep);
+            if ($dep["type"] == "group") {
+                $this->AddSubmetrics($projects, $dep, $pushto);
             }
-            else if ($metric["rounding"] == 1) { //Every 10 Minutes
-                $timeDiff -= $time_10minute;
+            else {
+                $pushto[] = $l_dep;
             }
-            else if ($metric["rounding"] == 2) { //Every Hour
-                $timeDiff -= $time_hour;
-            }
-            else { //Every Day
-                $timeDiff -= $time_day;
-            }
+        }
+    }
 
-            //Update Snapshot Lists
-            if ($timeDiff >= 0) {
-                AddSubmetrics($projects, $metric, $metricsToSnapshot);         
+    function TakeSnapshot($metric) {
+        //Dump The Metric Into A Compressed Binary File Suitable For Long Term Storage
+        $dump = DumpMetric($metric);
+        DB::query("INSERT INTO data_snapshot (MetricID, SnapTime, SnapData) VALUES (%s, %d, %s)", $metric["id"], time(), $dump);
+    }
 
-                //Add To Snapshot History
-                DB::query("UPDATE snapshot_history SET LastSnap = %d WHERE MetricID = %s", time(), $metric["id"]);
+    function TakeAllSnapshots() {
+        //Parse Snapshot History
+        foreach ($this->history as $metric) {
+            $this->parsedHistory[$metric["MetricID"]] = intval($metric["LastSnap"]);
+        }
+
+        foreach ($this->projects as $project) {
+            foreach ($project["metrics"] as $metric) {
+                if ($metric["type"] == "snapshot") {
+                    $lastSnapshot = $this->parsedHistory[$metric["id"]];
+                    $timeDiff = time() - $lastSnapshot;
+
+                    
+                    if ($metric["rounding"] == 0) { //Every Minute
+                        $timeDiff -= self::TIME_MINUTE;
+                    }
+                    else if ($metric["rounding"] == 1) { //Every 10 Minutes
+                        $timeDiff -= self::TIME_10MINUTE;
+                    }
+                    else if ($metric["rounding"] == 2) { //Every Hour
+                        $timeDiff -= self::TIME_HOUR;
+                    }
+                    else { //Every Day
+                        $timeDiff -= self::TIME_DAY;
+                    }
+
+                    //Update Snapshot Lists
+                    if ($timeDiff >= 0) {
+                        $this->AddSubmetrics($this->projects, $metric, $this->metricsToSnapshot);         
+
+                        //Add To Snapshot History
+                        DB::query("UPDATE snapshot_history SET LastSnap = %d WHERE MetricID = %s", time(), $metric["id"]);
+                    }
+                }
             }
+        }
+
+        //Take The Snapshots
+        $this->metricsToSnapshot = array_unique($this->metricsToSnapshot); // No Need To Snapshot The Same Metric Multiple Times
+        foreach ($this->metricsToSnapshot as $metricToSnapshot) {
+            $this->TakeSnapshot(GetMetricFromID($this->projects, $metricToSnapshot));
         }
     }
 }
 
-//Take The Snapshots
-$metricsToSnapshot = array_unique($metricsToSnapshot); // No Need To Snapshot The Same Metric Multiple Times
-foreach ($metricsToSnapshot as $metricToSnapshot) {
-    TakeSnapshot(GetMetricFromID($projects, $metricToSnapshot));
-}
-
-function AddSubmetrics($projects, $metric, &$pushto) {
-    foreach ($metric["dependencies"] as $l_dep) {
-        $dep = GetMetricFromID($projects, $l_dep);
-        if ($dep["type"] == "group") {
-            AddSubmetrics($projects, $dep, $pushto);
-        }
-        else {
-            $pushto[] = $l_dep;
-        }
-    }
-}
-
-function TakeSnapshot($metric) {
-    //Dump The Metric Into A Compressed Binary File Suitable For Long Term Storage
-    $dump = DumpMetric($metric);
-    DB::query("INSERT INTO data_snapshot (MetricID, SnapTime, SnapData) VALUES (%s, %d, %s)", $metric["id"], time(), $dump);
-}
+$writer = new SnapshotWriter();
+$writer->TakeAllSnapshots();
 
 ?>
