@@ -1,5 +1,7 @@
 var LoadedDependencies = [];
 
+var AutoLoadThisFile = () => {}; // Stub
+
 self.addEventListener('message', (e) => {
     if (e.data.type === 'LOAD_DEPENDENCY') {
         if (!LoadedDependencies.includes(e.data.name)) {

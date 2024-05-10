@@ -18,8 +18,12 @@ function MobileLayout(props) {
     )
 }
 
-function MobileWorkspaceHeader(props) {
+function _MobileWorkspaceHeader(props) {
     return (
         <h2 className="mobileWorkspaceHeader">{props.workspace?.name || localStorage.lastWorkspaceName || ""}</h2>
     );
+}
+
+if (isMobile) {
+    window.MobileWorkspaceHeader = _MobileWorkspaceHeader;
 }

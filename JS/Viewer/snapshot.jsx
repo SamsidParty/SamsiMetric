@@ -28,23 +28,51 @@ async function LoadSnapshotRange(from, to) {
             return;
         }
 
-        MessagePack.decode((await response.arrayBuffer())).data_snapshot.forEach((l_snap) => {
-            l_snap.SnapData = MessagePack.decode(fflate.decompressSync(l_snap.SnapData));
-            var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
-            if (LoadedSnapshots[identity] == undefined) {
-                LoadedSnapshots[identity] = l_snap;
+        var snaps = (await SWMessagePack.decodeAsync((await response.arrayBuffer()))).data_snapshot;
+
+        for (var i = 0; i < snaps.length; i++) {
+            var l_snap = snaps[i];
+            if (ShouldLoadSnapshot(l_snap)) {
+                l_snap.SnapData = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(l_snap.SnapData));
+                var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
+                if (LoadedSnapshots[identity] == undefined) {
+                    LoadedSnapshots[identity] = l_snap;
+                }
+                if (SnapshotsFor[l_snap.MetricID] == undefined) {
+                    SnapshotsFor[l_snap.MetricID] = {};
+                }
+                SnapshotsFor[l_snap.MetricID][l_snap.SnapTime] = l_snap;
             }
-            if (SnapshotsFor[l_snap.MetricID] == undefined) {
-                SnapshotsFor[l_snap.MetricID] = {};
-            }
-            SnapshotsFor[l_snap.MetricID][l_snap.SnapTime] = l_snap;
-        });
+        }
+
+
         LoadedSnapshotRanges.push(from + "_" + to);
     }
     catch (err) {
         //TODO: GUI Error Handler
         console.error(err);
     }
+}
+
+
+//Helps To Scale Back The Amount Of Snapshots To Load
+//Loads Less Snapshots As Time Goes Further Back
+function ShouldLoadSnapshot(l_snap) {
+    var tDiffMS = Math.abs(new Date() - new Date(l_snap.SnapTime * 1000));
+    var tDiff = Math.floor((tDiffMS / 1000) / 60);
+    
+    if (tDiff < 60) { //Less Than An Hour Ago
+        return true;
+    }
+    else if (tDiff < 1440) { // Less Than 24 Hours Ago
+        return tDiff % 30 == 0;
+    }
+    else if (tDiff < 10080) { // Less Than 1 Week Ago
+        return tDiff % 30 == 0;
+    }
+
+
+    return false;
 }
 
 function SnapshotAt(metric, time) {

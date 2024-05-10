@@ -56,7 +56,7 @@ foreach ($projects as $project) {
             }
 
             //Update Snapshot Lists
-            if ($timeDiff > 0) {
+            if ($timeDiff >= 0) {
                 AddSubmetrics($projects, $metric, $metricsToSnapshot);         
 
                 //Add To Snapshot History
