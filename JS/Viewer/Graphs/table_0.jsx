@@ -41,6 +41,7 @@ function Graphtable_0(props)
     var values = chartFill[0];
     var names = chartFill[1];
     var colors = chartFill[2];
+    var icons = chartFill[3];
     var percents = chartFill[4];
 
     //Return Empty Graph Until Country List Is Available
@@ -153,7 +154,7 @@ function Graphtable_0(props)
                                             <Table.Row key={l_index}>
                                                 <Table.Cell>
                                                     <div className="metricIcon" style={{ backgroundColor: colors[l_index] }}>
-                                                        <CachedIcon src={metric.icon} />
+                                                        <CachedIcon src={icons[l_index]} />
                                                     </div>
                                                 </Table.Cell>
                                                 <Table.Cell>{l_name}</Table.Cell>
