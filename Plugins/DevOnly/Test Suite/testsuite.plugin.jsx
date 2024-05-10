@@ -20,6 +20,16 @@ window.TestSuiteTests = [
         "assert": () => dataStatus != "error"
     },
     {
+        "name": "Service Worker MessagePack Encode",
+        "run": async (c) => { window.TestSuite_MSGPackEncode = await SWMessagePack.encodeAsync(["Test", "Suite", c.id, "Encode", "Test"]); },
+        "assert": (c) => (!!window.TestSuite_MSGPackEncode && (MessagePack.decode(window.TestSuite_MSGPackEncode)[2]) == c.id)
+    },
+    {
+        "name": "Service Worker MessagePack Decode",
+        "run": (c) => { window.TestSuite_MSGPackDecode = MessagePack.encode(["Test", "Suite", c.id, "Decode", "Test"]); },
+        "assert": async (c) => (!!window.TestSuite_MSGPackDecode && ((await SWMessagePack.decodeAsync(window.TestSuite_MSGPackDecode))[2]) == c.id)
+    },
+    {
         "name": "Clean Up",
         "run": async () => {
             window.Backend = window.LastBackend;

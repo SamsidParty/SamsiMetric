@@ -20,7 +20,7 @@ function TestSuiteTopBar() {
             <Tooltip ttid="DevModeBuildTools_TopbarIcon" {...TTContent("static", "Developer Mode Build Tools")}>
                 <Button onPress={() => setIsOpen(true)} className="iconButton iconButtonLarge" flat auto color={CurrentWorkspace(window.lastDataObject)?.tag || "secondary"}><i className="ti ti-test-pipe" /></Button>
             </Tooltip>
-            <Modal width="420px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
+            <Modal width="900px" closeButton open={isOpen} onClose={() => { setIsOpen(false); }}>
                 <Modal.Header>
                     <Text b id="modal-title" size={20}>
                         Test Suite
@@ -55,26 +55,32 @@ function TestSuiteTopBar() {
 
 //Iterates Through All Tests And Runs Them
 async function RunAllTests(onTestFinished) {
-    setTimeout(async () => {
-        for (var i = 0; i < window.TestSuiteTests.length; i++) {
-            await RunTest(window.TestSuiteTests[i], onTestFinished);
-        }
-    }, 0);
+    await SkipFrame();
+    for (var i = 0; i < window.TestSuiteTests.length; i++) {
+        await RunTest(window.TestSuiteTests[i], onTestFinished);
+    }
 }
 
 async function RunTest(test, onTestFinished) {
+
+    var testContext = {
+        id: UUID() // Unique To Each Run Of Each Test, Used Mostly In Assert To Check If The Action Worked
+    }
+
     try {
         //Run Test
-        await test.run();
+        await test.run(testContext);
 
         //Check Result
-        if (test.assert && !await test.assert()) {
+        if (test.assert && !await test.assert(testContext)) {
             throw new Error(`Assertion Failed {${test.assert.toString()} returned false}`)
         }
 
         onTestFinished("[PASS] " + test.name);
     }
     catch (ex) {
-        onTestFinished(`[FAIL] ${test.name} (${ex})`)
+        onTestFinished(`[FAIL] ${test.name} (${ex})`);
     }
+
+    await SkipFrame(); // Needed To Prevent setTestResults From Messing Up
 }

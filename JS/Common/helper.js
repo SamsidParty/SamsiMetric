@@ -351,6 +351,10 @@ async function WaitUntil(cond) {
     while(!cond()) await new Promise(resolve => setTimeout(resolve, delayMs));
 }
 
+async function SkipFrame() {
+    return new Promise(resolve => setTimeout(resolve, 0));
+}
+
 function SaturateColor(color, amount){
     const clamp = (val) => Math.min(Math.max(val, 0), 0xFF)
     const fill = (str) => ('00' + str).slice(-2)

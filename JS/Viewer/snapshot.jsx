@@ -55,6 +55,7 @@ async function LoadSnapshotRange(from, to) {
 
 async function ParseSnapData(l_snap) {
 
+    //Check For Cached Data, No Need To Decompress And Deserialize Again
     if (!!l_snap.CachedSnapData) {
         return l_snap.CachedSnapData;
     }

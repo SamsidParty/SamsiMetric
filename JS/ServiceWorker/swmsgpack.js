@@ -12,6 +12,14 @@ if (typeof window !== 'undefined') {
             else {
                 return MessagePack.decode(data);
             }
+        },
+        encodeAsync: async (data) => {
+            if (!!window.CurrentWorkbox) {
+                return await window.CurrentWorkbox.messageSW({ type: "ENCODE_MSGPACK", content: data });
+            }
+            else {
+                return MessagePack.encode(data);
+            }
         }
     }
 }
@@ -25,6 +33,12 @@ else {
             if (LoadedDependencies.includes("./JS/ThirdParty/msgpack.js")) {
                 var decoded = MessagePack.decode(e.data.content);
                 e.ports[0].postMessage(decoded);
+            }
+        }
+        else if (e.data.type === 'ENCODE_MSGPACK') {
+            if (LoadedDependencies.includes("./JS/ThirdParty/msgpack.js")) {
+                var encoded = MessagePack.encode(e.data.content);
+                e.ports[0].postMessage(encoded);
             }
         }
     });
