@@ -33,7 +33,6 @@ async function LoadSnapshotRange(from, to) {
         for (var i = 0; i < snaps.length; i++) {
             var l_snap = snaps[i];
             if (ShouldLoadSnapshot(l_snap)) {
-                l_snap.SnapData = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(l_snap.SnapData));
                 var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
                 if (LoadedSnapshots[identity] == undefined) {
                     LoadedSnapshots[identity] = l_snap;
@@ -54,13 +53,19 @@ async function LoadSnapshotRange(from, to) {
     }
 }
 
+async function ParseSnapData(l_snap) {
+    return await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(l_snap.SnapData));
+}
 
 //Helps To Scale Back The Amount Of Snapshots To Load
 //Loads Less Snapshots As Time Goes Further Back
 function ShouldLoadSnapshot(l_snap) {
+
+    return true;
+
     var tDiffMS = Math.abs(new Date() - new Date(l_snap.SnapTime * 1000));
     var tDiff = Math.floor((tDiffMS / 1000) / 60);
-    
+
     if (tDiff < 60) { //Less Than An Hour Ago
         return true;
     }

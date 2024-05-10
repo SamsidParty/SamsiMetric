@@ -197,7 +197,9 @@ function Graphbar_0_Bar(props) {
         async function _() {
             if (chartData.shouldRefresh && isDataLoaded) {
                 //Add Series Data To The Chart
-                names.forEach((l_name, l_index) => {
+                for (var s = 0; s < names.length; s++) {
+                    var l_name = names[s];
+                    var l_index = s;
                     var values = [];
 
                     for (let i = 0; i < timeRange.detail; i++) {
@@ -206,7 +208,7 @@ function Graphbar_0_Bar(props) {
                         var stubDataObject = { data: {} };
 
                         if (snap && snap.SnapData) {
-                            stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = snap.SnapData;
+                            stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = await ParseSnapData(snap);
                             var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
 
                             values.push(value);
@@ -228,7 +230,7 @@ function Graphbar_0_Bar(props) {
                         borderColor: colors[l_index],
                         spanGaps: true,
                     });
-                });
+                }
                 defaultChartData.key = UUID();
                 defaultChartData.shouldRefresh = false;
                 setChartData(Object.assign({}, defaultChartData));
