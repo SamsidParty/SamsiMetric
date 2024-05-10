@@ -54,7 +54,14 @@ async function LoadSnapshotRange(from, to) {
 }
 
 async function ParseSnapData(l_snap) {
-    return await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(l_snap.SnapData));
+
+    if (!!l_snap.CachedSnapData) {
+        return l_snap.CachedSnapData;
+    }
+
+    var data = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(l_snap.SnapData));
+    l_snap.CachedSnapData = data;
+    return data;
 }
 
 //Helps To Scale Back The Amount Of Snapshots To Load
