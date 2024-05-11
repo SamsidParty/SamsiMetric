@@ -60,7 +60,7 @@ function Topbar()
             }
 
             <Tooltip ttid="databasestatus" {...TTContent("static", "Refresh Data")}>
-                <Button auto flat color={databaseTag} onPress={() => RefreshData(true)} className="iconButtonLarge"><i className={"ti ti-" + databaseIcon}></i></Button>
+                <Button auto flat color={databaseTag} onPress={() => RefreshData()} className="iconButtonLarge"><i className={"ti ti-" + databaseIcon}></i></Button>
             </Tooltip>
 
             <Dropdown>
