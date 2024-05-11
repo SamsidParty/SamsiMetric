@@ -24,10 +24,19 @@ var tooltipTemplates = {
 function UpdateTT(e) {
 
     //Use Event Position Or Last Event Position If Event Is Null
-    var offsetX = e != undefined ? e.clientX : window.lastTTX;
-    var offsetY = e != undefined ? e.clientY : window.lastTTY;
-    window.lastTTX = offsetX;
-    window.lastTTY = offsetY;
+    var placeX = !!e ? e.clientX : window.lastTTX;
+    var placeY = !!e ? e.clientY : window.lastTTY;
+
+    var offsetX = 0;
+    var offsetY = 0;
+
+    if (!!e && isMobile && e.touches?.length > 0) {
+        placeX = e.touches[0].clientX;
+        placeY = e.touches[0].clientY;
+    }
+
+    window.lastTTX = placeX;
+    window.lastTTY = placeY;
 
     var text = window.lastTTText || "";
     TTBody.innerText = text;
@@ -35,28 +44,40 @@ function UpdateTT(e) {
     var placementOffset = 15;
     var placement = window.lastTTPlacement || "bottom";
 
-    if (placement == "bottomRight") {
-        offsetX += placementOffset;
-        offsetY += placementOffset;
-    }
-    else if (placement == "bottomLeft") {
-        offsetX -= placementOffset;
-        offsetY += placementOffset;
-    }
-    else if (placement == "bottom") {
-        var width = getComputedStyle(TTBody).width;
-        offsetX -= (width.includes("px") ? (parseInt(width.toString().replace("px", "")) / 2) : 0);
-        offsetY += placementOffset;
-    }
+    //Calculate Width After The Tooltip Has Rendered
+    setTimeout(() => {
 
-    if (window.lastTTOX >= 0) {
-        TTBody.style.left = `${window.lastTTOX}px`;
-        TTBody.style.top = `${window.lastTTOY}px`;
-    }
-    else {
-        TTBody.style.left = `${offsetX}px`;
-        TTBody.style.top = `${offsetY}px`;
-    }
+        var ttWidth = TTBody.getBoundingClientRect().width;
+
+
+        if (placement == "bottomRight") {
+            offsetX += placementOffset;
+            offsetY += placementOffset;
+        }
+        else if (placement == "bottomLeft") {
+            offsetX -= placementOffset;
+            offsetY += placementOffset;
+        }
+        else if (placement == "bottom") {
+            offsetX -= ttWidth / 2;
+            offsetY += placementOffset;
+        }
+
+        //Fingers Get In The Way, Move It Up
+        if (isMobile) {
+            offsetY = -100;
+        }
+    
+        if (window.lastTTOX >= 0) {
+            TTBody.style.left = `${window.lastTTOX + offsetX}px`;
+            TTBody.style.top = `${window.lastTTOY + offsetY}px`;
+        }
+        else {
+            TTBody.style.left = `${placeX + offsetX}px`;
+            TTBody.style.top = `${placeY + offsetY}px`;
+        }
+
+    }, 0);
 
 
     //Set Visibility Based On Body Class
@@ -91,44 +112,70 @@ function Tooltip(props) {
     }
 
     var mouseEnter = (e) => {
-        window.lastTTText = props.content;
-        window.lastTTKey = props.ttid;
-        window.lastTTPlacement = props.placement;
+        if (isMobile) {
+            UpdateTT();
+        }
+        else {
+            window.lastTTText = props.content;
+            window.lastTTKey = props.ttid;
+            window.lastTTPlacement = props.placement;
+        }
     }
 
     var mouseLeave = (e) => {
-        if (window.lastTTKey == props.ttid) {
-            window.lastTTText = "";
-            window.lastTTKey = "";
+        if (isMobile) {
+            UpdateTT();
+        }
+        else {
+            if (window.lastTTKey == props.ttid) {
+                window.lastTTText = "";
+                window.lastTTKey = "";
+            }
         }
     }
 
     return (
         <React.Fragment>
-            { React.cloneElement( props.children, { onMouseEnter: mouseEnter, onMouseLeave: mouseLeave, "aria-label": props.content } ) }
+            { React.cloneElement( props.children, { onMouseEnter: mouseEnter, onMouseLeave: mouseLeave, onTouchStart: mouseEnter, onTouchEnd: mouseLeave, "aria-label": props.content } ) }
         </React.Fragment>
     )
 }
 
 window.addEventListener("keydown", (e) => {
-    if (e.key == "Shift") {
-        if (document.body.classList.contains("hideTooltips")) {
-            document.body.classList.remove("hideTooltips");
-            UpdateTT();
-            setTimeout(UpdateTT, 0);
-        }
+    if (isDesktop && e.key == "Shift") {
+        ShowTooltips();
     }
 });
 
 window.addEventListener("keyup", (e) => {
-    if (e.key == "Shift") {
-        if (!document.body.classList.contains("hideTooltips")) {
-            document.body.classList.add("hideTooltips");
-            UpdateTT();
-            setTimeout(UpdateTT, 0);
-        }
+    if (isDesktop && e.key == "Shift") {
+        HideTooltips();
     }
 });
+
+window.addEventListener("touchstart", (e) => {
+    ShowTooltips();
+});
+
+window.addEventListener("touchend", (e) => {
+    HideTooltips();
+});
+
+function ShowTooltips() {
+    if (document.body.classList.contains("hideTooltips")) {
+        document.body.classList.remove("hideTooltips");
+        UpdateTT();
+        setTimeout(UpdateTT, 0);
+    }
+}
+
+function HideTooltips() {
+    if (!document.body.classList.contains("hideTooltips")) {
+        document.body.classList.add("hideTooltips");
+        UpdateTT();
+        setTimeout(UpdateTT, 0);
+    }
+}
 
 //Make Tooltip Invisible Initially
 if (!document.body.classList.contains("hideTooltips")) {
@@ -141,5 +188,6 @@ TTBody.id = "mastertooltip";
 document.body.appendChild(TTBody);
 TTBody = document.getElementById("mastertooltip");
 window.addEventListener("mousemove", UpdateTT);
+window.addEventListener("touchmove", UpdateTT);
 setTimeout(UpdateTT, 0);
 setInterval(UpdateTT, 100);
