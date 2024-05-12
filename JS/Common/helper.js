@@ -280,7 +280,7 @@ function FillChart(metric, DataObject, options) {
             icons.push(dep.icon);
             metricDatas.push(dep);
             if (colors.includes(tagColors[dep["tag"]]) && !options?.rawColor) {
-                colors.push(SaturateColor(tagColors[dep["tag"]], 25 * l_index));
+                colors.push(tinycolor(tagColors[dep["tag"]]).brighten(7 * l_index).toString());
             }
             else {
                 colors.push(tagColors[dep["tag"]]);
@@ -357,15 +357,4 @@ async function WaitUntil(cond) {
 
 async function SkipFrame() {
     return new Promise(resolve => setTimeout(resolve, 0));
-}
-
-function SaturateColor(color, amount){
-    const clamp = (val) => Math.min(Math.max(val, 0), 0xFF)
-    const fill = (str) => ('00' + str).slice(-2)
-
-    const num = parseInt(color.substr(1), 16)
-    const red = clamp((num >> 16) + amount)
-    const green = clamp(((num >> 8) & 0x00FF) + amount)
-    const blue = clamp((num & 0x0000FF) + amount)
-    return '#' + fill(red.toString(16)) + fill(green.toString(16)) + fill(blue.toString(16))
 }

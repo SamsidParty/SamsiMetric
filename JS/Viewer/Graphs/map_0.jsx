@@ -150,8 +150,8 @@ function Graphmap_0_Map(props)
 
         var value = getCountryValue(country);
         value = (value / highestValue);
-        var startingColor = getComputedStyle(document.body).getPropertyValue(`--nextui-colors-${metric.tag}Light`).replace("#", "");
-        return "#" + interpolateColor(startingColor, tagColors[metric.tag].replace("#", ""), value);
+        var colorValue = isDark ? tinycolor(tagColors[metric.tag]).darken((80 - (value * 100)) * 0.5) : tinycolor(tagColors[metric.tag]).lighten((100 - (value * 100)) * 0.5);
+        return colorValue.toString();
     }
 
 

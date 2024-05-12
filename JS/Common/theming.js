@@ -15,9 +15,8 @@ async function LoadFontFiles() {
 
 async function Theming() {
 
-    var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var isDarkAndroid = window.GetFromGlobal && await GetFromGlobal("Theme") == "dark";
-    if (isDark || isDarkAndroid) {
+    window.isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (isDark) {
         document.body.classList.add("dark");
     }
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
