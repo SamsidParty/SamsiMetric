@@ -345,6 +345,10 @@ function ConvertPercents(values, filter) {
     });
 }
 
+function ShortenNumber(num) {
+    return (Intl.NumberFormat('en', { notation: 'compact' })).format(num);
+}
+
 async function WaitUntil(cond) {
     if (cond()) { return; }
     const delayMs = 10;

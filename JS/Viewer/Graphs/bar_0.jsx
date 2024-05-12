@@ -164,7 +164,21 @@ function Graphbar_0_Bar(props) {
                     external: window.ChartJSTooltipInterop,
                 },
                 dashedline: {
-                    color: 'transparent',
+                    color: 'transparent', // Disable On This Chart
+                },
+                datalabels: {
+                    color: (ctx) => {
+                        return tinycolor(ctx.dataset.backgroundColor).isDark() ? "white" : "black";
+                    },
+                    display: (ctx) => {
+                        if (props.cardSize == "csMedLong") { return true; }
+                        return "auto";
+                    },
+                    font: {
+                        size: 13,
+                        family: "Jetbrains"
+                    },
+                    formatter: ShortenNumber
                 }
             },
             scales: {

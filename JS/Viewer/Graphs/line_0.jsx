@@ -143,6 +143,9 @@ function Graphline_0_Line(props) {
                 },
                 dashedline: {
                     color: 'black',
+                },
+                datalabels: {
+                    color: 'transparent' // Disable On This Chart
                 }
             },
             scales: {
