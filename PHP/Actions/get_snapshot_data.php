@@ -4,6 +4,8 @@ require_once("./PHP/ThirdParty/vendor/autoload.php");
 
 ViewerOnly();
 
+ini_set('memory_limit', '-1');
+
 $result = array();
 $tdata = DB::query("SELECT * FROM data_snapshot WHERE SnapTime BETWEEN %d AND %d", $params["date_start"], $params["date_end"]);
 $result["data_snapshot"] = $tdata;

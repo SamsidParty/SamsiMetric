@@ -2,6 +2,11 @@
 
     $params = json_decode($_SERVER["HTTP_X_PARAMS"], true);
 
+    //Enable Error Reporting
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+
     $mockData = [
         "schema" => [
             [
@@ -66,8 +71,27 @@
         echo json_encode($mockData);
     }
     else if ($params["action"] == "get_snapshot_data") {
-        header("Content-Type: application/json");
-        echo base64_decode("ga1kYXRhX3NuYXBzaG90kA"); // Empty Snapshot Data
+        header("Content-Type: application/msgpack");
+        require_once("../../../PHP/ThirdParty/vendor/autoload.php");
+
+        $result = array("data_snapshot" => array());
+
+        ini_set('memory_limit', '-1');
+
+        //Fill $result with 1 year's worth of random data
+        $snapTime = time();
+
+        for ($i = 0; $i < 525960; $i++) {
+            $snapTime -= 60; // Minus One Minute
+
+            $result["data_snapshot"][] = array(
+                "MetricID" => "457AB1-66F35C-CFAC2024",
+                "SnapTime" => $snapTime
+            );
+        }
+
+        $packer = new MessagePack\Packer(MessagePack\PackOptions::FORCE_STR);
+        echo $packer->pack($result);
     }
     else {
 

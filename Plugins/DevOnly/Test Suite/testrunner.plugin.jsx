@@ -9,7 +9,19 @@ function TestSuiteTopBar() {
     var [testResults, setTestResults] = React.useState([]);
     window.lastTestResults = testResults;
 
-    var onTestFinished = (result) => {
+    var onTestFinished = async (result) => {
+
+        //Remove Last Result, Which Is A Loading State
+        var newResults = window.lastTestResults.map((e) => e); // Clone Array
+        newResults.pop();
+        setTestResults(newResults);
+
+        await SkipFrame();
+
+        pushResult(result);
+    }
+
+    var pushResult = (result) => {
         var newResults = window.lastTestResults.map((e) => e); // Clone Array
         newResults.push(result);
         setTestResults(newResults);
@@ -39,13 +51,17 @@ function TestSuiteTopBar() {
                                     //Red X
                                     l_result.startsWith("[FAIL]") ? (<i className="ti ti-x"></i>) : null
                                 }
+                                {
+                                    //Loading Wheel
+                                    l_result.startsWith("[RUNNING]") ? (<LoadingWheel></LoadingWheel>) : null
+                                }
                                 <p>{l_result}</p>
                             </div>
                             )
                         })
                     }
                     <div className="flexx fillx fjend">
-                        <Button auto onPress={() => { setTestResults([]); RunAllTests(onTestFinished); }}>Start Tests</Button>
+                        <Button auto onPress={() => { setTestResults([]); RunAllTests(pushResult, onTestFinished); }}>Start Tests</Button>
                     </div>
                 </Modal.Body>
             </Modal>
@@ -54,9 +70,10 @@ function TestSuiteTopBar() {
 }
 
 //Iterates Through All Tests And Runs Them
-async function RunAllTests(onTestFinished) {
+async function RunAllTests(pushResult, onTestFinished) {
     await SkipFrame();
     for (var i = 0; i < window.TestSuiteTests.length; i++) {
+        pushResult("[RUNNING] " + window.TestSuiteTests[i].name)
         await RunTest(window.TestSuiteTests[i], onTestFinished);
     }
 }
@@ -76,10 +93,10 @@ async function RunTest(test, onTestFinished) {
             throw new Error(`Assertion Failed {${test.assert.toString()} returned false}`)
         }
 
-        onTestFinished("[PASS] " + test.name);
+        await onTestFinished("[PASS] " + test.name);
     }
     catch (ex) {
-        onTestFinished(`[FAIL] ${test.name} (${ex})`);
+        await onTestFinished(`[FAIL] ${test.name} (${ex})`);
     }
 
     await SkipFrame(); // Needed To Prevent setTestResults From Messing Up
