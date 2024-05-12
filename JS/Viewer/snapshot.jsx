@@ -32,16 +32,15 @@ async function LoadSnapshotRange(from, to) {
 
         for (var i = 0; i < snaps.length; i++) {
             var l_snap = snaps[i];
-            if (ShouldLoadSnapshot(l_snap)) {
-                var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
-                if (LoadedSnapshots[identity] == undefined) {
-                    LoadedSnapshots[identity] = l_snap;
-                }
-                if (SnapshotsFor[l_snap.MetricID] == undefined) {
-                    SnapshotsFor[l_snap.MetricID] = {};
-                }
-                SnapshotsFor[l_snap.MetricID][l_snap.SnapTime] = l_snap;
+
+            var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
+            if (LoadedSnapshots[identity] == undefined) {
+                LoadedSnapshots[identity] = l_snap;
             }
+            if (SnapshotsFor[l_snap.MetricID] == undefined) {
+                SnapshotsFor[l_snap.MetricID] = {};
+            }
+            SnapshotsFor[l_snap.MetricID][l_snap.SnapTime] = l_snap;
         }
 
 
@@ -53,39 +52,33 @@ async function LoadSnapshotRange(from, to) {
     }
 }
 
-async function ParseSnapData(l_snap) {
+async function DownloadSnapData(l_snap) {
 
-    //Check For Cached Data, No Need To Decompress And Deserialize Again
+    //Check For Cached Data, No Need To Download And Decompress Again
     if (!!l_snap.CachedSnapData) {
         return l_snap.CachedSnapData;
     }
 
-    var data = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(l_snap.SnapData));
+    var response = await fetch(Backend, {
+        headers: DefaultHeaders({ "X-Params": JSON.stringify({
+            action: "get_snapshot_data",
+            get_data_directly: "true",
+            snap_time: l_snap.SnapTime,
+            metric_id: l_snap.MetricID
+        }) })
+    });
+
+    if (!response.ok) {
+        if (response.status == 401 || response.status == 424) {
+            window.location.href = "./Login"
+        }
+        dataStatus = "error";
+        return null;
+    }
+
+    var data = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(new Uint8Array(await response.arrayBuffer())));
     l_snap.CachedSnapData = data;
     return data;
-}
-
-//Helps To Scale Back The Amount Of Snapshots To Load
-//Loads Less Snapshots As Time Goes Further Back
-function ShouldLoadSnapshot(l_snap) {
-
-    return true;
-
-    var tDiffMS = Math.abs(new Date() - new Date(l_snap.SnapTime * 1000));
-    var tDiff = Math.floor((tDiffMS / 1000) / 60);
-
-    if (tDiff < 60) { //Less Than An Hour Ago
-        return true;
-    }
-    else if (tDiff < 1440) { // Less Than 24 Hours Ago
-        return tDiff % 30 == 0;
-    }
-    else if (tDiff < 10080) { // Less Than 1 Week Ago
-        return tDiff % 30 == 0;
-    }
-
-
-    return false;
 }
 
 function SnapshotAt(metric, time) {

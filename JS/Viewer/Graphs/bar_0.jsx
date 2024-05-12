@@ -221,8 +221,8 @@ function Graphbar_0_Bar(props) {
                         var snap = SnapshotAt(metricDatas[l_index].id, timeOfSnap);
                         var stubDataObject = { data: {} };
 
-                        if (snap && snap.SnapData) {
-                            stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = await ParseSnapData(snap);
+                        if (!!snap) {
+                            stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = await DownloadSnapData(snap);
                             var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
 
                             values.push(value);
