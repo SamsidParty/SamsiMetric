@@ -12,6 +12,8 @@
     --col-text-secondary: #818181;
 
     --drawer-bg: var(--col-contrast) !important;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
 @media (prefers-color-scheme: dark) {

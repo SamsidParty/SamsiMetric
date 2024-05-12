@@ -22,8 +22,12 @@ const theme = extendTheme({ config });
 
 var serverList = [
     {
-        name: "Dev Server",
+        name: "Dev Server (Build)",
         url: "http://192.168.100.100:8082/Analytics/Build"
+    },
+    {
+        name: "Dev Server (Bleeding Edge)",
+        url: "http://192.168.100.100:8082/Analytics"
     }
 ]
 
