@@ -182,64 +182,60 @@ function Graphline_0_Line(props) {
 
     var [chartData, setChartData] = React.useState(defaultChartData);
 
-    setTimeout(() => {
-        async function _() {
-            if (chartData.shouldRefresh && isDataLoaded) {
-                //Add Series Data To The Chart
-                for (var s = 0; s < names.length; s++) {
-                    var l_name = names[s];
-                    var l_index = s;
-                    var values = [];
-    
-                    for (let i = 0; i < timeRange.detail; i++) {
-                        var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
-                        var snap = SnapshotAt(metricDatas[l_index].id, timeOfSnap);
-                        var stubDataObject = { data: {} };
-    
-                        if (!!snap) {
-                            stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = await DownloadSnapData(snap);
-                            var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
-    
-                            values.push(value);
-    
-                            dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
-                        }
-    
-                        if (l_index == 0) {
-                            var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
-                            defaultChartData.labels.push(timeOfAxis);
-                        }
+    setTimeout(async () => {
+
+        if (chartData.shouldRefresh && isDataLoaded) {
+
+            var snaps = GetSnapshotsGroupedInRange(timeRange, metricDatas.map((e) => e.id));
+
+            //Add Series Data To The Chart
+            for (var s = 0; s < names.length; s++) {
+                var l_name = names[s];
+                var l_index = s;
+                var values = [];
+
+                for (let i = 0; i < snaps[s].length; i++) {
+                    var snap = snaps[s][i];
+                    var stubDataObject = { data: {} };
+         
+                    stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = await DownloadSnapData(snap);
+                    var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
+                    values.push(value);
+                    dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
+
+                    if (l_index == 0) {
+                        var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
+                        defaultChartData.labels.push(timeOfAxis);
                     }
-    
-                    //Enable Line Smoothing
-                    if (props.graph.lineSmoothing) {
-                        var nullDupes = data => data.map((x, i) => data[i - 1] === x ? null : x);
-                        var lastValidValue = values[values.length - 1];
-                        values = nullDupes(values);
-                        values[defaultChartData.labels.length - 1] = lastValidValue;
-                    }
-    
-                    defaultChartData.datasets.push({
-                        data: values,
-                        label: l_name,
-                        backgroundColor: (context) => {
-                            const ctx = context.chart.ctx;
-                            const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.offsetHeight);
-                            gradient.addColorStop(0, tagColors[metricDatas[l_index].tag] + "41");
-                            gradient.addColorStop(1, tagColors[metricDatas[l_index].tag] + "00");
-                            return gradient;
-                        },
-                        fill: true,
-                        borderColor: tagColors[metricDatas[l_index].tag],
-                        spanGaps: true,
-                    });
                 }
-                defaultChartData.key = UUID();
-                defaultChartData.shouldRefresh = false;
-                setChartData(Object.assign({}, defaultChartData));
+
+                //Enable Line Smoothing
+                if (props.graph.lineSmoothing) {
+                    var nullDupes = data => data.map((x, i) => data[i - 1] === x ? null : x);
+                    var lastValidValue = values[values.length - 1];
+                    values = nullDupes(values);
+                    values[defaultChartData.labels.length - 1] = lastValidValue;
+                }
+
+                defaultChartData.datasets.push({
+                    data: values,
+                    label: l_name,
+                    backgroundColor: (context) => {
+                        const ctx = context.chart.ctx;
+                        const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.offsetHeight);
+                        gradient.addColorStop(0, tagColors[metricDatas[l_index].tag] + "41");
+                        gradient.addColorStop(1, tagColors[metricDatas[l_index].tag] + "00");
+                        return gradient;
+                    },
+                    fill: true,
+                    borderColor: tagColors[metricDatas[l_index].tag],
+                    spanGaps: true,
+                });
             }
+            defaultChartData.key = UUID();
+            defaultChartData.shouldRefresh = false;
+            setChartData(Object.assign({}, defaultChartData));
         }
-        _();
     }, 0);
 
     return (

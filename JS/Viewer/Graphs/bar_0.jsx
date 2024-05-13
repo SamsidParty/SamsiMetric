@@ -207,51 +207,47 @@ function Graphbar_0_Bar(props) {
 
     var [chartData, setChartData] = React.useState(defaultChartData);
 
-    React.useEffect(() => {
-        async function _() {
-            if (chartData.shouldRefresh && isDataLoaded) {
-                //Add Series Data To The Chart
-                for (var s = 0; s < names.length; s++) {
-                    var l_name = names[s];
-                    var l_index = s;
-                    var values = [];
+    setTimeout(async () => {
 
-                    for (let i = 0; i < timeRange.detail; i++) {
-                        var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
-                        var snap = SnapshotAt(metricDatas[l_index].id, timeOfSnap);
-                        var stubDataObject = { data: {} };
+        if (chartData.shouldRefresh && isDataLoaded) {
 
-                        if (!!snap) {
-                            stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = await DownloadSnapData(snap);
-                            var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
+            var snaps = GetSnapshotsGroupedInRange(timeRange, metricDatas.map((e) => e.id));
 
-                            values.push(value);
+            //Add Series Data To The Chart
+            for (var s = 0; s < names.length; s++) {
+                var l_name = names[s];
+                var l_index = s;
+                var values = [];
 
-                            dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
-                        }
+                for (let i = 0; i < snaps[s].length; i++) {
+                    var snap = snaps[s][i];
+                    var stubDataObject = { data: {} };
 
-                        if (l_index == 0) {
-                            var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
-                            defaultChartData.labels.push(timeRange.label(timeOfAxis, i));
-                        }
+                    stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = await DownloadSnapData(snap);
+                    var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
+                    values.push(value);
+                    dates.push(new Date(snap.SnapTime * 1000).toLocaleString());
+
+                    if (l_index == 0) {
+                        var timeOfAxis = (timeRange.unix[0] + ((i + 1) / timeRange.detail) * (timeRange.unix[1] - timeRange.unix[0]));
+                        defaultChartData.labels.push(timeRange.label(timeOfAxis, i));
                     }
-
-                    defaultChartData.datasets.push({
-                        data: values,
-                        label: l_name,
-                        backgroundColor: colors[l_index],
-                        fill: true,
-                        borderColor: colors[l_index],
-                        spanGaps: true,
-                    });
                 }
-                defaultChartData.key = UUID();
-                defaultChartData.shouldRefresh = false;
-                setChartData(Object.assign({}, defaultChartData));
+
+                defaultChartData.datasets.push({
+                    data: values,
+                    label: l_name,
+                    backgroundColor: colors[l_index],
+                    fill: true,
+                    borderColor: colors[l_index],
+                    spanGaps: true,
+                });
             }
+            defaultChartData.key = UUID();
+            defaultChartData.shouldRefresh = false;
+            setChartData(Object.assign({}, defaultChartData));
         }
-        _();
-    });
+    }, 0);
 
     return (
         <>

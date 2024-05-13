@@ -1,6 +1,9 @@
 var LoadedSnapshotRanges = [];
 var LoadedSnapshots = [];
 var SnapshotsFor = {};
+var LoadedSnapshotData = {};
+var SnapshotDataQueue = [];
+var IsDownloadingSnapData = false;
 
 //The Names Of The Tables That Snapshots Are Taken From
 var SnapshotTables = {
@@ -34,6 +37,8 @@ async function LoadSnapshotRange(from, to) {
             var l_snap = snaps[i];
 
             var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
+            l_snap.identity = identity;
+
             if (LoadedSnapshots[identity] == undefined) {
                 LoadedSnapshots[identity] = l_snap;
             }
@@ -54,18 +59,57 @@ async function LoadSnapshotRange(from, to) {
 
 async function DownloadSnapData(l_snap) {
 
-    //Check For Cached Data, No Need To Download And Decompress Again
-    if (!!l_snap.CachedSnapData) {
-        return l_snap.CachedSnapData;
+    //Add To Queue And Wait If The Data Is Not Stored Already
+    if (!LoadedSnapshotData[l_snap.SnapIndex]) {
+        SnapshotDataQueue.push(l_snap);
+        await WaitUntil(() => !!LoadedSnapshotData[l_snap.SnapIndex]);
     }
 
+    return LoadedSnapshotData[l_snap.SnapIndex];
+}
+
+//Returns A 2D Array Of Snapshots In A Time Range, Where timeRange Is A Time Range And ids Is An Array Of Metric IDs
+function GetSnapshotsGroupedInRange(timeRange, ids) {
+    var snaps = [];
+
+    for (let i = 0; i < ids.length; i++) {
+        snaps.push(GetSnapshotsInRange(timeRange, ids[i]));
+    }
+
+    return snaps;
+}
+
+//Returns An Array Of Snapshots In A Time Range, Where timeRange Is A Time Range And id Is A Metric ID
+function GetSnapshotsInRange(timeRange, id) {
+
+    var snaps = []
+
+    for (let i = 0; i < timeRange.detail; i++) {
+        var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
+        var snap = SnapshotAt(id, timeOfSnap);
+        DownloadSnapData(snap);
+
+        if (!!snap) {
+            snaps.push(snap);
+        }
+    }
+
+    return snaps;
+}
+
+async function DownloadAllSnapData() {
+
+    if (SnapshotDataQueue.length < 1 || IsDownloadingSnapData) { return; }
+
+    IsDownloadingSnapData = true;
+
     var response = await fetch(Backend, {
+        method: "POST",
         headers: DefaultHeaders({ "X-Params": JSON.stringify({
             action: "get_snapshot_data",
-            get_data_directly: "true",
-            snap_time: l_snap.SnapTime,
-            metric_id: l_snap.MetricID
-        }) })
+            get_data_directly: "true"
+        })}),
+        body: JSON.stringify(SnapshotDataQueue)
     });
 
     if (!response.ok) {
@@ -73,13 +117,27 @@ async function DownloadSnapData(l_snap) {
             window.location.href = "./Login"
         }
         dataStatus = "error";
-        return null;
+        return;
     }
 
-    var data = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(new Uint8Array(await response.arrayBuffer())));
-    l_snap.CachedSnapData = data;
-    return data;
+    var snapDatas = await SWMessagePack.decodeAsync(await response.arrayBuffer());
+
+    for (var i = SnapshotDataQueue.length - 1; i >= 0; i--) {
+        
+        if (!SnapshotDataQueue[i]) { continue; }
+        var binaryData = snapDatas[SnapshotDataQueue[i].SnapIndex];
+        if (!binaryData) { continue; }
+
+        var data = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(binaryData));
+        LoadedSnapshotData[SnapshotDataQueue[i].SnapIndex] = data;
+        SnapshotDataQueue.splice(i, 1);
+        
+    }
+
+    IsDownloadingSnapData = false;
 }
+
+setInterval(DownloadAllSnapData, 500);
 
 function SnapshotAt(metric, time) {
 

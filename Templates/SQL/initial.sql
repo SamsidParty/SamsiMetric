@@ -222,7 +222,8 @@ CREATE TABLE `data_country` (
 CREATE TABLE `data_snapshot` (
   `MetricID` varchar(64) NOT NULL,
   `SnapTime` bigint NOT NULL,
-  `SnapData` varbinary(5000) NOT NULL
+  `SnapData` varbinary(5000) NOT NULL,
+  `SnapIndex` bigint UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `data_total` (
