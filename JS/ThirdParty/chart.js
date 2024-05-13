@@ -283,7 +283,7 @@ chart_js.register(window.ChartJSDashedLine);
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('chart.js/helpers'), require('chart.js')) :
     typeof define === 'function' && define.amd ? define(['chart.js/helpers', 'chart.js'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.ChartDataLabels = factory(global.Chart.helpers, global.Chart));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.ChartDataLabels = factory(window.chart_js.helpers, window.chart_js));
     })(this, (function (__helpers, __chart_js) { 'use strict';
     
     var helpers = window.chart_js.helpers;

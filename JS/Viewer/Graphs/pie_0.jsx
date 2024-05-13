@@ -72,6 +72,9 @@ function Graphpie_0_Pie(props) {
             dashedline: {
                 color: 'transparent', // Disable On This Chart
             },
+            datalabels: {
+                color: 'transparent'
+            }
         }
     }
 
