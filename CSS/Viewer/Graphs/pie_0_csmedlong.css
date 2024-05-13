@@ -20,16 +20,15 @@
 }
 
 .csMedLong.graphPie0 .graphChart {
-    margin-right: 5px;
     margin-left: auto;
-    margin-bottom: 3px;
+    margin-right: 10px; 
 }
 
 .csMedLong.graphPie0 .iconHolder {
     width: 35px;
     height: 35px;
     position: absolute;
-    right: calc(45px * var(--card-scale));
+    right: calc(50px * var(--card-scale));
     border-radius: 360px;
     border: 2px solid var(--col-contrast);
     display: flex;

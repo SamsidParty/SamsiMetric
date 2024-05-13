@@ -156,7 +156,7 @@ var GraphTypes = [
             }
         ],
         "dependencies": [
-            "./JS/ThirdParty/apexcharts.js"
+            "./JS/ThirdParty/chart.js"
         ]
     },
     {

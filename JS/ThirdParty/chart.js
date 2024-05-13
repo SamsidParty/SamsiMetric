@@ -211,6 +211,7 @@ window.ChartJSDashedLine = {
         dash: [3, 3],
     },
     afterInit: (chart, args, opts) => {
+        if (opts.color == "transparent") { return; }
         chart.dashedline = {
             x: 0,
             y: 0,
@@ -218,7 +219,8 @@ window.ChartJSDashedLine = {
             nonce: UUID()
         }
     },
-    afterEvent: (chart, args) => {
+    afterEvent: (chart, args, opts) => {
+       if (opts.color == "transparent") { return; }
         const { inChartJSArea } = args
         const { type, x, y } = args.event
 
@@ -228,6 +230,7 @@ window.ChartJSDashedLine = {
         chart.draw()
     },
     beforeDatasetsDraw: (chart, args, opts) => {
+        if (opts.color == "transparent") { return; }
         const { ctx } = chart
         const { top, bottom, left, right } = chart.chartArea
         const { x, y, draw } = chart.dashedline
@@ -251,8 +254,8 @@ window.ChartJSTooltipInterop = (context) => {
 
     var { chart, tooltip } = context;
 
-    if (tooltip.opacity > 0 && tooltip.body.length > 0 && tooltip.body[0].lines.length > 0) {   
-        window.lastTTText = tooltip.body[0].lines[0];
+    if (tooltip.opacity > 0 && tooltip.body.length > 0 && tooltip.body[0].lines.length > 0) {  
+        window.lastTTText = isNaN(parseFloat(tooltip.body[0].lines[0])) ? tooltip.body[0].lines[0] : tooltip.title[0] + ": " + tooltip.body[0].lines[0];
         window.lastTTKey = "ChartJSTooltip_" + chart.id;
         window.lastTTPlacement = "bottom";
         window.lastTTOX = chart.canvas.getBoundingClientRect().left + tooltip.caretX;

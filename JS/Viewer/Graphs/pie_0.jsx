@@ -12,22 +12,22 @@ function Graphpie_0(props) {
             <div className="subCard">
                 <h3>{metric.name}</h3>
                 <div className="labelHolder">
-                {
-                    metric["dependencies"].map((l_dep) => {
-                        var dep = ArrayValue(metrics, "id", l_dep);
+                    {
+                        metric["dependencies"].map((l_dep) => {
+                            var dep = ArrayValue(metrics, "id", l_dep);
 
-                        if (dep.length != 0) {
-                            return (<div key={l_dep} className="subCardLabel" style={{ backgroundColor: tagColors[dep.tag] }}><CachedIcon src={dep.icon}></CachedIcon></div>);
-                        }
-                    })
-                }
+                            if (dep.length != 0) {
+                                return (<div key={l_dep} className="subCardLabel" style={{ backgroundColor: tagColors[dep.tag] }}><CachedIcon src={dep.icon}></CachedIcon></div>);
+                            }
+                        })
+                    }
                 </div>
             </div>
 
             {
-                window.ReactApexChart != undefined ?
-                (<Graphpie_0_Pie {...props} />) :
-                (<GraphLoading {...props}></GraphLoading>)
+                window.ChartJSPie != undefined ?
+                    (<Graphpie_0_Pie {...props} />) :
+                    (<GraphLoading {...props}></GraphLoading>)
             }
 
             <div className="iconHolder" style={{ backgroundColor: tagColors[metric.tag], display: props.graph.showicon ? "flex" : "none" }}>
@@ -50,77 +50,54 @@ function Graphpie_0_Pie(props) {
     var colors = chartFill[2];
 
     //Add Dummy Data If No Submetrics Assigned
-    if (names.length == 0)
-    {
+    if (names.length == 0) {
         names.push("No Data");
         values.push(404);
         colors.push(tagColors.error);
     }
 
 
-    var onStartHover = (e, c, hover) => {
-        //Add Tooltip
-        window.lastTTText = tooltipTemplates["graphmetric"].content([names[hover.dataPointIndex], values[hover.dataPointIndex]]);
-        window.lastTTKey = props.graphNonce;
-        window.lastTTPlacement = "bottom";
-    }
-
-    var onEndHover = (e, context) => {
-        //Remove Tooltip
-        if (window.lastTTKey == props.graphNonce) {
-            window.lastTTText = "";
-            window.lastTTKey = "";
+    var options = {
+        responsive: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                enabled: false,
+                intersect: false,
+                position: "nearest",
+                external: window.ChartJSTooltipInterop,
+            },
+            dashedline: {
+                color: 'transparent', // Disable On This Chart
+            },
         }
     }
 
     var chartData = {
-        options: {
-            chart: {
-                background: "transparent",
-                animations: {
-                    enabled: false
-                },
-                foreColor: "var(--col-text)",
-                sparkline: {
-                    enabled: true
-                },
-                parentHeightOffset: 0,
-                events: {
-                    dataPointMouseEnter: onStartHover,
-                    dataPointMouseLeave: onEndHover
-                }
-            },
-            stroke: { show: false },
-            tooltip: { enabled: false },
-            dataLabels: { enabled: false },
-            plotOptions: {
-                pie: {
-                    expandOnClick: false,
-                }
-            },
-            colors: colors,
-            labels: names,
-            grid: {
-                padding: {
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0
-                }
+        labels: names,
+        datasets: [
+            {
+                label: "",
+                data: values,
+                backgroundColor: colors,
+                borderColor: colors,
             }
-        },
-        series: values
-    }
+        ]
+    };
+
+    //Choose Type Based On If Hollow
+    var ChartToRender = props.graph.hollow ? ChartJSDoughnut : ChartJSPie;   
 
     return (
-        <Chart
-        options={chartData.options}
-        series={chartData.series}
-        className="graphChart"
-        key={props.isPreview ? UUID() : metric.id /* Updates Every Time Only If We Are In Preview Mode*/}
-        type={props.graph.hollow ? "donut" : "pie"}
-        width={ScaleGraph(props.cardSize, true) * 115}
-        height={ScaleGraph(props.cardSize, true) * 115}
+        <ChartToRender
+            options={options}
+            data={chartData}
+            className="graphChart"
+            width={(ScaleGraph(props.cardSize, true) * 115)}
+            height={(ScaleGraph(props.cardSize, true) * 115)}
+            key={props.isPreview ? UUID() : metric.id /* Updates Every Time Only If We Are In Preview Mode*/}
         />
     )
 }
