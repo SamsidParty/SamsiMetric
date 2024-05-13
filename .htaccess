@@ -10,6 +10,9 @@ RewriteRule ^manifest.json$ ./pwa.php [L]
 
 DirectoryIndex index.php
 
+Header add Cross-Origin-Embedder-Policy "require-corp"
+Header add Cross-Origin-Opener-Policy "same-origin"
+
 RewriteEngine On
 <FilesMatch "\.(html|htm|js|jsx|css)$">
   FileETag None
