@@ -23,6 +23,12 @@ function Topbar()
             localStorage.clear();
             location.reload();
         }
+        else if (e == "clientsettings") {
+            await LoadDependency("./JS/Viewer/clientsettings.jsx");
+            DataObject["page"] = "ClientSettings";
+            DataObject["pageOverridable"] = "false"; // Prevent Selecting A Workspace From Closing It
+            setExtRedraw(UUID());
+        }
     }
 
 
