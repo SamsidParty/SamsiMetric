@@ -19,6 +19,7 @@ async function PageInit() {
     await LoadDependency("./JS/Viewer/topbar.jsx");
     await LoadDependency("./JS/Viewer/sidebar.jsx");
     await LoadDependency("./JS/Common/errorhandler.jsx");
+    await LoadDependency("./JS/Viewer/settingrenderer.jsx");
 
     if (localStorage.apikey_perms == "admin") {
         await LoadDependency("./JS/Admin/keymanager.jsx");
