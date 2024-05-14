@@ -150,7 +150,7 @@ async function LoadDependency(dependency) {
     var script = await localforage.getItem(dependency);
 
     if (dependency.endsWith(".css")){
-        await LoadCSSDependency(script);
+        await LoadCSSDependency(script, true);
     }
     else {
         var scriptURL = URL.createObjectURL(new Blob([script], { type: "text/javascript" }));
@@ -241,7 +241,7 @@ async function LoadBinaryDependency(dep, value) {
     busy--;
 }
 
-async function LoadCSSDependency(css) {
+async function LoadCSSDependency(css, enableHotReload) {
 
     Loader_WaitUntil(() => busy == 0);
 
@@ -252,7 +252,26 @@ async function LoadCSSDependency(css) {
 
     var tag = document.createElement('style');
     tag.textContent = css;
+
+    if (enableHotReload) {
+        tag.setAttribute("data-hot-reload", "true");
+    }
+
     document.head.append(tag);
+}
+
+//Redownload And Reload CSS (Development Only)
+async function HotReloadCSS() {
+    var reloadableStyles = document.querySelectorAll("style[data-hot-reload='true']");
+
+    reloadableStyles.forEach((e) => e.remove());
+
+    var newStyles = await CollectDependencies({});
+    newStyles.forEach(async (s) => {
+        if (s.endsWith(".css")) {
+            LoadCSSDependency(await (await fetch(s)).text(), true);
+        }
+    });
 }
 
 function ParseIndexTree(treeString, accept) {
