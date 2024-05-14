@@ -241,7 +241,7 @@ async function LoadBinaryDependency(dep, value) {
     busy--;
 }
 
-async function LoadCSSDependency(css, enableHotReload) {
+async function LoadCSSDependency(css, enableHotReload, className) {
 
     Loader_WaitUntil(() => busy == 0);
 
@@ -251,6 +251,7 @@ async function LoadCSSDependency(css, enableHotReload) {
     });
 
     var tag = document.createElement('style');
+    tag.className = className || "loaderDynamicStyle";
     tag.textContent = css;
 
     if (enableHotReload) {

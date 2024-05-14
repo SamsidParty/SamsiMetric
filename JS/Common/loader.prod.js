@@ -179,7 +179,7 @@ async function LoadBinaryDependency(dep, value) {
     busy--;
 }
 
-async function LoadCSSDependency(css) {
+async function LoadCSSDependency(css, thisParamOnlyWorksInDevMode, className) {
 
     Loader_WaitUntil(() => busy == 0);
 
@@ -189,6 +189,7 @@ async function LoadCSSDependency(css) {
     });
 
     var tag = document.createElement('style');
+    tag.className = className || "loaderDynamicStyle";
     tag.textContent = css;
     document.head.append(tag);
 }

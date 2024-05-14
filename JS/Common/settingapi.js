@@ -19,7 +19,9 @@ function GetClientSettings() {
                     "displayname": "Use Dyslexic Font",
                     "name": "useDyslexicFont",
                     "default": isMobile,
-                    "current": isMobile
+                    "current": isMobile,
+                    onChange: (newVal) => newVal ? LoadDyslexicFont() : UnloadDyslexicFont()
+                    
                 }
             ]
         },

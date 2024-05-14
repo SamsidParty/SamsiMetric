@@ -7,6 +7,13 @@ function ClientSettings() {
         setDataObject(Object.assign({}, DataObject));
     }
 
+    var setSetting = (setting, value) => {
+        if (!!setting.onChange) {
+            setting.onChange(value);
+        }
+        Settings[setting.name] = value;
+    }
+
     return (
         <Modal
             width="900px"
@@ -28,7 +35,7 @@ function ClientSettings() {
                     </div>
                     <div className="settingsPanel">
                         <h2>{page.name}</h2>
-                        <SettingRenderer key={UUID()} settings={page.settings} settingTarget={Settings} setSetting={(s, v) => Settings[s.name] = v} />
+                        <SettingRenderer key={UUID()} settings={page.settings} settingTarget={Settings} setSetting={setSetting} />
                     </div>
                 </div>
             </Modal.Body>
