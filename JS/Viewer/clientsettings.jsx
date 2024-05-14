@@ -1,14 +1,10 @@
 function ClientSettings() {
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
-    var [tab, setTab] = React.useState("appearance");
+    var [page, setPage] = React.useState(Settings.Client.Appearance);
 
     var close = () => {
         DataObject["page"] = null;
         setDataObject(Object.assign({}, DataObject));
-    }
-
-    var changeTab = (e) => {
-        setTab(e.target.value);
     }
 
     return (
@@ -19,15 +15,19 @@ function ClientSettings() {
             onClose={close}
             className="clientSettingsModal"
         >
-            <Modal.Header>
-                <Text id="modal-title" b size={20}>
-                    Client Settings
-                </Text>
-            </Modal.Header>
             <Modal.Body>
                 <div className="clientSettings">
                     <div className="settingsSidebar">
-
+                        {
+                            //Load All Settings Pages Into The Sidebar
+                            Object.keys(Settings.Client).map((l_page) => {
+                                l_page = Settings.Client[l_page];
+                                return (<Button onPress={() => setPage(l_page)} key={l_page.name} flat={l_page.name == page.name ? false : true} auto className="settingsSidebarButton"><i className={l_page.icon}></i>&nbsp;{l_page.name}</Button>)
+                            })
+                        }
+                    </div>
+                    <div className="settingsPanel">
+                        <h2>{page.name}</h2>
                     </div>
                 </div>
             </Modal.Body>
