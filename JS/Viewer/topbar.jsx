@@ -6,6 +6,7 @@ function Topbar()
 
     var keyDropdown = [
         ... (localStorage.apikey_perms == "admin") ? [{ key: "editkeys", name: "Manage API Keys", icon: "ti ti-edit-circle" }] : [],
+        { key: "clientsettings", name: "Client Settings", icon: "ti ti-settings" },
         { key: "signout", name: "Sign Out", icon: "ti ti-logout" }
     ];
 
