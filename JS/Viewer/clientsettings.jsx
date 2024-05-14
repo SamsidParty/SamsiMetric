@@ -1,6 +1,6 @@
 function ClientSettings() {
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
-    var [page, setPage] = React.useState(Settings.Client.Appearance);
+    var [page, setPage] = React.useState(SettingSchema.Client.Appearance);
 
     var close = () => {
         DataObject["page"] = null;
@@ -20,14 +20,15 @@ function ClientSettings() {
                     <div className="settingsSidebar">
                         {
                             //Load All Settings Pages Into The Sidebar
-                            Object.keys(Settings.Client).map((l_page) => {
-                                l_page = Settings.Client[l_page];
+                            Object.keys(SettingSchema.Client).map((l_page) => {
+                                l_page = SettingSchema.Client[l_page];
                                 return (<Button onPress={() => setPage(l_page)} key={l_page.name} flat={l_page.name == page.name ? false : true} auto className="settingsSidebarButton"><i className={l_page.icon}></i>&nbsp;{l_page.name}</Button>)
                             })
                         }
                     </div>
                     <div className="settingsPanel">
                         <h2>{page.name}</h2>
+                        <SettingRenderer key={UUID()} settings={page.settings} settingTarget={Settings} setSetting={(s, v) => Settings[s.name] = v} />
                     </div>
                 </div>
             </Modal.Body>

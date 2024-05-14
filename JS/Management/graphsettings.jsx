@@ -50,12 +50,17 @@ function graphsettings_standard(props)
         }
     });  
 
+    var setSetting = (setting, value) =>
+    {
+        settings[setting.name] = value;
+        setSettings(Object.assign({}, settings));
+    }
 
     return (
         <div className="graphSettings" key={settings.for}>
             <MetricGraph key={settings.for} {...props} graph={settings}></MetricGraph>
             <div className={"graphSettingsBox graphSettings" + props.cardSize}>
-                {<SettingRenderer {...props} settings={settings} setSettings={setSettings} />}
+                {<SettingRenderer settings={props.graphmeta.settings} settingTarget={settings} setSetting={setSetting} />}
                 <Button flat auto css={{ marginLeft: "auto" }} className="applyGraphSettings" onPress={apply}>Apply</Button>
             </div>
         </div>

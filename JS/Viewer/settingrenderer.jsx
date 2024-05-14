@@ -1,12 +1,5 @@
 function SettingRenderer(props)
 {
-
-    var setSetting = (setting, value) =>
-    {
-        props.settings[setting.name] = value;
-        props.setSettings(Object.assign({}, props.settings));
-    }
-
     var renderSetting = (setting) =>
     {
 
@@ -14,7 +7,7 @@ function SettingRenderer(props)
         {
             setTimeout(() =>
             {
-                setSetting(setting, (props.graph[setting.name] != undefined) ? props.graph[setting.name] : setting.default);
+                props.setSetting(setting, (props.settingTarget[setting.name] != undefined) ? props.settingTarget[setting.name] : setting.default);
             }, 0);
         }
 
@@ -33,7 +26,7 @@ function SettingRenderer(props)
         return (
             <div className="renderedSetting" key={setting.name}>
                 <h3 className="boldText">{setting.displayname}</h3>
-                <Switch checked={(props.graph[setting.name] != undefined) ? props.graph[setting.name] : setting.default} onChange={(e) => { setSetting(setting, e.target.checked); }} />
+                <Switch checked={(props.settingTarget[setting.name] != undefined) ? props.settingTarget[setting.name] : setting.default} onChange={(e) => { props.setSetting(setting, e.target.checked); }} />
             </div>
         )
     }
@@ -41,7 +34,7 @@ function SettingRenderer(props)
     var renderSetting_select = (setting) =>
     {
         var setSelected = (s) => {
-            setSetting(setting, parseInt(s.currentKey));
+            props.setSetting(setting, parseInt(s.currentKey));
         }
 
         return (
@@ -49,7 +42,7 @@ function SettingRenderer(props)
                 <h3 className="boldText">{setting.displayname}</h3>
                 <Dropdown>
                     <Dropdown.Button flat color="secondary" css={{ tt: "capitalize" }}>
-                        {(props.settings[setting.name] != undefined) ? setting.options[props.settings[setting.name]] : setting.options[setting.default]}
+                        {(props.settingTarget[setting.name] != undefined) ? setting.options[props.settingTarget[setting.name]] : setting.options[setting.default]}
                     </Dropdown.Button>
                     <Dropdown.Menu
                         selectionMode="single"
@@ -70,7 +63,7 @@ function SettingRenderer(props)
     return (
         <div className="settingsBox">
             {
-                props.graphmeta.settings.map((l_setting) =>
+                props.settings.map((l_setting) =>
                 {
                     return renderSetting(l_setting);
                 })

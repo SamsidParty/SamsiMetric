@@ -1,29 +1,45 @@
 AutoLoadThisFile();
 
-window.Settings = {
+window.SettingSchema = {
     Client: GetClientSettings()
 }
 
+window.Settings = {
+
+}
 
 function GetClientSettings() {
     return {
         Appearance: {
             "name": "Appearance",
-            "icon": "ti ti-palette"
+            "icon": "ti ti-palette",
+            "settings": [
+                {
+                    "type": "bool",
+                    "displayname": "Use Dyslexic Font",
+                    "name": "useDyslexicFont",
+                    "default": isMobile,
+                    "current": isMobile
+                }
+            ]
         },
         About: {
             "name": "About",
             "icon": "ti ti-info-circle",
             "settings": [
                 {
-                    "type": "info",
+                    "type": "bool",
+                    "displayname": "Is Mobile",
                     "name": "isMobile",
-                    "value": isMobile
+                    "default": isMobile,
+                    "current": isMobile
                 },
                 {
-                    "type": "info",
+                    "type": "bool",
+                    "displayname": "Is Desktop",
                     "name": "isDesktop",
-                    "value": isDesktop
+                    "default": isDesktop,
+                    "current": isDesktop
                 }
             ]
         },
