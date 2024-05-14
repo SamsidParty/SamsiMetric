@@ -1,0 +1,11 @@
+.clientSettings {
+    height: 400px;
+    display: flex;
+}
+
+.settingsSidebar {
+    height: 100%;
+    background-color: var(--col-bg);
+    border-radius: 10px;
+    width: 200px;
+}

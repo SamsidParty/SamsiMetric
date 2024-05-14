@@ -1,11 +1,14 @@
 function ClientSettings() {
     var { DataObject, setDataObject } = React.useContext(DataContext); window.lastDataObject = DataObject;
-    var [error, setError] = React.useState("");
+    var [tab, setTab] = React.useState("appearance");
 
-    var close = () =>
-    {
+    var close = () => {
         DataObject["page"] = null;
         setDataObject(Object.assign({}, DataObject));
+    }
+
+    var changeTab = (e) => {
+        setTab(e.target.value);
     }
 
     return (
@@ -22,7 +25,11 @@ function ClientSettings() {
                 </Text>
             </Modal.Header>
             <Modal.Body>
-                
+                <div className="clientSettings">
+                    <div className="settingsSidebar">
+
+                    </div>
+                </div>
             </Modal.Body>
             <Modal.Footer>
 
