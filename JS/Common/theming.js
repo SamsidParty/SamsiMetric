@@ -2,6 +2,13 @@ AutoLoadThisFile();
 
 RunOnLoad("./JS/Common/theming.js", Theming);
 
+var ThemeComponents = {
+    "EnhancedReadabilityFont": {
+        "name": "EnhancedReadabilityFont",
+        "css": ` * { --standard-font: Jetbrains !important; }`
+    }
+}
+
 async function LoadFontFiles() {
     await LoadDependency("./Fonts/InterVariable.woff2");
     await LoadDependency("./Fonts/Jetbrains.woff2");
@@ -9,7 +16,7 @@ async function LoadFontFiles() {
 
     //Use EnhancedReadability Font
     if (!!Settings.useEnhancedReadabilityFont) {
-        await LoadEnhancedReadabilityFont();
+        await LoadThemeComponent(ThemeComponents["EnhancedReadabilityFont"]);
     }
     //Use The System Font If On Mobile
     else if (window.isMobile) {
@@ -17,20 +24,18 @@ async function LoadFontFiles() {
     }
 }
 
-//Use Jetbrains Sans Globally
-async function LoadEnhancedReadabilityFont() {
+async function LoadThemeComponent(tc) {
     //Don't Load It If It's Already Loaded
-    if (!!document.querySelector(".EnhancedReadabilityFont")) { return; }
+    if (!!document.querySelector(".tc-" + tc.name)) { return; }
 
-    LoadCSSDependency(`  
-    * { --standard-font: Jetbrains !important; }`, false, "EnhancedReadabilityFont");
+    LoadCSSDependency(tc.css, false, "tc-" + tc.name);
 }
 
-async function UnloadEnhancedReadabilityFont() {
-    //The Font Isn't Loaded
-    if (!document.querySelector(".EnhancedReadabilityFont")) { return; }
+async function UnloadThemeComponent(tc) {
+    //The Theme Component Isn't Loaded
+    if (!document.querySelector(".tc-" + tc.name)) { return; }
 
-    document.querySelector(".EnhancedReadabilityFont").remove();
+    document.querySelector(".tc-" + tc.name).remove();
 }
 
 async function Theming() {
