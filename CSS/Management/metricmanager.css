@@ -25,11 +25,11 @@
 
 .metricTableItem p {
     line-height: normal;
-    font-size: 20px;
+    font-size: 0.2rem;
 }
 
 .metricTableItem h1 {
-    font-size: 16px;
+    font-size: 0.16rem;
     letter-spacing: normal;
     line-height: normal;
     margin: 0;

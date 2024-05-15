@@ -37,7 +37,7 @@
 }
 
 .loginModal h1, .selectProjectModal h1 {
-    font-size: 40px;
+    font-size: 0.4rem;
     font-weight: 600;
     color: var(--col-text);
 }
@@ -96,7 +96,7 @@
     }
 
     .setupModal .mobileIcon {
-        font-size: 5rem;
+        font-size: 0.5rem;
         color: var(--nextui-colors-primary);
     }
 

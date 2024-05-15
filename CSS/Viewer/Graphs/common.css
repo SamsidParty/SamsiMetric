@@ -25,6 +25,6 @@
 }
 
 .graphError0 .ti-alert-triangle {
-    font-size: 35px;
+    font-size: 0.35rem;
     color: var(--nextui-colors-error);
 }   

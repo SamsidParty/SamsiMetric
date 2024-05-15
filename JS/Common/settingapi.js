@@ -21,7 +21,6 @@ function GetClientSettings() {
                     "default": isMobile,
                     "current": isMobile,
                     onChange: (newVal) => newVal ? LoadThemeComponent(ThemeComponents["EnhancedReadabilityFont"]) : UnloadThemeComponent(ThemeComponents["EnhancedReadabilityFont"])
-                    
                 }
             ]
         },

@@ -64,7 +64,7 @@
     text-transform: uppercase;
 
     margin: 0;
-    font-size: 14px;
+    font-size: 0.14rem;
     color: var(--col-text-secondary);
     letter-spacing: normal;
 }

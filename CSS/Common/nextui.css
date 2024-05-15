@@ -1,0 +1,69 @@
+/* Styles To Override NextUI Default Styles */
+
+/* Generated Styles To Reset NextUI Font Sizes */
+:root {
+
+    --nextui-fontSizes-2xl: 0.24rem !important;
+    --nextui-fontSizes-3xl: 0.3rem !important;
+    --nextui-fontSizes-4xl: 0.36rem !important;
+    --nextui-fontSizes-5xl: 0.48rem !important;
+    --nextui-fontSizes-6xl: 0.6rem !important;
+    --nextui-fontSizes-7xl: 0.72rem !important;
+    --nextui-fontSizes-8xl: 0.96rem !important;
+    --nextui-fontSizes-9xl: 1.28rem !important;
+    --nextui-fontSizes-base: 0.16rem !important;
+    --nextui-fontSizes-lg: 0.18rem !important;
+    --nextui-fontSizes-md: 0.16rem !important;
+    --nextui-fontSizes-sm: 0.14rem !important;
+    --nextui-fontSizes-xl: 0.2rem !important;
+    --nextui-fontSizes-xs: 0.12rem !important;
+    --nextui-space-0: 0rem !important;
+    --nextui-space-1: 0.02rem !important;
+    --nextui-space-10: 0.24rem !important;
+    --nextui-space-11: 0.28rem !important;
+    --nextui-space-12: 0.32rem !important;
+    --nextui-space-13: 0.36rem !important;
+    --nextui-space-14: 0.4rem !important;
+    --nextui-space-15: 0.44rem !important;
+    --nextui-space-16: 0.48rem !important;
+    --nextui-space-17: 0.56rem !important;
+    --nextui-space-18: 0.64rem !important;
+    --nextui-space-2: 0.04rem !important;
+    --nextui-space-20: 0.8rem !important;
+    --nextui-space-24: 0.96rem !important;
+    --nextui-space-28: 1.12rem !important;
+    --nextui-space-2xl: 0.48rem !important;
+    --nextui-space-3: 0.06rem !important;
+    --nextui-space-32: 1.28rem !important;
+    --nextui-space-36: 1.44rem !important;
+    --nextui-space-3xl: 0.8rem !important;
+    --nextui-space-4: 0.08rem !important;
+    --nextui-space-40: 1.6rem !important;
+    --nextui-space-44: 1.76rem !important;
+    --nextui-space-48: 1.92rem !important;
+    --nextui-space-4xl: 1.6rem !important;
+    --nextui-space-5: 0.1rem !important;
+    --nextui-space-52: 2.08rem !important;
+    --nextui-space-56: 2.24rem !important;
+    --nextui-space-5xl: 2.24rem !important;
+    --nextui-space-6: 0.12rem !important;
+    --nextui-space-60: 2.4rem !important;
+    --nextui-space-64: 2.56rem !important;
+    --nextui-space-6xl: 2.88rem !important;
+    --nextui-space-7: 0.14rem !important;
+    --nextui-space-72: 2.88rem !important;
+    --nextui-space-7xl: 3.84rem !important;
+    --nextui-space-8: 0.16rem !important;
+    --nextui-space-80: 3.2rem !important;
+    --nextui-space-8xl: 5.12rem !important;
+    --nextui-space-9: 0.2rem !important;
+    --nextui-space-96: 3.84rem !important;
+    --nextui-space-9xl: 6.4rem !important;
+    --nextui-space-lg: 0.2rem !important;
+    --nextui-space-md: 0.16rem !important;
+    --nextui-space-sm: 0.12rem !important;
+    --nextui-space-xl: 0.36rem !important;
+    --nextui-space-xs: 0.08rem !important;
+
+
+}

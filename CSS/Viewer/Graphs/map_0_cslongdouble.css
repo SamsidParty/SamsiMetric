@@ -55,7 +55,7 @@
     text-transform: uppercase !important;
 
     line-height: normal !important;
-    font-size: 14px !important;
+    font-size: 0.14rem !important;
     color: var(--col-text-secondary) !important;
     letter-spacing: normal !important;
 }

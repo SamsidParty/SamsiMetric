@@ -4,6 +4,7 @@
     --standard-font: InterVariable;
     font-family: var(--standard-font), tabler-icons !important;
     letter-spacing: normal !important;
+    font-size: 0.16rem;
     -webkit-font-smoothing: subpixel-antialiased;
     
     --nextui-transitions-button: background 0s ease 0s, color 0.25s ease 0s, border-color 0.25s ease 0s, box-shadow 0.25s ease 0s, transform 0.25s ease 0s, opacity 0.25s ease 0s !important;
@@ -44,9 +45,14 @@
     view-transition-name: root;
 }
 
+html {
+    font-size: 625%;
+}
+
 body {
     margin: 0;
     height: 100vh;
+    font-size: inherit !important;
     background-color: var(--col-bg);
 }
 
@@ -130,7 +136,7 @@ body {
     text-transform: uppercase !important;
 
     line-height: normal !important;
-    font-size: 14px !important;
+    font-size: 0.14rem !important;
     color: var(--col-text-secondary) !important;
     letter-spacing: normal !important;
 }
@@ -139,7 +145,7 @@ body {
     font-weight: 500;
     line-height: normal;
     letter-spacing: normal;
-    font-size: 22px;
+    font-size: 0.22rem;
 
     font-optical-sizing: none;
     font-variation-settings: 'opsz' 32;
@@ -156,6 +162,7 @@ body {
 .ti {
     text-align: center;
     position: relative;
+    font-size: inherit;
 }
 
 .nextui-dropdown-item-content {
@@ -203,7 +210,7 @@ body {
 .horizontalButtons button {
     border-radius: 0;
     margin: 0;
-    font-size: 17px;
+    font-size: 0.17rem;
     width: calc(100% / 5);
 }
 
@@ -235,7 +242,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 15px;
+    font-size: 0.15rem;
     font-weight: 600;
     aspect-ratio: 1;
 }
