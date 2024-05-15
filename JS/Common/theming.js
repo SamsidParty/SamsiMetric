@@ -7,9 +7,9 @@ async function LoadFontFiles() {
     await LoadDependency("./Fonts/Jetbrains.woff2");
     await LoadDependency("./Fonts/Tabler.ttf");
 
-    //Use Dyslexic Font
-    if (!!Settings.useDyslexicFont) {
-        await LoadDyslexicFont();
+    //Use EnhancedReadability Font
+    if (!!Settings.useEnhancedReadabilityFont) {
+        await LoadEnhancedReadabilityFont();
     }
     //Use The System Font If On Mobile
     else if (window.isMobile) {
@@ -17,30 +17,20 @@ async function LoadFontFiles() {
     }
 }
 
-async function LoadDyslexicFont() {
+//Use Jetbrains Sans Globally
+async function LoadEnhancedReadabilityFont() {
     //Don't Load It If It's Already Loaded
-    if (!!document.querySelector(".dyslexicFont")) { return; }
+    if (!!document.querySelector(".EnhancedReadabilityFont")) { return; }
 
-    await LoadDependency("./Fonts/OpenDyslexic.ttf");
-
-    LoadCSSDependency(`
-
-    @font-face {
-        font-family: OpenDyslexic;
-        font-style: normal;
-        src: url("./LOADER_LOAD_BIN/./Fonts/OpenDyslexic.ttf/FINISH") format("truetype");
-    }    
-
-    * { --standard-font: OpenDyslexic !important; }
-
-    `, false, "dyslexicFont");
+    LoadCSSDependency(`  
+    * { --standard-font: Jetbrains !important; }`, false, "EnhancedReadabilityFont");
 }
 
-async function UnloadDyslexicFont() {
+async function UnloadEnhancedReadabilityFont() {
     //The Font Isn't Loaded
-    if (!document.querySelector(".dyslexicFont")) { return; }
+    if (!document.querySelector(".EnhancedReadabilityFont")) { return; }
 
-    document.querySelector(".dyslexicFont").remove();
+    document.querySelector(".EnhancedReadabilityFont").remove();
 }
 
 async function Theming() {

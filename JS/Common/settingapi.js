@@ -16,11 +16,11 @@ function GetClientSettings() {
             "settings": [
                 {
                     "type": "bool",
-                    "displayname": "Use Dyslexic Font",
-                    "name": "useDyslexicFont",
+                    "displayname": "Use Enhanced Readability Font",
+                    "name": "useEnhancedReadabilityFont",
                     "default": isMobile,
                     "current": isMobile,
-                    onChange: (newVal) => newVal ? LoadDyslexicFont() : UnloadDyslexicFont()
+                    onChange: (newVal) => newVal ? LoadEnhancedReadabilityFont() : UnloadEnhancedReadabilityFont()
                     
                 }
             ]
