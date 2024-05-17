@@ -6,29 +6,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: calc(1rem * var(--card-scale));
 }
 
 .csMedLong.graphPie0 .subCard {
     height: 100%;
     display: flex;
     flex-direction: column;
-    min-width: 95px;
+    min-width: 0.95rem;
     align-items: flex-start;
-    padding: 15px 0px 0px 15px;
+    padding: 0.15rem 0px 0px 0.15rem;
     margin-right: auto;
-    gap: 15px;
+    gap: 0.15rem;
 }
 
 .csMedLong.graphPie0 .graphChart {
+    font-size: inherit;
     margin-left: auto;
-    margin-right: 10px; 
+    margin-right: 0.1em; 
 }
 
 .csMedLong.graphPie0 .iconHolder {
-    width: 35px;
-    height: 35px;
+    font-size: inherit;
+    width: 0.35em;
+    height: 0.35em;
     position: absolute;
-    right: calc(50px * var(--card-scale));
+    right: 0.50em;
     border-radius: 360px;
     border: 2px solid var(--col-contrast);
     display: flex;
@@ -37,8 +40,9 @@
 }
 
 .csMedLong.graphPie0 .iconHolder img {
-    width: 21px;
-    height: 21px;
+    font-size: inherit;
+    width: 0.21em;
+    height: 0.21em;
 }
 
 .csMedLong.graphPie0 .subCard h3 {
@@ -54,23 +58,23 @@
 }
 
 .csMedLong.graphPie0 .labelHolder {
-    width: 140px;
-    height: 70px;
+    width: 1.40rem;
+    height: 0.70rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
 }
 
 .csMedLong.graphPie0 .subCardLabel {
-    border-radius: 8px;
-    width: 30px;
-    height: 30px;
+    border-radius: 0.08rem;
+    width: 0.30rem;
+    height: 0.30rem;
     justify-content: center;
     align-items: center;
     display: flex;
 }
 
 .csMedLong.graphPie0 .subCardLabel img {
-    width: 21px;
-    height: 21px;
+    width: 0.21rem;
+    height: 0.21rem;
 }
