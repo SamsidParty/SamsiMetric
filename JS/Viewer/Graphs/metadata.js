@@ -138,7 +138,7 @@ var GraphTypes = [
         "native": "true",
         "name": "pie_0",
         "for": ["group"],
-        "size": ["csMedLong"],
+        "size": ["csMedLong", "csLongDouble"],
         "render": () => Graphpie_0,
         "settingsui": (props) => graphsettings_standard(props),
         "settings": [

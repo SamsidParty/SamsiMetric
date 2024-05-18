@@ -1,0 +1,80 @@
+.csLongDouble.graphPie0 .apexcharts-legend {
+    display: none;
+}
+
+.csLongDouble.graphPie0 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: calc(1rem * var(--card-scale));
+}
+
+.csLongDouble.graphPie0 .subCard {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0.95rem;
+    align-items: flex-start;
+    padding: 0.15rem 0px 0px 0.15rem;
+    margin-right: auto;
+    gap: 0.15rem;
+}
+
+.csLongDouble.graphPie0 .graphChart {
+    font-size: inherit;
+    margin-left: auto;
+    margin-right: 0.3em; 
+}
+
+.csLongDouble.graphPie0 .iconHolder {
+    font-size: inherit;
+    width: 0.8em;
+    height: 0.8em;
+    position: absolute;
+    right: 1.1em;
+    border-radius: 360px;
+    border: 2px solid var(--col-contrast);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.csLongDouble.graphPie0 .iconHolder img {
+    font-size: inherit;
+    width: 0.4em;
+    height: 0.4em;
+}
+
+.csLongDouble.graphPie0 .subCard h3 {
+    font-family: var(--standard-font) !important;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    margin: 0;
+    font-size: 0.14rem;
+    color: var(--col-text-secondary);
+    letter-spacing: normal;
+    line-height: normal;
+}
+
+.csLongDouble.graphPie0 .labelHolder {
+    width: 1.40rem;
+    height: 0.70rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.csLongDouble.graphPie0 .subCardLabel {
+    border-radius: 0.08rem;
+    width: 0.30rem;
+    height: 0.30rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.csLongDouble.graphPie0 .subCardLabel img {
+    width: 0.21rem;
+    height: 0.21rem;
+}
