@@ -1,6 +1,7 @@
 var LoadedSnapshotRanges = [];
 var LoadedSnapshots = [];
 var SnapshotsFor = {};
+var CronOffsets = {};
 var LoadedSnapshotData = {};
 var SnapshotDataQueue = [];
 var IsDownloadingSnapData = false;
@@ -171,9 +172,41 @@ function SnapshotAt(metric, time) {
     var closestSnapshot = {
         SnapTime: -Infinity
     };
-    closestSnapshot = BinarySearchSnapshots(Object.values(SnapshotsFor[metric]), time);
+
+    //Check If There Is An Exact Match
+    //If Not, Binary Search The Nearest Match
+    closestSnapshot = FindExactSnapshot(metric, time) || BinarySearchSnapshots(Object.values(SnapshotsFor[metric]), time);
+
 
     return closestSnapshot;
+}
+
+function FindExactSnapshot(metricID, time) {
+    var cronOffset = CronOffsetFor(metricID);
+    var timeMinute = (Math.ceil(time / 60) * 60) + (cronOffset < 60 ? cronOffset : 0);
+
+    if (LoadedSnapshots[metricID + "_" + time]) {
+        return LoadedSnapshots[metricID + "_" + time];
+    }
+    else if (LoadedSnapshots[metricID + "_" + timeMinute]) {
+        return LoadedSnapshots[metricID + "_" + timeMinute];
+    }
+
+    return null;
+}
+
+//Cron won't execute the snapshot writer php file exactly on the minute
+//This function calculates that offset
+function CronOffsetFor(metricID) {
+
+    //Use Cached Offset
+    if (!!CronOffsets[metricID]) { return CronOffsets[metricID]; }
+
+    //Get The First SnapTime Of The Metric
+    var firstSnapTime = SnapshotsFor[metricID][function() { for (var k in SnapshotsFor[metricID]) return k }()].SnapTime;
+    var cronOffset = firstSnapTime % 60; // Calculate Offset
+    CronOffsets[metricID] = cronOffset;
+    return cronOffset;
 }
 
 function ClearLoadedSnapshots() {
