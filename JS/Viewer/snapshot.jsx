@@ -175,23 +175,32 @@ function SnapshotAt(metric, time) {
 
     //Check If There Is An Exact Match
     //If Not, Binary Search The Nearest Match
-    closestSnapshot = FindExactSnapshot(metric, time) || BinarySearchSnapshots(Object.values(SnapshotsFor[metric]), time);
-
+    closestSnapshot = SimpleSearchSnapshot(metric, time) || BinarySearchSnapshots(Object.values(SnapshotsFor[metric]), time);
 
     return closestSnapshot;
 }
 
-function FindExactSnapshot(metricID, time) {
+function SimpleSearchSnapshot(metricID, time) {
     var cronOffset = CronOffsetFor(metricID);
-    var timeMinute = (Math.ceil(time / 60) * 60) + (cronOffset < 60 ? cronOffset : 0);
+    var timeMinute = (Math.floor(time / 60) * 60) + (cronOffset < 60 ? cronOffset : 0);
 
-    if (LoadedSnapshots[metricID + "_" + time]) {
+    if (LoadedSnapshots[metricID + "_" + time]) { // Try Exact Time
         return LoadedSnapshots[metricID + "_" + time];
     }
-    else if (LoadedSnapshots[metricID + "_" + timeMinute]) {
+    else if (LoadedSnapshots[metricID + "_" + timeMinute]) { // Try Nearest Minute
         return LoadedSnapshots[metricID + "_" + timeMinute];
     }
+    else if (LoadedSnapshots[metricID + "_" + timeMinute - 60]) { // Try Nearest Minute - 1
+        return LoadedSnapshots[metricID + "_" + timeMinute - 60];
+    }
+    else if (LoadedSnapshots[metricID + "_" + timeMinute + 1]) { // Account For 1 Second Errors
+        return LoadedSnapshots[metricID + "_" + timeMinute + 1];
+    }
+    else if (LoadedSnapshots[metricID + "_" + timeMinute - 1]) { // Account For 1 Second Errors
+        return LoadedSnapshots[metricID + "_" + timeMinute - 1];
+    }
 
+    //Imperfect SnapTime, Proceed To Binary Search
     return null;
 }
 
