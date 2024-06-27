@@ -71,6 +71,11 @@
     },
     {
         "action": "copyfile",
+        "from": "../sw.js",
+        "to": "../Build/sw.js"
+    },
+    {
+        "action": "copyfile",
         "from": "../JS/Common/loader.prod.js",
         "to": "../Build/JS/Common/loader.prod.js"
     },

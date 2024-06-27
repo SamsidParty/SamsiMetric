@@ -20,6 +20,9 @@ timeRange is an object like this
 */
 
 async function LoadSnapshotRange(timeRange) {
+
+    if (IsRangeLoaded(timeRange)) { return; }
+
     try {
         //Sync Snapshot Range From Server
         var response = await fetch(Backend, {
