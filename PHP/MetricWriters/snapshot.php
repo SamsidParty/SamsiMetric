@@ -55,7 +55,7 @@ class SnapshotWriter {
     function TakeSnapshot($metric) {
         //Dump The Metric Into A Compressed Binary File Suitable For Long Term Storage
         $dump = DumpMetric($metric);
-        DB::query("INSERT INTO data_snapshot (MetricID, SnapTime, SnapData) VALUES (%s, %d, %s)", $metric["id"], time(), $dump);
+        DB::query("INSERT INTO data_snapshot (MetricID, SnapTime, SnapData) VALUES (%s, %d, %s)", $metric["id"], round(time() / 60) * 60, $dump);
     }
 
     function TakeAllSnapshots() {

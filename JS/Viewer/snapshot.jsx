@@ -1,10 +1,6 @@
 var LoadedSnapshotRanges = [];
 var LoadedSnapshots = [];
 var SnapshotsFor = {};
-var CronOffsets = {};
-var LoadedSnapshotData = {};
-var SnapshotDataQueue = [];
-var IsDownloadingSnapData = false;
 
 //The Names Of The Tables That Snapshots Are Taken From
 var SnapshotTables = {
@@ -13,14 +9,23 @@ var SnapshotTables = {
     country: "data_country"
 }
 
-async function LoadSnapshotRange(from, to) {
+/*
+timeRange is an object like this 
+{
+    name: "1Y",
+    fullName: "Past Year",
+    unix: [from, to],
+    detail: 12,
+}
+*/
+
+async function LoadSnapshotRange(timeRange) {
     try {
         //Sync Snapshot Range From Server
         var response = await fetch(Backend, {
             headers: DefaultHeaders({ "X-Params": JSON.stringify({
-                action: "get_snapshot_data",
-                date_start: from,
-                date_end: to
+                action: "get_snapshot_range",
+                range: JSON.stringify(timeRange)
             }) })
         });
 
@@ -36,6 +41,8 @@ async function LoadSnapshotRange(from, to) {
 
         for (var i = 0; i < snaps.length; i++) {
             var l_snap = snaps[i];
+            
+            l_snap.SnapData = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(l_snap.SnapData)); // Decompress SnapData In Place
 
             var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // Prevents Duplication
             l_snap.identity = identity;
@@ -50,7 +57,7 @@ async function LoadSnapshotRange(from, to) {
         }
 
 
-        LoadedSnapshotRanges.push(from + "_" + to);
+        LoadedSnapshotRanges.push(JSON.stringify(timeRange));
     }
     catch (err) {
         //TODO: GUI Error Handler
@@ -58,16 +65,6 @@ async function LoadSnapshotRange(from, to) {
     }
 }
 
-async function DownloadSnapData(l_snap) {
-
-    //Add To Queue And Wait If The Data Is Not Stored Already
-    if (!LoadedSnapshotData[l_snap.SnapIndex]) {
-        SnapshotDataQueue.push(l_snap);
-        await WaitUntil(() => !!LoadedSnapshotData[l_snap.SnapIndex]);
-    }
-
-    return LoadedSnapshotData[l_snap.SnapIndex];
-}
 
 //Returns A 2D Array Of Snapshots In A Time Range, Where timeRange Is A Time Range And ids Is An Array Of Metric IDs
 function GetSnapshotsGroupedInRange(timeRange, ids) {
@@ -88,7 +85,6 @@ function GetSnapshotsInRange(timeRange, id) {
     for (let i = 0; i < timeRange.detail; i++) {
         var timeOfSnap = Math.ceil(timeRange.unix[0] + ((Math.abs(timeRange.unix[0] - timeRange.unix[1]) / timeRange.detail) * (i + 1)));
         var snap = SnapshotAt(id, timeOfSnap);
-        DownloadSnapData(snap);
 
         if (!!snap) {
             snaps.push(snap);
@@ -98,47 +94,6 @@ function GetSnapshotsInRange(timeRange, id) {
     return snaps;
 }
 
-async function DownloadAllSnapData() {
-
-    if (SnapshotDataQueue.length < 1 || IsDownloadingSnapData) { return; }
-
-    IsDownloadingSnapData = true;
-
-    var response = await fetch(Backend, {
-        method: "POST",
-        headers: DefaultHeaders({ "X-Params": JSON.stringify({
-            action: "get_snapshot_data",
-            get_data_directly: "true"
-        })}),
-        body: JSON.stringify(SnapshotDataQueue)
-    });
-
-    if (!response.ok) {
-        if (response.status == 401 || response.status == 424) {
-            window.location.href = "./Login"
-        }
-        dataStatus = "error";
-        return;
-    }
-
-    var snapDatas = await SWMessagePack.decodeAsync(await response.arrayBuffer());
-
-    for (var i = SnapshotDataQueue.length - 1; i >= 0; i--) {
-        
-        if (!SnapshotDataQueue[i]) { continue; }
-        var binaryData = snapDatas[SnapshotDataQueue[i].SnapIndex];
-        if (!binaryData) { continue; }
-
-        var data = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(binaryData));
-        LoadedSnapshotData[SnapshotDataQueue[i].SnapIndex] = data;
-        SnapshotDataQueue.splice(i, 1);
-        
-    }
-
-    IsDownloadingSnapData = false;
-}
-
-setInterval(DownloadAllSnapData, 500);
 
 function SnapshotAt(metric, time) {
 
@@ -176,13 +131,11 @@ function SnapshotAt(metric, time) {
     //Check If There Is An Exact Match
     //If Not, Binary Search The Nearest Match
     closestSnapshot = SimpleSearchSnapshot(metric, time) || BinarySearchSnapshots(Object.values(SnapshotsFor[metric]), time);
-
     return closestSnapshot;
 }
 
 function SimpleSearchSnapshot(metricID, time) {
-    var cronOffset = CronOffsetFor(metricID);
-    var timeMinute = (Math.floor(time / 60) * 60) + (cronOffset < 60 ? cronOffset : 0);
+    var timeMinute = Math.floor(time / 60) * 60;
 
     if (LoadedSnapshots[metricID + "_" + time]) { // Try Exact Time
         return LoadedSnapshots[metricID + "_" + time];
@@ -204,26 +157,12 @@ function SimpleSearchSnapshot(metricID, time) {
     return null;
 }
 
-//Cron won't execute the snapshot writer php file exactly on the minute
-//This function calculates that offset
-function CronOffsetFor(metricID) {
-
-    //Use Cached Offset
-    if (!!CronOffsets[metricID]) { return CronOffsets[metricID]; }
-
-    //Get The First SnapTime Of The Metric
-    var firstSnapTime = SnapshotsFor[metricID][function() { for (var k in SnapshotsFor[metricID]) return k }()].SnapTime;
-    var cronOffset = firstSnapTime % 60; // Calculate Offset
-    CronOffsets[metricID] = cronOffset;
-    return cronOffset;
-}
-
 function ClearLoadedSnapshots() {
     LoadedSnapshotRanges = [];
     LoadedSnapshots = [];
     SnapshotsFor = {};
 }
 
-function IsRangeLoaded(range) {
-    return LoadedSnapshotRanges.includes(range[0] + "_" + range[1]);
+function IsRangeLoaded(timeRange) {
+    return LoadedSnapshotRanges.includes(JSON.stringify(timeRange)); // Only Match Exact Same Time Range Args
 }

@@ -116,7 +116,7 @@ function Graphline_0_Line(props) {
 
     setTimeout(async () => {
         if (!isDataLoaded) {
-            await LoadSnapshotRange(timeRange.unix[0], timeRange.unix[1]);
+            await LoadSnapshotRange(timeRange);
             setIsDataLoaded(true);
         }
     }, 0);
@@ -197,8 +197,7 @@ function Graphline_0_Line(props) {
                 for (let i = 0; i < snaps[s].length; i++) {
                     var snap = snaps[s][i];
                     var stubDataObject = { data: {} };
-         
-                    stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = await DownloadSnapData(snap);
+                    stubDataObject.data[SnapshotTables[metricDatas[l_index].type]] = snap.SnapData;
                     var value = ValueFromNumberMetric(metricDatas[l_index], stubDataObject);
                     values.push(value);
                     dates.push(new Date(snap.SnapTime * 1000).toLocaleString());

@@ -143,7 +143,10 @@ async function RefreshData(ignoreSchema)
 
     //Load Snapshots From Last 24 Hours
     ClearLoadedSnapshots();
-    await LoadSnapshotRange(Math.floor(Date.now() / 1000) - 86400, Math.floor(Date.now() / 1000));
+    await LoadSnapshotRange({
+        unix: [Math.floor(Date.now() / 1000) - 86400, Math.floor(Date.now() / 1000)],
+        detail: 240
+    });
 
     //Check If There Are No Projects, Redirect To Project Select
     if (extDataObject["schema"].length < 1 && window.location.pathname.endsWith("/Dashboard")) {
