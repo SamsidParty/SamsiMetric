@@ -17,6 +17,9 @@ function DumpMetric($metric) {
     if ($metric["type"] == "total") {
         $query = DB::query("SELECT * FROM data_total WHERE MetricID = %s", $metric["id"]);
     }
+    else if ($metric["type"] == "dynamic") {
+        $query = array(0 => array());
+    }
     else if ($metric["type"] == "average") {
         $query = DB::query("SELECT * FROM data_average WHERE MetricID = %s", $metric["id"]);
     }

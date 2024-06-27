@@ -20,11 +20,13 @@ var SampleMetric = () => {
 
 var MetricNames = {
     "total": "Total Number",
+    "dynamic": "Dynamic Number",
     "average": "Average Number",
     "country": "Numbers By Country"
 }
 var MetricTypeDetails = {
     "total": "The Sum Of Multiple Data Submissions",
+    "dynamic": "Generate Values Using Visual Scripting",
     "average": "The Average Of Multiple Data Submissions",
     "country": "Total Numbers Arranged By Country"
 }

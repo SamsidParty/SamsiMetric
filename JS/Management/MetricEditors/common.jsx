@@ -1,4 +1,5 @@
 var AllMetricEditors = [
+    "dynamic",
     "total",
     "average",
     "common_num",

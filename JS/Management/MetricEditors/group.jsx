@@ -1,5 +1,6 @@
 var GroupableMetrics = [
     "total",
+    "dynamic",
     "average",
     "country"
 ]

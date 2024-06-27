@@ -1,4 +1,5 @@
 var SnappableMetrics = [
+    "dynamic",
     "total",
     "average",
     "group",

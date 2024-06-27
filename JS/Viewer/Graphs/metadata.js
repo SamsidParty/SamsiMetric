@@ -57,7 +57,7 @@ var GraphTypes = [
     {
         "native": "true",
         "name": "num_0",
-        "for": ["average", "total", "country"],
+        "for": ["average", "total", "dynamic", "country"],
         "size": ["csMedLong", "csShortLong"],
         "render": () => Graphnum_0,
         "settingsui": (props) => graphsettings_standard(props),
@@ -73,7 +73,7 @@ var GraphTypes = [
     {
         "native": "true",
         "name": "line_0",
-        "for": ["snapshot", "total", "average", "country", "group"],
+        "for": ["snapshot", "total", "dynamic", "average", "country", "group"],
         "size": ["csMedLong", "csLongDouble"],
         "render": () => Graphline_0,
         "settingsui": (props) => graphsettings_standard(props),
@@ -92,7 +92,7 @@ var GraphTypes = [
     {
         "native": "true",
         "name": "bar_0",
-        "for": ["snapshot", "total", "average", "country", "group"],
+        "for": ["snapshot", "total", "dynamic", "average", "country", "group"],
         "size": ["csMedLong", "csLongDouble"],
         "render": () => Graphbar_0,
         "settingsui": (props) => graphsettings_standard(props),
