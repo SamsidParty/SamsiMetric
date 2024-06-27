@@ -226,6 +226,14 @@ CREATE TABLE `data_snapshot` (
   `SnapIndex` bigint UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+ALTER TABLE `data_snapshot`
+  ADD PRIMARY KEY (`SnapIndex`),
+  ADD KEY `SnapTime` (`SnapTime`);
+
+ALTER TABLE `data_snapshot`
+  MODIFY `SnapIndex` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+COMMIT;
+
 CREATE TABLE `data_total` (
   `Total` double NOT NULL DEFAULT '0',
   `MetricID` varchar(100) NOT NULL DEFAULT '',

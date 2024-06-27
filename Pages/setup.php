@@ -34,6 +34,7 @@ if (isset($_GET['reason']) && $_GET['reason'] == "formatcomplete") {
             die();
         }
 
+        chdir("./Pages");
         http_response_code(201);
     }
     catch (Exception $ex) {
