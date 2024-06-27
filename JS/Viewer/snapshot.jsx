@@ -44,6 +44,9 @@ async function LoadSnapshotRange(timeRange) {
             
             l_snap.SnapData = await SWMessagePack.decodeAsync(await SWFFlate.decompressAsync(l_snap.SnapData)); // Decompress SnapData In Place
 
+            var identity = l_snap.MetricID + "_" + l_snap.SnapTime; // A Unique Identifier
+            l_snap.identity = identity;
+
             if (LoadedSnapshots[identity] == undefined) {
                 LoadedSnapshots[identity] = l_snap;
             }
